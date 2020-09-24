@@ -31,12 +31,16 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
+
   ionViewWillEnter() {
       this.menuCtrl.enable(false);
   }
 
+  get errorControl() {
+    return this.loginForm.controls;
+  }
+
   /**
-   * 
    * @param value : values from login form
    * function is used to login 
    */
@@ -48,31 +52,7 @@ export class LoginPage implements OnInit {
     } else {
       //ajax hit for login authentication
       let param = { email: value.email, password: value.password }
-      // this.callHttp.postHttp(APIList.LOGIN, param).subscribe(res => {
-      //   console.log(res);
-      //   if (res.status) {
-      //     //save remember me flag
-      //     if (value.rememberMe) {
-      //       this.common.saveLocal('rememberMe', 'true');
-      //     } else {
-      //       this.common.saveLocal('rememberMe', 'false');
-      //     }
-      //     //concat base url to image
-      //     res.data.profile_image = IMG_URL + res.data.profile_image;
-      //     this.currUser.userData = new User(
-      //       res.data.id,
-      //       res.data.address,
-      //       res.data.name,
-      //       res.data.mobile_number,
-      //       res.data.profile_image,
-      //       res.data.email,
-      //       res.data.api_token
-      //     );
-      //     this.common.saveLocal('loginType', 'auth');
-      //     this.common.saveLocal('userData', JSON.stringify(this.currUser.userData));
-      //     this.navCtrl.navigateRoot('home/auth');
-      //   }
-      // })
+      //api hit
     }
   }
 

@@ -129,3 +129,8 @@ ion-toolbar {
         overflow: hidden!important;
         word-break: break-word!important;
 }
+.hideErrorLine{--highlight-background: transparent;}
+.error {
+    color: red;
+    font-size: 13px;
+}

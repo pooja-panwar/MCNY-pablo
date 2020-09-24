@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { CommonService } from './global.service';
-import { UserService } from './user.service';
 import { Router } from '@angular/router';
 
 /**
@@ -17,7 +16,6 @@ export class CallHttpService {
   constructor(
     private http: HttpClient,
     private common: CommonService,
-    private curUser: UserService,
     private router: Router,
   ) {
     this.httpOptions = {
@@ -31,10 +29,10 @@ export class CallHttpService {
    * @param isHeader : true/false
    */
   getHttp(url, isHeader = false): Observable<any> {
-    if (isHeader && this.curUser && this.curUser.userData.api_token) {
+    if (isHeader ) {
       const httpOptions = {
         headers: new HttpHeaders({
-          'Authorization': `Bearer ${this.curUser.userData.api_token}`
+          'Authorization': `Bearer token`
         })
       };
       return this.http.get(url, httpOptions).pipe(
@@ -54,10 +52,10 @@ export class CallHttpService {
    * @param isHeader : true/false
    */
   postHttp(url, param, isHeader = false): Observable<any> {
-    if (isHeader && this.curUser.userData.api_token) {
+    if (isHeader ) {
       const httpOptions = {
         headers: new HttpHeaders({
-          'Authorization': `Bearer ${this.curUser.userData.api_token}`
+          'Authorization': `Bearer token`
         })
       };
       return this.http.post(url, param, httpOptions)
