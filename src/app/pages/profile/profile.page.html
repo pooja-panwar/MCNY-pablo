@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="signup2"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+    <ion-buttons slot="end">
+        <ion-button routerLink="/notification">
+          <img src="../assets/img/notification.png">
+          <ion-badge class="notiCount">10</ion-badge>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+  <ion-grid class="bg-blue">
+    <ion-row>
+      <ion-col class="profileImgWrap">
+        <img alt="" src="../assets/img/profile-pic.png">
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
+  <ion-grid class="userInfo">
+    <ion-row>
+      <ion-col >
+          <h2>Serena Gome <ion-button><img src="../assets/img/edit.png" alt=""></ion-button></h2>
+          <p class="name">Antisocial Personality</p>
+          <p>LMSW</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="mobileEmailInfo">
+    <ion-row>
+       <ion-col size="5" class="title">Phone Number</ion-col>
+       <ion-col size="7" class="info">+9125124147</ion-col>
+       <ion-col size="5" class="title">Insurance</ion-col>
+       <ion-col size="7" class="info">Insurance</ion-col>
+       <ion-col size="5" class="title">Email</ion-col>
+       <ion-col size="7" class="info">upender.rawat@evontech.com</ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="acceptingAvailableInfo">
+    <ion-row>
+      <ion-col size="6">
+        <h3>Accepting Clients</h3>
+        <ion-badge>Yes</ion-badge>
+      </ion-col>
+      <ion-col size="6">
+        <h3>Available Timeframe</h3>
+        <ion-badge>Anytime</ion-badge>
+      </ion-col>
+      <ion-col size="6">
+        <h3>Cities</h3>
+        <ion-badge>Alaska</ion-badge>
+      </ion-col>
+      <ion-col size="6">
+        <h3>Counseling Method</h3>
+        <ion-badge>Telehealth</ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

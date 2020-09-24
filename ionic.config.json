@@ -1,0 +1,7 @@
+{
+  "name": "MCNY",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

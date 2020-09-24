@@ -1,0 +1,131 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+// fonts
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+// common css 
+
+body{
+    font-family: 'Roboto', sans-serif;
+    font-size:14px;
+    font-weight:400;
+}
+.bg-blue{
+    --background:#1b356b;
+    background:#1b356b;
+}
+.header-md::after {
+    background-image: none;
+
+}
+
+ion-toolbar {
+    --background: #1b346a;
+    --padding-start: 15px;
+    --padding-end: 15px;
+    --border-width: 0 0 0 0 !important;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+
+    ion-title {
+        text-align: center;
+        text-align: center;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    ion-back-button {
+        --color: #fff;
+        --background-hover-opacity: 0;
+        --background-focused-opacity: 0;
+        --padding-start: 0px;
+        --padding-end: 0px;
+        min-width: auto;
+        height: auto;
+        --color: transparent;
+        font-size:0px;
+        background:url(assets/img/back.png);
+        height: 16px;
+        width: 23px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size:100%
+        
+
+    }
+
+    ion-buttons {
+        margin: 0px;
+        &.menuIcon{
+            ion-menu-button {
+                img{
+                    width:20px;
+                    
+                }  
+
+            }
+        }
+
+        ion-button {
+            --padding-start: 0px;
+            --padding-end: 5px;
+            position: relative;
+
+            .notiCount {
+                position: absolute;
+                color: #1b356b;
+                font-size: 9px;
+                background: #fff;
+                border: 1px solid #1b356b;
+                border-radius: 100%;
+                letter-spacing: 1px;
+                right: -4px;
+                top: 1px;
+                height: 15px;
+                width: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0px;
+            }
+        }
+    }
+
+}
+
+ .alert-radio-label{
+        font-size: 15px!important;
+        text-overflow: unset!important;
+        white-space: normal!important;
+        overflow: hidden!important;
+        word-break: break-word!important;
+}
