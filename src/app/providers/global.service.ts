@@ -1,25 +1,21 @@
 import { Injectable } from '@angular/core';
-import {
-  ToastController,
-  LoadingController,
-} from "@ionic/angular";
-import { Storage } from "@ionic/storage";
+import { ToastController, LoadingController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 /**
  * Common service used throughout app
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
-  loading:any;
-  isLoading:boolean = false;
+  loading: any;
+  isLoading: boolean = false;
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private storage: Storage
-  ) { 
-  }
+  ) {}
   /**
    * save to local db
    * @param key : name of the key that should be unique
@@ -50,11 +46,11 @@ export class CommonService {
    * Show toast with message
    * @param text : message to display on toast
    */
-  async presentToast(text){
+  async presentToast(text) {
     const toast = await this.toastCtrl.create({
       message: text,
       duration: 3000,
-      position: "top"
+      position: 'top',
     });
     toast.present();
   }
@@ -65,7 +61,9 @@ export class CommonService {
    */
   async hideLoader() {
     this.isLoading = false;
-    return await this.loadingCtrl.dismiss().then(() => console.log('dismissed'));
+    return await this.loadingCtrl
+      .dismiss()
+      .then(() => console.log('dismissed'));
   }
 
   /**
@@ -73,19 +71,21 @@ export class CommonService {
    */
   async displayLoader() {
     this.isLoading = true;
-    return await this.loadingCtrl.create({
-      spinner: 'dots',
-      message: 'Loading Please Wait...',
-      translucent: true,
-      cssClass: 'custom-class custom-loading',
-      backdropDismiss: true
-    }).then(a => {
-      a.present().then(() => {
-        console.log('presented');
-        if (!this.isLoading) {
-          a.dismiss().then(() => console.log('abort presenting'));
-        }
+    return await this.loadingCtrl
+      .create({
+        spinner: 'dots',
+        message: 'Loading Please Wait...',
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+        backdropDismiss: true,
+      })
+      .then((a) => {
+        a.present().then(() => {
+          console.log('presented');
+          if (!this.isLoading) {
+            a.dismiss().then(() => console.log('abort presenting'));
+          }
+        });
       });
-    });
   }
 }
