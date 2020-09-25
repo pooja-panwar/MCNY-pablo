@@ -44,6 +44,7 @@ export class Signup1Page implements OnInit {
    * when user clicks next to submit signup form 1
    */
   submitSignUp() {
+    console.log(this.signUpForm.value);
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
     }
