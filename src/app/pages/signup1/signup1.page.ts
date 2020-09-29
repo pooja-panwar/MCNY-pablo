@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup1',
@@ -11,7 +12,11 @@ export class Signup1Page implements OnInit {
   signUpForm: FormGroup;
   isSubmitted = false;
 
-  constructor(public menuCtrl: MenuController, private fb: FormBuilder) {}
+  constructor(
+    public menuCtrl: MenuController,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -47,6 +52,12 @@ export class Signup1Page implements OnInit {
     console.log(this.signUpForm.value);
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          userDetails: this.signUpForm.value,
+        },
+      };
+      this.router.navigate(['signup2'], navigationExtras);
     }
   }
 

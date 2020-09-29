@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MenuController, Platform } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup2',
   templateUrl: './signup2.page.html',
   styleUrls: ['./signup2.page.scss'],
 })
-export class Signup2Page implements OnInit {
+export class Signup2Page implements OnInit, OnDestroy {
   signUpForm: FormGroup;
   isSubmitted = false;
+  userDetails;
   timeFrames = [
     'Anytime',
     'Afternoon',
@@ -28,13 +30,52 @@ export class Signup2Page implements OnInit {
     { id: 3, name: 'City of Niagara Falls' },
     { id: 4, name: 'Town of Cambria' },
   ];
-  constructor(public menuCtrl: MenuController, private fb: FormBuilder) {}
+  constructor(
+    public menuCtrl: MenuController,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private platform: Platform
+  ) {
+    //get tour id from routes state data
+    this.route.queryParams.subscribe((params) => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.userDetails = this.router.getCurrentNavigation().extras.state.userDetails;
+        console.log(this.userDetails);
+      }
+    });
+  }
 
   ngOnInit() {
     this.initForm();
+    this.disableBackNav();
   }
+  ngOnDestroy(): void {
+    //destroy event listener for enabling back navigation again
+    document.removeEventListener('backbutton', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }
+
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
+  }
+
+  /**
+   * disable user to navigate back to signup page 1
+   */
+  disableBackNav() {
+    this.platform.backButton.subscribeWithPriority(9999, () => {
+      document.addEventListener(
+        'backbutton',
+        function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        false
+      );
+    });
   }
 
   /**
@@ -77,6 +118,9 @@ export class Signup2Page implements OnInit {
   submitSignUp() {
     this.isSubmitted = true;
     console.log(this.signUpForm.value);
+    if (this.signUpForm.valid) {
+      this.router.navigate(['profile']);
+    }
   }
 
   get errorControl() {
