@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { CommonService } from './providers/global.service';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +50,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    private router: Router,
+    private common: CommonService
   ) {
     this.initializeApp();
   }
@@ -66,8 +70,17 @@ export class AppComponent {
         (page) => page.title.toLowerCase() === path.toLowerCase()
       );
     }
+    this.handleBackNav();
   }
   toggleMenu() {
     this.menuCtrl.toggle();
+  }
+
+  /**
+   * call common service fn to check
+   * for hardware back button event
+   */
+  handleBackNav() {
+    this.common.handleBackNavigation();
   }
 }

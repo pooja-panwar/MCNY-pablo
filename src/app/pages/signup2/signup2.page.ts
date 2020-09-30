@@ -30,6 +30,7 @@ export class Signup2Page implements OnInit, OnDestroy {
     { id: 3, name: 'City of Niagara Falls' },
     { id: 4, name: 'Town of Cambria' },
   ];
+  subscription: any;
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
@@ -48,34 +49,46 @@ export class Signup2Page implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForm();
-    this.disableBackNav();
+    // this.disableBackNav();
   }
   ngOnDestroy(): void {
     //destroy event listener for enabling back navigation again
-    document.removeEventListener('backbutton', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    });
+    // document.removeEventListener(
+    //   'backbutton',
+    //   function (event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //   },
+    //   false
+    // );
+    this.subscription.unsubscribe();
   }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
 
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
+
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribeWithPriority(
+      9999,
+      () => {
+        // do nothing
+      }
+    );
+  }
+
   /**
    * disable user to navigate back to signup page 1
    */
   disableBackNav() {
-    this.platform.backButton.subscribeWithPriority(9999, () => {
-      document.addEventListener(
-        'backbutton',
-        function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        },
-        false
-      );
-    });
+    this.subscription = this.platform.backButton.subscribeWithPriority(
+      9999,
+      () => {}
+    );
   }
 
   /**
@@ -92,7 +105,7 @@ export class Signup2Page implements OnInit, OnDestroy {
   }
 
   /**
-   * push time gramce checkbox value into form array
+   * push time frame checkbox value into form array
    * @param val current timeframe checkbox selected by the user
    */
   pushTimeFrameVal(val) {

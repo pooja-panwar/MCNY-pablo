@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular'; 
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { MenuController } from '@ionic/angular';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/providers/user.service';
+import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
   selector: 'app-login',
@@ -15,25 +23,30 @@ export class LoginPage implements OnInit {
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
-    private navCtrl: NavController,
-  ) { 
+    private router: Router,
+    private user: UserService,
+    private common: CommonService
+  ) {
     this.loginForm = this.fb.group({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      password: new FormControl('', Validators.compose([
-        Validators.minLength(6),
-        Validators.required,
-      ]))
+      email: new FormControl(
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+        ])
+      ),
+      password: new FormControl(
+        '',
+        Validators.compose([Validators.minLength(6), Validators.required])
+      ),
+      rememberMe: [false],
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
-      this.menuCtrl.enable(false);
+    this.menuCtrl.enable(false);
   }
 
   get errorControl() {
@@ -42,18 +55,29 @@ export class LoginPage implements OnInit {
 
   /**
    * @param value : values from login form
-   * function is used to login 
+   * function is used to login
    */
   submitLogin(value) {
     this.isSubmitted = true;
-    if (!this.loginForm.valid) {
-      console.log('Please provide all the required values!')
-      return false;
-    } else {
+    if (this.loginForm.valid) {
       //ajax hit for login authentication
-      let param = { email: value.email, password: value.password }
-      //api hit
+      let param = { email: value.email, password: value.password };
+      this.user.loginUser(param).subscribe((data) => {
+        //check if user has checked true to remember me
+        if (value.remembeMe) {
+          this.saveUserToLocal(data);
+        }
+        this.router.navigate(['profile']);
+      });
+      this.router.navigate(['profile']);
     }
   }
 
+  /**
+   * save user details to local storage
+   * @param data user details received from backend
+   */
+  saveUserToLocal(data) {
+    this.common.saveLocal('user', data);
+  }
 }

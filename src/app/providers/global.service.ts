@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 
 /**
  * Common service used throughout app
@@ -14,7 +15,9 @@ export class CommonService {
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private storage: Storage
+    private storage: Storage,
+    private platform: Platform,
+    private router: Router
   ) {}
   /**
    * save to local db
@@ -81,11 +84,26 @@ export class CommonService {
       })
       .then((a) => {
         a.present().then(() => {
-          console.log('presented');
           if (!this.isLoading) {
             a.dismiss().then(() => console.log('abort presenting'));
           }
         });
       });
+  }
+
+  /**
+   * subscribe to back navigation event in android and handle
+   */
+  handleBackNavigation() {
+    this.platform.backButton.subscribe(() => {
+      //back handle for android
+      console.log('back hit');
+      if (this.router.url === '/profile' || this.router.url === '/login') {
+        navigator['app'].exitApp();
+      }
+      if (this.router.url === '/signup1') {
+        this.router.navigate(['login']);
+      }
+    });
   }
 }
