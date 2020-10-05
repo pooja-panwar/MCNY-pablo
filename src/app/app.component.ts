@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { MenuController } from '@ionic/angular';
@@ -14,6 +14,7 @@ import { CommonService } from './providers/global.service';
 })
 export class AppComponent {
   public selectedIndex = 0;
+  public showMenuBar = false;
   public appPages = [
     {
       title: 'Manage Profile',
@@ -52,7 +53,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
     private router: Router,
-    private common: CommonService
+    private common: CommonService,
+    private navCtrl: NavController
   ) {
     this.initializeApp();
   }
@@ -71,6 +73,7 @@ export class AppComponent {
       );
     }
     this.handleBackNav();
+    this.allowSideMenu();
   }
   toggleMenu() {
     this.menuCtrl.toggle();
@@ -82,5 +85,43 @@ export class AppComponent {
    */
   handleBackNav() {
     this.common.handleBackNavigation();
+  }
+
+  allowSideMenu() {
+    const path = window.location.pathname.split('/')[1];
+    if (
+      path !== '' &&
+      path !== 'login' &&
+      path !== 'signup1' &&
+      path !== 'signup2' &&
+      path !== 'forgot-password' &&
+      path !== 'email-verification' &&
+      path !== 'registration-success-message'
+    ) {
+      this.showMenuBar = true;
+    } else {
+      this.showMenuBar = false;
+    }
+  }
+
+  /**
+   * click on menu items
+   * @param menu
+   */
+  menuClick(menu) {
+    console.log(menu);
+    switch (menu.title) {
+      case 'Logout':
+        this.common.removeFromLocal('rememberMe');
+        this.common.removeFromLocal('userData');
+        this.common.removeFromLocal('loginType');
+        this.menuCtrl.toggle();
+        this.navCtrl.navigateForward('login');
+        break;
+
+      default:
+        this.navCtrl.navigateForward(menu.url);
+        break;
+    }
   }
 }

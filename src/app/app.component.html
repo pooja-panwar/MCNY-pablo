@@ -1,22 +1,30 @@
 <ion-app>
-	<ion-split-pane contentId="main-content">
-		<ion-menu contentId="main-content" type="push" *ngIf = "showMenuBar">
-			<ion-content class="sideMenuWrap" >
-				<ion-button class="closeBtn" (click)="toggleMenu()">
-					<img src="assets/close-1.png">
-				</ion-button>
-				<ion-list id="inbox-list">
-				<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-					<ion-item (click)="selectedIndex = i;menuClick(p)" routerDirection="root" lines="none" detail="false" [class.selected]="selectedIndex == i">				
-					
-						<img [src]="p.icon" class="icons" slot="start"/>
-					
-					<ion-label class="label">{{ p.title }}</ion-label>
-					</ion-item>
-				</ion-menu-toggle>
-				</ion-list>
-			</ion-content>
-		</ion-menu>
-		<ion-router-outlet id="main-content"></ion-router-outlet>
-	</ion-split-pane>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="push" *ngIf="showMenuBar">
+      <ion-content class="sideMenuWrap">
+        <ion-button class="closeBtn" (click)="toggleMenu()">
+          <img src="../assets/img/close-menu.png" />
+        </ion-button>
+        <ion-list id="inbox-list">
+          <ion-menu-toggle
+            auto-hide="false"
+            *ngFor="let p of appPages; let i = index"
+          >
+            <ion-item
+              (click)="selectedIndex = i; menuClick(p)"
+              routerDirection="root"
+              lines="none"
+              detail="false"
+              [class.selected]="selectedIndex == i"
+            >
+              <img [src]="p.icon" class="icons" slot="start" />
+
+              <ion-label class="label">{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>

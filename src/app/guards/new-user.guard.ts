@@ -12,7 +12,7 @@ import { CommonService } from '../providers/global.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LocalUserGuard implements CanActivate {
+export class NewUserGuard implements CanActivate {
   constructor(private common: CommonService, private router: Router) {}
 
   canActivate(

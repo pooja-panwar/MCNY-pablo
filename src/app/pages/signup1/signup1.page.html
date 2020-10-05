@@ -23,10 +23,16 @@
 
           <ion-item>
             <ion-label position="stacked">License</ion-label>
-            <ion-input
+            <ion-select
               formControlName="license"
               [class.error-input]="isSubmitted && errorControl.license.errors"
-            ></ion-input>
+            >
+              <ion-select-option
+                *ngFor="let license of masterData?.licenses"
+                [value]="license.id"
+                >{{license.name}}</ion-select-option
+              >
+            </ion-select>
           </ion-item>
           <span
             class="error ion-padding"
@@ -134,6 +140,47 @@
             Gender is required.
           </span>
 
+          <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input
+              type="password"
+              formControlName="password"
+              [class.error-input]="isSubmitted && errorControl.password.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.required"
+          >
+            Password is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.minlength"
+          >
+            Password should be minimum 6 character.
+          </span>
+
+          <ion-item>
+            <ion-label position="stacked">Confirm Password</ion-label>
+            <ion-input
+              type="password"
+              formControlName="confirmPassword"
+              [class.error-input]="isSubmitted && errorControl.confirmPassword.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.confirmPassword.errors?.required"
+          >
+            Confirm Password is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.confirmPassword.errors?.mustMatch"
+          >
+            Passwords must match.
+          </span>
           <ion-item>
             <ion-button type="submit" class="yellowBtn">next</ion-button>
           </ion-item>

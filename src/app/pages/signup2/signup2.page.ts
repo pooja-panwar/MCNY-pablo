@@ -1,24 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuController, Platform } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/providers/user.service';
 
 @Component({
   selector: 'app-signup2',
   templateUrl: './signup2.page.html',
   styleUrls: ['./signup2.page.scss'],
 })
-export class Signup2Page implements OnInit, OnDestroy {
+export class Signup2Page implements OnInit {
   signUpForm: FormGroup;
   isSubmitted = false;
   userDetails;
+  masterData;
   timeFrames = [
-    'Anytime',
-    'Afternoon',
-    'Weekends',
-    'Morning',
-    'Evening',
-    'Others',
+    { id: 1, name: 'Anytime' },
+    { id: 2, name: 'Afternoon' },
+    { id: 3, name: 'Weekends' },
+    { id: 4, name: 'Morning' },
+    { id: 5, name: 'Evening' },
+    { id: 6, name: 'Others' },
   ];
   expertiseArr = [
     { id: 1, name: 'Expertise 1' },
@@ -36,13 +38,13 @@ export class Signup2Page implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    private user: UserService
   ) {
     //get tour id from routes state data
     this.route.queryParams.subscribe((params) => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.userDetails = this.router.getCurrentNavigation().extras.state.userDetails;
-        console.log(this.userDetails);
       }
     });
   }
@@ -51,19 +53,6 @@ export class Signup2Page implements OnInit, OnDestroy {
     this.initForm();
     // this.disableBackNav();
   }
-  ngOnDestroy(): void {
-    //destroy event listener for enabling back navigation again
-    // document.removeEventListener(
-    //   'backbutton',
-    //   function (event) {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //   },
-    //   false
-    // );
-    this.subscription.unsubscribe();
-  }
-
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
@@ -79,6 +68,24 @@ export class Signup2Page implements OnInit, OnDestroy {
         // do nothing
       }
     );
+  }
+
+  /**
+   * get master data for all the
+   * required fields used in signup
+   */
+  getMasterData() {
+    this.user.getSignUpMasterData().subscribe((data) => {
+      this.user.emitMasterData(data);
+    });
+  }
+
+  subscribeToMasterData() {
+    this.user.signUpMasterDataSubject.subscribe((data) => {
+      if (data) {
+        this.masterData = data.data;
+      }
+    });
   }
 
   /**
@@ -130,9 +137,11 @@ export class Signup2Page implements OnInit, OnDestroy {
    */
   submitSignUp() {
     this.isSubmitted = true;
-    console.log(this.signUpForm.value);
     if (this.signUpForm.valid) {
-      this.router.navigate(['profile']);
+      //create form data by merging signup1 and signup2 data
+      const userData = { ...this.userDetails, ...this.signUpForm.value };
+      this.user.registerUser(userData).subscribe((data) => {});
+      this.router.navigate(['email-verification']);
     }
   }
 

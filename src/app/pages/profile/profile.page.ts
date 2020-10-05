@@ -18,12 +18,16 @@ export class ProfilePage implements OnInit {
     this.getUserPofile();
   }
   ionViewWillEnter() {
-    this.menuCtrl.enable(false);
+    this.menuCtrl.enable(true);
   }
 
   getUserPofile() {
     this.userService.getUserProfile('').subscribe((data) => {
       this.user = data;
     });
+  }
+
+  open() {
+    this.menuCtrl.toggle();
   }
 }

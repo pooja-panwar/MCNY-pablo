@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
+import { MustMatch } from 'src/app/providers/_helpers/must-match.validator';
+import { UserService } from 'src/app/providers/user.service';
 
 @Component({
   selector: 'app-signup1',
@@ -11,15 +13,18 @@ import { NavigationExtras, Router } from '@angular/router';
 export class Signup1Page implements OnInit {
   signUpForm: FormGroup;
   isSubmitted = false;
-
+  masterData;
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private user: UserService
   ) {}
 
   ngOnInit() {
     this.initForm();
+    this.getMasterData();
+    this.subscribeToMasterData();
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
@@ -29,29 +34,41 @@ export class Signup1Page implements OnInit {
    * initialize signup form
    */
   initForm() {
-    this.signUpForm = this.fb.group({
-      name: ['', [Validators.required]],
-      license: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      insurance: [null, [Validators.required]],
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+    this.signUpForm = this.fb.group(
+      {
+        name: ['', [Validators.required]],
+        license: ['', [Validators.required]],
+        phoneNumber: ['', [Validators.required]],
+        insurance: [null, [Validators.required]],
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9][-a-zA-Z0-9._]+@([- a-z0-9]+[.])+[a-z]{2,5}$'
+            ),
+          ],
         ],
-      ],
-      gender: [null, [Validators.required]],
-    });
+        gender: [null, [Validators.required]],
+        password: [
+          '',
+          Validators.compose([Validators.minLength(6), Validators.required]),
+        ],
+        confirmPassword: ['', Validators.compose([Validators.required])],
+      },
+      {
+        validator: MustMatch('password', 'confirmPassword'),
+      }
+    );
   }
 
   /**
    * when user clicks next to submit signup form 1
    */
   submitSignUp() {
-    console.log(this.signUpForm.value);
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
+      delete this.signUpForm.value.confirmPassword;
       let navigationExtras: NavigationExtras = {
         state: {
           userDetails: this.signUpForm.value,
@@ -66,5 +83,26 @@ export class Signup1Page implements OnInit {
    */
   get errorControl() {
     return this.signUpForm.controls;
+  }
+
+  /**
+   * get master data for all the
+   * required fields used in signup
+   */
+  getMasterData() {
+    this.user.getSignUpMasterData().subscribe((data) => {
+      this.user.emitMasterData(data);
+    });
+  }
+
+  /**
+   * subscribe to signup master data for fields
+   */
+  subscribeToMasterData() {
+    this.user.signUpMasterDataSubject.subscribe((data) => {
+      if (data) {
+        this.masterData = data.data;
+      }
+    });
   }
 }

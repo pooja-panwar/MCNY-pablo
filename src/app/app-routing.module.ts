@@ -1,26 +1,32 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { LocalUserGuard } from './guards/local-user.guard';
+import { NewUserGuard } from './guards/new-user.guard';
 
 const routes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginPageModule),
-    canActivate: [LocalUserGuard],
+    canActivate: [NewUserGuard],
   },
   {
     path: 'signup1',
     loadChildren: () =>
       import('./pages/signup1/signup1.module').then((m) => m.Signup1PageModule),
-    canActivate: [LocalUserGuard],
+    canActivate: [NewUserGuard],
   },
   {
     path: 'signup2',
     loadChildren: () =>
       import('./pages/signup2/signup2.module').then((m) => m.Signup2PageModule),
-    canActivate: [LocalUserGuard],
+    canActivate: [NewUserGuard],
+  },
+  {
+    path: 'registration-success-message',
+    loadChildren: () =>
+      import(
+        './pages/registration-success-message/registration-success-message.module'
+      ).then((m) => m.RegistrationSuccessMessagePageModule),
   },
   {
     path: 'profile',
