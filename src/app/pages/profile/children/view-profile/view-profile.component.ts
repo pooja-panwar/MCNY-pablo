@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-view-profile',
+  templateUrl: './view-profile.component.html',
+  styleUrls: ['./view-profile.component.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ViewProfileComponent implements OnInit {
   user;
   constructor(
-    public menuCtrl: MenuController,
     private userService: UserService,
     private common: CommonService
   ) {}
@@ -19,18 +17,13 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.getUserPofile();
   }
-  ionViewWillEnter() {
-    this.menuCtrl.enable(true);
-  }
 
+  //get user profile details
   getUserPofile() {
     this.userService.getUserProfile().subscribe((data) => {
+      console.log(data);
       this.user = data.data.doctor;
       this.common.emitUserSubject(this.user);
     });
-  }
-
-  open() {
-    this.menuCtrl.toggle();
   }
 }

@@ -23,16 +23,15 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return new Promise((resolve) => {
-      this.common.getFromLocal('userData').then((val) => {
-        // check from local db of logged in user data
-        if (val && JSON.parse(val).id) {
-          resolve(true);
-        } else {
-          //navigate to login if not authenticated
-          this.router.navigateByUrl('login');
-          resolve(false);
-        }
-      });
+      let val = this.common.getFromLocal('userData');
+      // check from local db of logged in user data
+      if (val && val.token) {
+        resolve(true);
+      } else {
+        //navigate to login if not authenticated
+        this.router.navigateByUrl('login');
+        resolve(false);
+      }
     });
   }
 }

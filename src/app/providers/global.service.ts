@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ToastController, LoadingController, Platform } from '@ionic/angular';
+import {
+  ToastController,
+  LoadingController,
+  Platform,
+  MenuController,
+  NavController,
+} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Common service used throughout app
@@ -12,12 +19,15 @@ import { Router } from '@angular/router';
 export class CommonService {
   loading: any;
   isLoading: boolean = false;
+  userSubject = new BehaviorSubject(null);
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private storage: Storage,
     private platform: Platform,
-    private router: Router
+    private router: Router,
+    public menuCtrl: MenuController,
+    private navCtrl: NavController
   ) {}
   /**
    * save to local db
@@ -25,15 +35,17 @@ export class CommonService {
    * @param value : value can be anything but will be saved in string
    */
   async saveLocal(key, value) {
-    await this.storage.set(key, value);
+    // this.storage.set(key, JSON.stringify(value));
+    await localStorage.setItem(key, JSON.stringify(value));
   }
 
   /**
    * get call from local db
    * @param key : unique key to get the local data
    */
-  async getFromLocal(key) {
-    let val = await this.storage.get(key);
+  getFromLocal(key) {
+    // let val = this.storage.get(key);
+    let val = JSON.parse(localStorage.getItem(key));
     return val;
   }
 
@@ -42,7 +54,8 @@ export class CommonService {
    * @param key : unique key to remove the local data
    */
   async removeFromLocal(key) {
-    await this.storage.remove(key);
+    // await this.storage.remove(key);
+    localStorage.removeItem(key);
   }
 
   /**
@@ -64,9 +77,7 @@ export class CommonService {
    */
   async hideLoader() {
     this.isLoading = false;
-    return await this.loadingCtrl
-      .dismiss()
-      .then(() => console.log('dismissed'));
+    return await this.loadingCtrl.dismiss().then(() => {});
   }
 
   /**
@@ -85,7 +96,7 @@ export class CommonService {
       .then((a) => {
         a.present().then(() => {
           if (!this.isLoading) {
-            a.dismiss().then(() => console.log('abort presenting'));
+            a.dismiss().then(() => {});
           }
         });
       });
@@ -97,7 +108,6 @@ export class CommonService {
   handleBackNavigation() {
     this.platform.backButton.subscribe(() => {
       //back handle for android
-      console.log('back hit');
       if (this.router.url === '/profile' || this.router.url === '/login') {
         navigator['app'].exitApp();
       }
@@ -105,5 +115,27 @@ export class CommonService {
         this.router.navigate(['login']);
       }
     });
+  }
+
+  //emit user subject after value is stored
+  emitUserSubject(user) {
+    this.userSubject.next(user);
+  }
+
+  /**
+   * return user token if stored either from
+   * local storage or from the user subject
+   */
+  getUserToken() {
+    const local = JSON.parse(this.getFromLocal('userData'));
+    return local.token;
+  }
+
+  //logout user and delete local stored details of the user
+  logout() {
+    this.removeFromLocal('rememberMe');
+    this.removeFromLocal('userData');
+    this.menuCtrl.toggle();
+    this.navCtrl.navigateForward('login');
   }
 }

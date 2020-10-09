@@ -63,15 +63,20 @@ export class LoginPage implements OnInit {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
       //ajax hit for login authentication
-      let param = { email: value.email, password: value.password };
+      const param = { email: value.email, password: value.password };
       this.user.loginUser(param).subscribe((data) => {
-        //check if user has checked true to remember me
-        if (value.remembeMe) {
-          this.saveUserToLocal(data);
+        if (data.status === 'success') {
+          this.saveUserToLocal('userData', data.data);
+          //check if user has checked true to remember me
+          if (value.rememberMe) {
+            this.saveUserToLocal('rememberMe', 'true');
+          } else {
+            this.saveUserToLocal('rememberMe', 'false');
+          }
+          // this.common.emitUserSubject(data.data);
+          this.router.navigate(['profile']);
         }
-        this.router.navigate(['profile']);
       });
-      this.router.navigate(['profile']);
     }
   }
 
@@ -79,7 +84,7 @@ export class LoginPage implements OnInit {
    * save user details to local storage
    * @param data user details received from backend
    */
-  saveUserToLocal(data) {
-    this.common.saveLocal('user', data);
+  saveUserToLocal(key, data) {
+    this.common.saveLocal(key, data);
   }
 }

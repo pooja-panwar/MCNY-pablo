@@ -52,7 +52,12 @@ export class Signup1Page implements OnInit {
         gender: [null, [Validators.required]],
         password: [
           '',
-          Validators.compose([Validators.minLength(6), Validators.required]),
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+            ),
+          ]),
         ],
         confirmPassword: ['', Validators.compose([Validators.required])],
       },
@@ -69,7 +74,7 @@ export class Signup1Page implements OnInit {
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
       delete this.signUpForm.value.confirmPassword;
-      let navigationExtras: NavigationExtras = {
+      const navigationExtras: NavigationExtras = {
         state: {
           userDetails: this.signUpForm.value,
         },
@@ -100,7 +105,7 @@ export class Signup1Page implements OnInit {
    */
   subscribeToMasterData() {
     this.user.signUpMasterDataSubject.subscribe((data) => {
-      if (data) {
+      if (data && data.status === 'success') {
         this.masterData = data.data;
       }
     });

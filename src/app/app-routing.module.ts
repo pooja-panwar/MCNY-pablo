@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NewUserGuard } from './guards/new-user.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () =>
       import('./pages/profile/profile.module').then((m) => m.ProfilePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'notification',
@@ -39,6 +41,7 @@ const routes: Routes = [
       import('./pages/notification/notification.module').then(
         (m) => m.NotificationPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'request-details',
@@ -46,6 +49,7 @@ const routes: Routes = [
       import('./pages/request-details/request-details.module').then(
         (m) => m.RequestDetailsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'accepted-requests',
@@ -53,6 +57,7 @@ const routes: Routes = [
       import('./pages/accepted-requests/accepted-requests.module').then(
         (m) => m.AcceptedRequestsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'accepted-requests-details',
@@ -60,11 +65,27 @@ const routes: Routes = [
       import(
         './pages/accepted-requests-details/accepted-requests-details.module'
       ).then((m) => m.AcceptedRequestsDetailsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./pages/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordPageModule
+      ),
+    canActivate: [NewUserGuard],
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () =>
+      import('./pages/reset-password/reset-password.module').then(
+        (m) => m.ResetPasswordPageModule
+      ),
   },
 ];
 

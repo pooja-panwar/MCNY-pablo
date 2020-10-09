@@ -31,37 +31,40 @@
           <ion-button><img src="../assets/img/edit.png" alt="" /></ion-button>
         </h2>
         <p class="name">Antisocial Personality</p>
-        <p>LMSW</p>
+        <p>{{user?.license}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-grid class="mobileEmailInfo">
     <ion-row>
       <ion-col size="5" class="title">Phone Number</ion-col>
       <ion-col size="7" class="info">{{user?.phoneNumber}}</ion-col>
       <ion-col size="5" class="title">Insurance</ion-col>
-      <ion-col size="7" class="info">Insurance</ion-col>
+      <ion-col size="7" class="info">{{user?.insurance}}</ion-col>
       <ion-col size="5" class="title">Email</ion-col>
-      <ion-col size="7" class="info">upender.rawat@evontech.com</ion-col>
+      <ion-col size="7" class="info">{{user?.email}}</ion-col>
     </ion-row>
   </ion-grid>
   <ion-grid class="acceptingAvailableInfo">
     <ion-row>
       <ion-col size="6">
         <h3>Accepting Clients</h3>
-        <ion-badge>Yes</ion-badge>
+        <ion-badge>{{user?.isAvailable ? 'Yes': 'No'}}</ion-badge>
       </ion-col>
       <ion-col size="6">
         <h3>Available Timeframe</h3>
-        <ion-badge>Anytime</ion-badge>
+        <ion-badge *ngFor="let timeFrame of user?.timeframes"
+          >{{timeFrame}}</ion-badge
+        >
       </ion-col>
       <ion-col size="6">
         <h3>Cities</h3>
-        <ion-badge>Alaska</ion-badge>
+        <ion-badge *ngFor="let city of user?.cities">{{city}}</ion-badge>
       </ion-col>
       <ion-col size="6">
         <h3>Counseling Method</h3>
-        <ion-badge>Telehealth</ion-badge>
+        <ion-badge>{{user?.counselingMethod}}</ion-badge>
       </ion-col>
     </ion-row>
   </ion-grid>

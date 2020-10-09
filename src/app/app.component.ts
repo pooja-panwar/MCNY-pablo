@@ -61,8 +61,15 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      console.log(this.platform.platforms);
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.common.getFromLocal('rememberMe').then((val) => {
+        //check remember me and navigate to dashboard without login
+        if (val && val === 'true') {
+          this.navCtrl.navigateRoot('profile');
+        }
+      });
     });
   }
   ngOnInit() {
@@ -88,20 +95,23 @@ export class AppComponent {
   }
 
   allowSideMenu() {
-    const path = window.location.pathname.split('/')[1];
-    if (
-      path !== '' &&
-      path !== 'login' &&
-      path !== 'signup1' &&
-      path !== 'signup2' &&
-      path !== 'forgot-password' &&
-      path !== 'email-verification' &&
-      path !== 'registration-success-message'
-    ) {
-      this.showMenuBar = true;
-    } else {
-      this.showMenuBar = false;
-    }
+    this.router.events.subscribe((data) => {
+      const path = window.location.pathname.split('/')[1];
+      if (
+        path !== '' &&
+        path !== 'login' &&
+        path !== 'signup1' &&
+        path !== 'signup2' &&
+        path !== 'forgot-password' &&
+        path !== 'email-verification' &&
+        path !== 'registration-success-message' &&
+        path !== 'reset-password'
+      ) {
+        this.showMenuBar = true;
+      } else {
+        this.showMenuBar = false;
+      }
+    });
   }
 
   /**
@@ -109,14 +119,9 @@ export class AppComponent {
    * @param menu
    */
   menuClick(menu) {
-    console.log(menu);
     switch (menu.title) {
       case 'Logout':
-        this.common.removeFromLocal('rememberMe');
-        this.common.removeFromLocal('userData');
-        this.common.removeFromLocal('loginType');
-        this.menuCtrl.toggle();
-        this.navCtrl.navigateForward('login');
+        this.common.logout();
         break;
 
       default:

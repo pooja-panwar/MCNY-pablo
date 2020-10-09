@@ -14,24 +14,7 @@ export class Signup2Page implements OnInit {
   isSubmitted = false;
   userDetails;
   masterData;
-  timeFrames = [
-    { id: 1, name: 'Anytime' },
-    { id: 2, name: 'Afternoon' },
-    { id: 3, name: 'Weekends' },
-    { id: 4, name: 'Morning' },
-    { id: 5, name: 'Evening' },
-    { id: 6, name: 'Others' },
-  ];
-  expertiseArr = [
-    { id: 1, name: 'Expertise 1' },
-    { id: 2, name: 'Expertise 2' },
-  ];
-  cities = [
-    { id: 1, name: 'City of Lockport' },
-    { id: 2, name: 'City of North Tonawanda' },
-    { id: 3, name: 'City of Niagara Falls' },
-    { id: 4, name: 'Town of Cambria' },
-  ];
+  timeFrames = [];
   subscription: any;
   constructor(
     public menuCtrl: MenuController,
@@ -51,6 +34,7 @@ export class Signup2Page implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.subscribeToMasterData();
     // this.disableBackNav();
   }
   ionViewWillEnter() {
@@ -80,6 +64,7 @@ export class Signup2Page implements OnInit {
     });
   }
 
+  //subscirbe to signup required master data
   subscribeToMasterData() {
     this.user.signUpMasterDataSubject.subscribe((data) => {
       if (data) {
@@ -104,10 +89,10 @@ export class Signup2Page implements OnInit {
   initForm() {
     this.signUpForm = this.fb.group({
       expertise: ['', [Validators.required]],
-      availability: [false],
-      timeFrame: this.fb.array([]),
+      isAvailable: [false],
+      timeframes: this.fb.array([]),
       cities: ['', [Validators.required]],
-      councellingMethod: ['', [Validators.required]],
+      counselingMethod: ['', [Validators.required]],
     });
   }
 
@@ -117,16 +102,16 @@ export class Signup2Page implements OnInit {
    */
   pushTimeFrameVal(val) {
     const isExistingTimeFrame = this.signUpForm
-      .get('timeFrame')
+      .get('timeframes')
       .value.findIndex((timeFrame) => {
         return timeFrame === val;
       });
     if (isExistingTimeFrame < 0) {
-      (this.signUpForm.get('timeFrame') as FormArray).push(
+      (this.signUpForm.get('timeframes') as FormArray).push(
         this.fb.control(val)
       );
     } else {
-      (this.signUpForm.get('timeFrame') as FormArray).removeAt(
+      (this.signUpForm.get('timeframes') as FormArray).removeAt(
         isExistingTimeFrame
       );
     }
@@ -139,9 +124,13 @@ export class Signup2Page implements OnInit {
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
       //create form data by merging signup1 and signup2 data
+      this.userDetails.phoneNumber = this.userDetails.phoneNumber.toString();
       const userData = { ...this.userDetails, ...this.signUpForm.value };
-      this.user.registerUser(userData).subscribe((data) => {});
-      this.router.navigate(['email-verification']);
+      this.user.registerUser(userData).subscribe((data) => {
+        if (data.status === 'success') {
+          this.router.navigate(['registration-success-message']);
+        }
+      });
     }
   }
 
