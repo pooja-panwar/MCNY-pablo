@@ -7,6 +7,8 @@ import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonService } from './providers/global.service';
 
+import { FirebaseX } from '@ionic-native/firebase-x/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -54,7 +56,8 @@ export class AppComponent {
     public menuCtrl: MenuController,
     private router: Router,
     private common: CommonService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private firebaseX: FirebaseX
   ) {
     this.initializeApp();
   }
@@ -70,6 +73,7 @@ export class AppComponent {
           this.navCtrl.navigateRoot('profile');
         }
       });
+      this.checkPermission();
     });
   }
   ngOnInit() {
@@ -84,6 +88,47 @@ export class AppComponent {
   }
   toggleMenu() {
     this.menuCtrl.toggle();
+  }
+
+  /**
+   * get firebase device token
+   */
+  initFirebasePush() {
+    this.firebaseX
+      .getToken()
+      .then((token) => {
+        console.log(`The token is ${token}`);
+        this.common.saveLocal('device_token', token);
+      }) // save the token server-side and use it to push notifications to this device
+      .catch((error) => console.error('Error getting token' + error));
+
+    this.firebaseX
+      .onMessageReceived()
+      .subscribe((data) => console.error(`User opened a notification ${data}`));
+  }
+
+  checkPermission() {
+    console.log('push has permission>>', this.firebaseX.hasPermission());
+    this.firebaseX.hasPermission().then((isPerm) => {
+      console.log(isPerm);
+      if (isPerm) {
+        console.log('yes perm');
+        this.initFirebasePush();
+      } else {
+        console.log('no perm');
+        this.firebaseX
+          .grantPermission()
+          .then(() => {
+            this.initFirebasePush();
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            console.log('done push>>>');
+          });
+      }
+    });
   }
 
   /**
