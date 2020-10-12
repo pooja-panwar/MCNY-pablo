@@ -8,7 +8,7 @@ import {
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Common service used throughout app
@@ -35,8 +35,8 @@ export class CommonService {
    * @param value : value can be anything but will be saved in string
    */
   async saveLocal(key, value) {
-    await localStorage.setItem(key, value);
-    //await this.storage.set(key, value);
+    //await localStorage.setItem(key, value);
+    await this.storage.set(key, value);
   }
 
   /**
@@ -44,8 +44,8 @@ export class CommonService {
    * @param key : unique key to get the local data
    */
   async getFromLocal(key) {
-    let val = await localStorage.getItem(key);
-    //let val = await this.storage.get(key);
+    //let val = await localStorage.getItem(key);
+    let val = await this.storage.get(key);
     return val;
   }
 
@@ -127,8 +127,15 @@ export class CommonService {
    * local storage or from the user subject
    */
   getUserToken() {
-    const local = this.getFromLocal('userData');
-    return local['token'];
+    return new Promise((resolve) => {
+      this.getFromLocal('userData').then((val) => {
+        if (val && JSON.parse(val).token) {
+          resolve(JSON.parse(val).token);
+        } else {
+          resolve(false);
+        }
+      });
+    });
   }
 
   //logout user and delete local stored details of the
@@ -136,6 +143,6 @@ export class CommonService {
     this.removeFromLocal('rememberMe');
     this.removeFromLocal('userData');
     this.menuCtrl.toggle();
-    this.navCtrl.navigateForward('login');
+    this.router.navigate(['login']);
   }
 }

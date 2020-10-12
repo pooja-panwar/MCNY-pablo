@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { CommonService } from './providers/global.service';
 
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
+import { UserDataService } from './providers/user-data.service';
 
 @Component({
   selector: 'app-root',
@@ -57,9 +58,11 @@ export class AppComponent {
     private router: Router,
     private common: CommonService,
     private navCtrl: NavController,
-    private firebaseX: FirebaseX
+    private firebaseX: FirebaseX,
+    private userDataService: UserDataService
   ) {
     this.initializeApp();
+    1;
   }
 
   initializeApp() {
@@ -67,7 +70,6 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.common.getFromLocal('rememberMe').then((val) => {
-        console.log(val);
         //check remember me and navigate to dashboard without login
         if (val && val == 'true') {
           this.navCtrl.navigateRoot('profile');
@@ -78,6 +80,8 @@ export class AppComponent {
     });
   }
   ngOnInit() {
+    // console.log(this.platform.platforms());
+
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(

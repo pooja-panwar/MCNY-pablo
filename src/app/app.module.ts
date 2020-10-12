@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpErrorInterceptor } from './interceptors/http-error-interceptor';
 import { IonicStorageModule } from '@ionic/storage';
+import { UserDataService } from './providers/user-data.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { IonicStorageModule } from '@ionic/storage';
   providers: [
     StatusBar,
     SplashScreen,
+    UserDataService,
     FirebaseX,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }, // httpClient interceptors for common header and error handling

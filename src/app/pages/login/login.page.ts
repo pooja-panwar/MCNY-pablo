@@ -6,7 +6,6 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
-import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
@@ -19,7 +18,8 @@ import { CommonService } from 'src/app/providers/global.service';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isSubmitted: boolean = false;
-
+  deviceToken: string;
+  platformName: string;
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
@@ -46,7 +46,12 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.common.getFromLocal('device_token').then((val) => {
+      this.deviceToken = val;
+    });
+    this.checkDevicePlatform();
+  }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
@@ -54,6 +59,16 @@ export class LoginPage implements OnInit {
 
   get errorControl() {
     return this.loginForm.controls;
+  }
+
+  checkDevicePlatform() {
+    if (this.platform.is('android')) {
+      this.platformName = 'android';
+    } else if (this.platform.is('ios')) {
+      this.platformName = 'ios';
+    } else {
+      this.platformName = 'windows';
+    }
   }
 
   /**
@@ -67,7 +82,8 @@ export class LoginPage implements OnInit {
       const param = {
         email: value.email,
         password: value.password,
-        // deviceToken: this.common.getFromLocal('device_token'),
+        deviceToken: this.deviceToken,
+        deviceType: this.platformName,
       };
       this.user.loginUser(param).subscribe((data) => {
         if (data.status === 'success') {

@@ -1,32 +1,41 @@
-<ion-grid class="mobileEmailInfo">
-  <ion-row>
-    <ion-col size="5" class="title">Phone Number</ion-col>
-    <ion-col size="7" class="info"> <ion-input></ion-input></ion-col>
-    <ion-col size="5" class="title">Insurance</ion-col>
-    <ion-col size="7" class="info">{{ user?.insurance }}</ion-col>
-    <ion-col size="5" class="title">Email</ion-col>
-    <ion-col size="7" class="info">{{ user?.email }}</ion-col>
-  </ion-row>
-</ion-grid>
-<ion-grid class="acceptingAvailableInfo">
-  <ion-row>
-    <ion-col size="6">
-      <h3>Accepting Clients</h3>
-      <ion-badge>{{ user?.isAvailable ? 'Yes' : 'No' }}</ion-badge>
-    </ion-col>
-    <ion-col size="6">
-      <h3>Available Timeframe</h3>
-      <ion-badge *ngFor="let timeFrame of user?.timeframes">{{
-        timeFrame
-      }}</ion-badge>
-    </ion-col>
-    <ion-col size="6">
-      <h3>Cities</h3>
-      <ion-badge *ngFor="let city of user?.cities">{{ city }}</ion-badge>
-    </ion-col>
-    <ion-col size="6">
-      <h3>Counseling Method</h3>
-      <ion-badge>{{ user?.counselingMethod }}</ion-badge>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+<form [formGroup]="editProfileForm">
+  <ion-grid class="mobileEmailInfo">
+    <ion-row>
+      <ion-col size="5" class="title">Phone Number</ion-col>
+      <ion-col size="7" class="info"
+        ><ion-input formControlName="phoneNumber"></ion-input
+      ></ion-col>
+      <ion-col size="5" class="title">Insurance</ion-col>
+      <ion-col size="7" class="info"
+        ><ion-input formControlName="insurance"></ion-input
+      ></ion-col>
+      <ion-col size="5" class="title">Email</ion-col>
+      <ion-col size="7" class="info"
+        ><ion-input formControlName="email"></ion-input
+      ></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="acceptingAvailableInfo">
+    <ion-row>
+      <ion-col size="6">
+        <h3>Accepting Clients</h3>
+        <ion-toggle formControlName="isAvailable"></ion-toggle>
+      </ion-col>
+      <ion-col size="6">
+        <h3>Available Timeframe</h3>
+        <ion-badge
+          *ngFor="let timeFrame of masterData?.timeframes; let i = index"
+          >{{ timeFrame }}</ion-badge
+        >
+      </ion-col>
+      <ion-col size="6">
+        <h3>Cities</h3>
+        <ion-badge *ngFor="let city of user?.cities">{{ city }}</ion-badge>
+      </ion-col>
+      <ion-col size="6">
+        <h3>Counseling Method</h3>
+        <ion-badge>{{ user?.counselingMethod }}</ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
