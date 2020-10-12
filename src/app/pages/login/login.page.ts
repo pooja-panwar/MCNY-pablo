@@ -6,7 +6,6 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
-import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';

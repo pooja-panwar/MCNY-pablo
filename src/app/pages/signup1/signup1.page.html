@@ -28,9 +28,9 @@
               [class.error-input]="isSubmitted && errorControl.license.errors"
             >
               <ion-select-option
-                *ngFor="let license of masterData?.licenses"
+                *ngFor="let license of masterData?.license"
                 [value]="license.id"
-                >{{license.name}}</ion-select-option
+                >{{license.license}}</ion-select-option
               >
             </ion-select>
           </ion-item>

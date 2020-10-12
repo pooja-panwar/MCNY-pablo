@@ -1,6 +1,6 @@
 //base urls
 export const SITE_URL = '';
-export const BASE_URL = '';
+export const BASE_URL = 'http://3.138.95.10:3000/';
 export const IMG_URL = '';
 
 export const ApiEndPoints = {
