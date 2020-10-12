@@ -21,9 +21,8 @@ export class UserService {
 
   /**
    * getuser profile details
-   * @param userId loggedIn user id
    */
-  getUserProfile(userId): Observable<any> {
+  getUserProfile(): Observable<any> {
     return this.http.getHttp(ApiEndPoints.GETUSERPROFILE);
   }
 
@@ -51,5 +50,21 @@ export class UserService {
    */
   emitMasterData(data) {
     this.signUpMasterDataSubject.next(data);
+  }
+
+  /**
+   * send email to user who has forgot email
+   * @param body form body containing user email
+   */
+  forgotPassword(body): Observable<any> {
+    return this.http.postHttp(ApiEndPoints.FORGOT_PASSWORD, body);
+  }
+
+  /**
+   * reser user password
+   * @param body containing OTP and new password
+   */
+  resetPassword(body): Observable<any> {
+    return this.http.postHttp(ApiEndPoints.RESET_PASSWORD, body);
   }
 }

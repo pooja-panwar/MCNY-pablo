@@ -9,7 +9,6 @@ import { CommonService } from './providers/global.service';
 
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -64,9 +63,17 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then((source) => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.common.getFromLocal('rememberMe').then((val) => {
+        console.log(val);
+        //check remember me and navigate to dashboard without login
+        if (val && val == 'true') {
+          this.navCtrl.navigateRoot('profile');
+        }
+      });
+
       this.checkPermission();
     });
   }
@@ -79,7 +86,6 @@ export class AppComponent {
     }
     this.handleBackNav();
     this.allowSideMenu();
-    
   }
   toggleMenu() {
     this.menuCtrl.toggle();
@@ -88,38 +94,42 @@ export class AppComponent {
   /**
    * get firebase device token
    */
-  initFirebasePush(){
-    this.firebaseX.getToken()
-      .then(token => {
-        console.log(`The token is ${token}`)
-        this.common.saveLocal('device_token', token)
+  initFirebasePush() {
+    this.firebaseX
+      .getToken()
+      .then((token) => {
+        console.log(`The token is ${token}`);
+        this.common.saveLocal('device_token', token);
       }) // save the token server-side and use it to push notifications to this device
-      .catch(error => console.error('Error getting token'+error));
+      .catch((error) => console.error('Error getting token' + error));
 
-    this.firebaseX.onMessageReceived()
-      .subscribe(data => console.error(`User opened a notification ${data}`));
+    this.firebaseX
+      .onMessageReceived()
+      .subscribe((data) => console.error(`User opened a notification ${data}`));
   }
 
   checkPermission() {
-    console.log('push has permission>>', this.firebaseX.hasPermission())
-    this.firebaseX.hasPermission().then((isPerm)=>{
-      console.log(isPerm)
-      if(isPerm){
-        console.log('yes perm')
+    console.log('push has permission>>', this.firebaseX.hasPermission());
+    this.firebaseX.hasPermission().then((isPerm) => {
+      console.log(isPerm);
+      if (isPerm) {
+        console.log('yes perm');
         this.initFirebasePush();
-        
       } else {
-        console.log('no perm')
-        this.firebaseX.grantPermission().then(()=>{
-          this.initFirebasePush();
-        }).catch(err => {
-          console.error(err)
-        }).finally(()=>{
-          console.log('done push>>>')
-        })
+        console.log('no perm');
+        this.firebaseX
+          .grantPermission()
+          .then(() => {
+            this.initFirebasePush();
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            console.log('done push>>>');
+          });
       }
-    })
-    
+    });
   }
 
   /**
@@ -131,20 +141,23 @@ export class AppComponent {
   }
 
   allowSideMenu() {
-    const path = window.location.pathname.split('/')[1];
-    if (
-      path !== '' &&
-      path !== 'login' &&
-      path !== 'signup1' &&
-      path !== 'signup2' &&
-      path !== 'forgot-password' &&
-      path !== 'email-verification' &&
-      path !== 'registration-success-message'
-    ) {
-      this.showMenuBar = true;
-    } else {
-      this.showMenuBar = false;
-    }
+    this.router.events.subscribe((data) => {
+      const path = window.location.pathname.split('/')[1];
+      if (
+        path !== '' &&
+        path !== 'login' &&
+        path !== 'signup1' &&
+        path !== 'signup2' &&
+        path !== 'forgot-password' &&
+        path !== 'email-verification' &&
+        path !== 'registration-success-message' &&
+        path !== 'reset-password'
+      ) {
+        this.showMenuBar = true;
+      } else {
+        this.showMenuBar = false;
+      }
+    });
   }
 
   /**
@@ -152,14 +165,9 @@ export class AppComponent {
    * @param menu
    */
   menuClick(menu) {
-    console.log(menu);
     switch (menu.title) {
       case 'Logout':
-        this.common.removeFromLocal('rememberMe');
-        this.common.removeFromLocal('userData');
-        this.common.removeFromLocal('loginType');
-        this.menuCtrl.toggle();
-        this.navCtrl.navigateForward('login');
+        this.common.logout();
         break;
 
       default:

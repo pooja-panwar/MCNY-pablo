@@ -2,7 +2,10 @@
   <ion-card class="formWrap">
     <ion-card-content>
       <h4>
-        Sign up <ion-button><img src="../assets/img/close.png" /></ion-button>
+        Sign up
+        <ion-button (click)="close()"
+          ><img routerLink="/login" src="../assets/img/close.png"
+        /></ion-button>
       </h4>
 
       <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
@@ -16,9 +19,9 @@
             >
               <!-- <ion-select-option value="">Select Expertise</ion-select-option> -->
               <ion-select-option
-                *ngFor="let expertise of expertiseArr"
+                *ngFor="let expertise of masterData?.expertise"
                 [value]="expertise.id"
-                >{{expertise.name}}</ion-select-option
+                >{{expertise.expertise}}</ion-select-option
               >
             </ion-select>
           </ion-item>
@@ -31,7 +34,7 @@
 
           <ion-item>
             <ion-label class="mb-0">Availability</ion-label>
-            <ion-toggle formControlName="availability"></ion-toggle>
+            <ion-toggle formControlName="isAvailable"></ion-toggle>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Available Timeframe</ion-label>
@@ -41,12 +44,12 @@
                   <ion-row>
                     <ion-col
                       size="6"
-                      *ngFor="let timeFrame of timeFrames; let i = index"
+                      *ngFor="let timeFrame of masterData?.timeframes; let i = index"
                     >
                       <ion-checkbox
                         (click)="pushTimeFrameVal(timeFrame.id)"
                       ></ion-checkbox>
-                      <ion-label>{{timeFrame.name}}</ion-label>
+                      <ion-label>{{timeFrame.timeframe}}</ion-label>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -61,8 +64,10 @@
               [class.error-input]="isSubmitted && errorControl.cities?.errors"
             >
               <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
-              <ion-select-option *ngFor="let city of cities" [value]="city.id"
-                >{{city.name}}</ion-select-option
+              <ion-select-option
+                *ngFor="let city of masterData?.cities"
+                [value]="city.id"
+                >{{city.city}}</ion-select-option
               >
             </ion-select>
           </ion-item>
@@ -78,10 +83,10 @@
               >Preferred Counseling Method</ion-label
             >
             <ion-select
-              formControlName="councellingMethod"
-              [class.error-input]="isSubmitted && errorControl.councellingMethod?.errors"
+              formControlName="counselingMethod"
+              [class.error-input]="isSubmitted && errorControl.counselingMethod?.errors"
             >
-              <ion-select-option value="Person">Person</ion-select-option>
+              <ion-select-option value="In-person">Person</ion-select-option>
               <ion-select-option value="Telehealth"
                 >Telehealth</ion-select-option
               >
@@ -89,7 +94,7 @@
           </ion-item>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.councellingMethod.errors?.required"
+            *ngIf="isSubmitted && errorControl.counselingMethod.errors?.required"
           >
             Preferred counseling method is required.
           </span>

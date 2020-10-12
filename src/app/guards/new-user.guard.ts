@@ -24,16 +24,7 @@ export class NewUserGuard implements CanActivate {
     | boolean
     | UrlTree {
     return new Promise((resolve) => {
-      this.common.getFromLocal('userData').then((val) => {
-        // check from local db of logged in user data
-        if ((val && JSON.parse(val).id) === null) {
-          resolve(true);
-        } else {
-          //navigate to login if not authenticated
-          this.router.navigateByUrl('profile');
-          resolve(false);
-        }
-      });
+     resolve(true)
     });
   }
 }

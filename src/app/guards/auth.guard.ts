@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     return new Promise((resolve) => {
       this.common.getFromLocal('userData').then((val) => {
         // check from local db of logged in user data
-        if (val && JSON.parse(val).id) {
+        if (val && JSON.parse(val).token) {
           resolve(true);
         } else {
           //navigate to login if not authenticated

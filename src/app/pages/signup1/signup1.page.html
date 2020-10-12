@@ -2,7 +2,10 @@
   <ion-card class="formWrap">
     <ion-card-content>
       <h4>
-        Sign up <ion-button><img src="../assets/img/close.png" /></ion-button>
+        Sign up
+        <ion-button (click)="close()"
+          ><img routerLink="/login" src="../assets/img/close.png"
+        /></ion-button>
       </h4>
 
       <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
@@ -62,37 +65,11 @@
               formControlName="insurance"
               [class.error-input]="isSubmitted && errorControl.insurance.errors"
             >
-              <ion-select-option> Insurance</ion-select-option>
-              <ion-select-option>Fidelis Care</ion-select-option>
-              <ion-select-option>YourCare Option Plus</ion-select-option>
-              <ion-select-option>YourCare Health Plan</ion-select-option>
-              <ion-select-option>Crystal Run Health Plan</ion-select-option>
-              <ion-select-option>Metroplus Health Plan FIDA</ion-select-option>
               <ion-select-option
-                >Metroplus Health Plan Enhanced</ion-select-option
+                *ngFor="let insurance of masterData?.insurance"
+                [value]="insurance.id"
+                >{{insurance.insurance}}</ion-select-option
               >
-              <ion-select-option>Metroplus Health Plan</ion-select-option>
-              <ion-select-option
-                >Centers Plan for Healthy Living</ion-select-option
-              >
-              <ion-select-option>Unicare Commercial</ion-select-option>
-              <ion-select-option
-                >Independent Health (All Commercial and State
-                Plans)</ion-select-option
-              >
-              <ion-select-option
-                >Independent Health's Medisource Connect</ion-select-option
-              >
-              <ion-select-option
-                >Independent Health Association Inc</ion-select-option
-              >
-              <ion-select-option> Healthfirst</ion-select-option>
-              <ion-select-option
-                >Amida Care, Affinity Health Plan Enriched</ion-select-option
-              >
-              <ion-select-option>Affinity Health Plan</ion-select-option>
-              <ion-select-option>Kalos Gold Plus</ion-select-option>
-              <ion-select-option>other</ion-select-option>
             </ion-select>
           </ion-item>
           <span
@@ -156,9 +133,10 @@
           </span>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.password.errors?.minlength"
+            *ngIf="isSubmitted && errorControl.password.errors?.pattern"
           >
-            Password should be minimum 6 character.
+            Password must contain atleast 8 characters with one special
+            character, one capital and one small letter.
           </span>
 
           <ion-item>
