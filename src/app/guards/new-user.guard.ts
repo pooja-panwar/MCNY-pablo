@@ -24,15 +24,7 @@ export class NewUserGuard implements CanActivate {
     | boolean
     | UrlTree {
     return new Promise((resolve) => {
-      let val = this.common.getFromLocal('userData');
-      const rememberMe = this.common.getFromLocal('rememberMe');
-      // check from local db of logged in user data
-      if ((val && val.token) === null || rememberMe === 'false') {
-        resolve(true);
-      } else {
-        this.router.navigateByUrl('profile');
-        resolve(false);
-      }
+     resolve(true)
     });
   }
 }

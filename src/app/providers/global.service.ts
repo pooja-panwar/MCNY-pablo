@@ -35,17 +35,17 @@ export class CommonService {
    * @param value : value can be anything but will be saved in string
    */
   async saveLocal(key, value) {
-    // this.storage.set(key, JSON.stringify(value));
-    await localStorage.setItem(key, JSON.stringify(value));
+    await localStorage.setItem(key, value);
+    //await this.storage.set(key, value);
   }
 
   /**
    * get call from local db
    * @param key : unique key to get the local data
    */
-  getFromLocal(key) {
-    // let val = this.storage.get(key);
-    let val = JSON.parse(localStorage.getItem(key));
+  async getFromLocal(key) {
+    let val = await localStorage.getItem(key);
+    //let val = await this.storage.get(key);
     return val;
   }
 
@@ -54,8 +54,8 @@ export class CommonService {
    * @param key : unique key to remove the local data
    */
   async removeFromLocal(key) {
-    // await this.storage.remove(key);
-    localStorage.removeItem(key);
+    await this.storage.remove(key);
+    //localStorage.removeItem(key);
   }
 
   /**
@@ -127,11 +127,11 @@ export class CommonService {
    * local storage or from the user subject
    */
   getUserToken() {
-    const local = JSON.parse(this.getFromLocal('userData'));
-    return local.token;
+    const local = this.getFromLocal('userData');
+    return local['token'];
   }
 
-  //logout user and delete local stored details of the user
+  //logout user and delete local stored details of the
   logout() {
     this.removeFromLocal('rememberMe');
     this.removeFromLocal('userData');

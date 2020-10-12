@@ -110,4 +110,9 @@ export class Signup1Page implements OnInit {
       }
     });
   }
+
+  //stop registration and navgitate back to login
+  close() {
+    this.router.navigate(['login']);
+  }
 }

@@ -1,4 +1,4 @@
-import { catchError, tap } from 'rxjs/internal/operators';
+import { catchError, tap, finalize } from 'rxjs/internal/operators';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -8,25 +8,22 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
 import { CommonService } from '../providers/global.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(public common: CommonService) {}
+  constructor(public common: CommonService, private router: Router) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.common.displayLoader();
-
-    const userToken = this.common.getFromLocal('userData');
-
+    let userToken = localStorage.getItem('userData');
     let headers = {};
     if (userToken) {
       headers = {
-        Authorization: `Bearer ${userToken.token}`,
+        Authorization: `Bearer ${JSON.parse(userToken).token}`,
       };
     } else {
       headers = {
@@ -65,9 +62,15 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     );
   }
 
+  //handle error response
   handleError(err) {
     if (err.message === 'Token is not valid') {
       this.common.logout();
+    } else if (err.message === 'email already exists') {
+      setTimeout(() => {
+        this.router.navigate(['login']);
+      }, 5000);
+      return throwError(err);
     }
   }
 }

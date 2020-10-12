@@ -126,15 +126,25 @@ export class Signup2Page implements OnInit {
       //create form data by merging signup1 and signup2 data
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.toString();
       const userData = { ...this.userDetails, ...this.signUpForm.value };
-      this.user.registerUser(userData).subscribe((data) => {
-        if (data.status === 'success') {
-          this.router.navigate(['registration-success-message']);
+      this.user.registerUser(userData).subscribe(
+        (data) => {
+          if (data.status === 'success') {
+            this.router.navigate(['registration-success-message']);
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      });
+      );
     }
   }
 
   get errorControl() {
     return this.signUpForm.controls;
+  }
+
+  //stop registration and navgitate back to login
+  close() {
+    this.router.navigate(['login']);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import {
   FormBuilder,
   FormGroup,
@@ -25,7 +25,8 @@ export class LoginPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private user: UserService,
-    private common: CommonService
+    private common: CommonService,
+    private platform: Platform
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl(
@@ -63,7 +64,11 @@ export class LoginPage implements OnInit {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
       //ajax hit for login authentication
-      const param = { email: value.email, password: value.password };
+      const param = {
+        email: value.email,
+        password: value.password,
+        // deviceToken: this.common.getFromLocal('device_token'),
+      };
       this.user.loginUser(param).subscribe((data) => {
         if (data.status === 'success') {
           this.saveUserToLocal('userData', data.data);
@@ -85,6 +90,6 @@ export class LoginPage implements OnInit {
    * @param data user details received from backend
    */
   saveUserToLocal(key, data) {
-    this.common.saveLocal(key, data);
+    this.common.saveLocal(key, JSON.stringify(data));
   }
 }

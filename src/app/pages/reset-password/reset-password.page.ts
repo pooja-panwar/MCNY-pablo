@@ -4,6 +4,7 @@ import { UserService } from 'src/app/providers/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MustMatch } from 'src/app/providers/_helpers/must-match.validator';
 import { Platform } from '@ionic/angular';
+import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -20,7 +21,8 @@ export class ResetPasswordPage implements OnInit {
     private user: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    private common: CommonService
   ) {
     //get tour id from routes state data
     this.route.queryParams.subscribe((params) => {
@@ -75,6 +77,12 @@ export class ResetPasswordPage implements OnInit {
       value.email = this.email;
       this.user.resetPassword(value).subscribe((data) => {
         this.resetPassForm.reset();
+        this.common.presentToast(
+          'Your password is successfully changed. Please Login again.'
+        );
+        setTimeout(() => {
+          this.router.navigate(['login']);
+        }, 3000);
       });
     }
   }

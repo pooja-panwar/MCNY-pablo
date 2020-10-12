@@ -63,16 +63,17 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      console.log(this.platform.platforms);
+    this.platform.ready().then((source) => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.common.getFromLocal('rememberMe').then((val) => {
+        console.log(val);
         //check remember me and navigate to dashboard without login
-        if (val && val === 'true') {
+        if (val && val == 'true') {
           this.navCtrl.navigateRoot('profile');
         }
       });
+
       this.checkPermission();
     });
   }
