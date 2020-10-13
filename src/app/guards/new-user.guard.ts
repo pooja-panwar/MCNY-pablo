@@ -27,7 +27,17 @@ export class NewUserGuard implements CanActivate {
       this.common.getFromLocal('userData').then((val) => {
         this.common.getFromLocal('rememberMe').then((rememberMe) => {
           // check from local db of logged in user data
-          if (val && JSON.parse(val).token && rememberMe == 'true') {
+          console.log(
+            val && JSON.parse(val).token && JSON.parse(rememberMe) == 'true'
+          );
+          if (
+            val &&
+            JSON.parse(val).token &&
+            JSON.parse(rememberMe) == 'true'
+          ) {
+            console.log(
+              val && JSON.parse(val).token && JSON.parse(rememberMe) == 'true'
+            );
             this.router.navigateByUrl('profile');
             resolve(false);
           } else {

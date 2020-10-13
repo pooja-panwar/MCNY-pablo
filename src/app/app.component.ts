@@ -69,12 +69,12 @@ export class AppComponent {
     this.platform.ready().then((source) => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.common.getFromLocal('rememberMe').then((val) => {
-        //check remember me and navigate to dashboard without login
-        if (val && val == 'true') {
-          this.navCtrl.navigateRoot('profile');
-        }
-      });
+      // this.common.getFromLocal('rememberMe').then((val) => {
+      //   //check remember me and navigate to dashboard without login
+      //   if (val && val == 'true') {
+      //     this.navCtrl.navigateRoot('profile');
+      //   }
+      // });
 
       this.checkPermission();
     });

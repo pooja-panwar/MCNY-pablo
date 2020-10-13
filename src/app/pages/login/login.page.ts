@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
+import { UserDataService } from 'src/app/providers/user-data.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage implements OnInit {
     private router: Router,
     private user: UserService,
     private common: CommonService,
-    private platform: Platform
+    private platform: Platform,
+    private userData: UserDataService
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl(
@@ -87,15 +89,21 @@ export class LoginPage implements OnInit {
       };
       this.user.loginUser(param).subscribe((data) => {
         if (data.status === 'success') {
-          this.saveUserToLocal('userData', data.data);
-          //check if user has checked true to remember me
-          if (value.rememberMe) {
-            this.saveUserToLocal('rememberMe', 'true');
-          } else {
-            this.saveUserToLocal('rememberMe', 'false');
-          }
-          // this.common.emitUserSubject(data.data);
-          this.router.navigate(['profile']);
+          this.common
+            .saveLocal('userData', JSON.stringify(data.data))
+            .then((res) => {
+              console.log(value);
+              //check if user has checked true to remember me
+              if (value.rememberMe) {
+                this.saveUserToLocal('rememberMe', 'true');
+              } else {
+                this.saveUserToLocal('rememberMe', 'false');
+              }
+              // this.common.emitUserSubject(data.data);
+              this.userData.setUserData().then((val) => {
+                this.router.navigate(['profile']);
+              });
+            });
         }
       });
     }
