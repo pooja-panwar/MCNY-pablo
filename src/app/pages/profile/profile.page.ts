@@ -3,6 +3,8 @@ import { MenuController } from '@ionic/angular';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
 import { Router } from '@angular/router';
+import { ExpertisePopoverComponent } from './popover/expertise-popover/expertise-popover.component';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +18,8 @@ export class ProfilePage implements OnInit {
     public menuCtrl: MenuController,
     private userService: UserService,
     private router: Router,
-    private common: CommonService
+    private common: CommonService,
+    public popoverController: PopoverController
   ) {}
 
   ngOnInit() {
@@ -36,5 +39,18 @@ export class ProfilePage implements OnInit {
 
   open() {
     this.menuCtrl.toggle();
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: ExpertisePopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+      componentProps: {
+        expertises: this.user.expertises,
+      },
+    });
+    return await popover.present();
   }
 }

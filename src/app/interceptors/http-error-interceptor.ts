@@ -49,7 +49,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap((data) => console.log(data)),
       catchError((error: HttpErrorResponse) => {
-        this.handleError(error.error);
+        this.handleError(error);
         if (error.error instanceof ErrorEvent) {
           // A client-side or network error occurred. Handle it accordingly.
           // console.error('An error occurred:', error.error.message);
@@ -75,9 +75,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
-    if (err.message === 'Token is not valid') {
+    if (err.status === 401) {
       this.common.logout();
-    } else if (err.message === 'email already exists') {
+    } else if (err.err.message === 'Token is not valid') {
+      this.common.logout();
+    } else if (err.err.message === 'email already exists') {
       setTimeout(() => {
         this.router.navigate(['login']);
       }, 5000);

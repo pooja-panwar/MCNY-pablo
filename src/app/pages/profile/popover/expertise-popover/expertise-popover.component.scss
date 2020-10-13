@@ -1,0 +1,18 @@
+/* DOES NOT WORK - not specific enough */
+.popover-content {
+  background: #222;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .popover-content {
+  background: #222;
+}
+:root {
+  --ion-safe-area-top: 20px;
+  --ion-safe-area-bottom: 22px;
+}
+
+ion-list-header {
+  font-size: 18px;
+  font-weight: 500;
+}
