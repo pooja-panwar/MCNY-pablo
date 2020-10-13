@@ -114,6 +114,6 @@ export class LoginPage implements OnInit {
    * @param data user details received from backend
    */
   saveUserToLocal(key, data) {
-    this.common.saveLocal(key, JSON.stringify(data));
+    this.common.saveLocal(key, data);
   }
 }
