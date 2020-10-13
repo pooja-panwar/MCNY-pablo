@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -11,7 +11,13 @@ import { EditProfileComponent } from './children/edit-profile/edit-profile.compo
 import { ViewProfileComponent } from './children/view-profile/view-profile.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ProfilePageRoutingModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule,
+    ProfilePageRoutingModule,
+  ],
   declarations: [ProfilePage, EditProfileComponent, ViewProfileComponent],
 })
 export class ProfilePageModule {}

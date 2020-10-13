@@ -10,20 +10,31 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { CommonService } from '../providers/global.service';
 import { Router } from '@angular/router';
+import { UserService } from '../providers/user.service';
+import { UserDataService } from '../providers/user-data.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(public common: CommonService, private router: Router) {}
+  constructor(
+    public common: CommonService,
+    private router: Router,
+    private user: UserDataService
+  ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.common.displayLoader();
-    let userToken = localStorage.getItem('userData');
+
+    let userToken = '';
+    if (this.user.userData && this.user.userData.token) {
+      userToken = this.user.userData.token;
+    }
+
     let headers = {};
     if (userToken) {
       headers = {
-        Authorization: `Bearer ${JSON.parse(userToken).token}`,
+        Authorization: `Bearer ${userToken}`,
       };
     } else {
       headers = {

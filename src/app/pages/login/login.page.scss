@@ -113,3 +113,29 @@
   width: 20px;
   height: 20px;
 }
+
+ion-toggle {
+  --handle-background: #ebc104;
+  --background: #fff;
+  --background-checked: #ebc104;
+  --handle-box-shadow: none;
+  --handle-background-checked: #fff;
+  border: 2px solid #ddd;
+  border-radius: 30px;
+  width: 65px;
+  --handle-height: 28px;
+  --handle-width: 28px;
+  --handle-max-height: auto;
+  padding-inline-start: 1px;
+  padding-inline-end: 1px;
+  &.md {
+    height: 32px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  &[aria-checked='true'] {
+    border: 2px solid #ebc104;
+    background: #ebc104;
+  }
+}

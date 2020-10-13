@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
+import { UserDataService } from 'src/app/providers/user-data.service';
 
 @Component({
   selector: 'app-login',
@@ -18,14 +19,16 @@ import { CommonService } from 'src/app/providers/global.service';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isSubmitted: boolean = false;
-
+  deviceToken: string;
+  platformName: string;
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
     private router: Router,
     private user: UserService,
     private common: CommonService,
-    private platform: Platform
+    private platform: Platform,
+    private userData: UserDataService
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl(
@@ -45,7 +48,12 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.common.getFromLocal('device_token').then((val) => {
+      this.deviceToken = val;
+    });
+    this.checkDevicePlatform();
+  }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
@@ -53,6 +61,16 @@ export class LoginPage implements OnInit {
 
   get errorControl() {
     return this.loginForm.controls;
+  }
+
+  checkDevicePlatform() {
+    if (this.platform.is('android')) {
+      this.platformName = 'android';
+    } else if (this.platform.is('ios')) {
+      this.platformName = 'ios';
+    } else {
+      this.platformName = 'windows';
+    }
   }
 
   /**
@@ -63,19 +81,18 @@ export class LoginPage implements OnInit {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
       //ajax hit for login authentication
-      
-      this.common.getFromLocal('device_token').then((val) => { //check remember me and navigate to dashboard without login
-        if (val) {
-          console.log('token>>>>>>>',val);
-          const param = {
-            email: value.email,
-            password: value.password,
-            deviceToken: val,
-            deviceType: 'ios'
-          };
-          this.user.loginUser(param).subscribe((data) => {
-            if (data.status === 'success') {
-              this.saveUserToLocal('userData', data.data);
+      const param = {
+        email: value.email,
+        password: value.password,
+        deviceToken: this.deviceToken,
+        deviceType: this.platformName,
+      };
+      this.user.loginUser(param).subscribe((data) => {
+        if (data.status === 'success') {
+          this.common
+            .saveLocal('userData', JSON.stringify(data.data))
+            .then((res) => {
+              console.log(value);
               //check if user has checked true to remember me
               if (value.rememberMe) {
                 this.saveUserToLocal('rememberMe', 'true');
@@ -83,9 +100,10 @@ export class LoginPage implements OnInit {
                 this.saveUserToLocal('rememberMe', 'false');
               }
               // this.common.emitUserSubject(data.data);
-              this.router.navigate(['profile']);
-            }
-          });
+              this.userData.setUserData().then((val) => {
+                this.router.navigate(['profile']);
+              });
+            });
         }
       })
       
@@ -97,6 +115,6 @@ export class LoginPage implements OnInit {
    * @param data user details received from backend
    */
   saveUserToLocal(key, data) {
-    this.common.saveLocal(key, JSON.stringify(data));
+    this.common.saveLocal(key, data);
   }
 }
