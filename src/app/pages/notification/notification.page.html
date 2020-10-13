@@ -13,15 +13,15 @@
 </ion-header>
 <ion-content>
   <ion-list class="notificationWrap">
-    <ion-item-sliding *ngFor="let notify of notificationData.data; let i = index" routerLink="/request-details">
-      <ion-item >
+    <!-- <ion-item-sliding > -->
+      <ion-item *ngFor="let notify of notificationData.data; let i = index" routerLink="/request-details">
         <ion-label>
           <h3>John Due</h3>
           <p>{{notify.body}}</p>
         </ion-label>
-        <ion-badge>3 min ago</ion-badge>
+        <ion-badge>{{notify.duration}}</ion-badge>
       </ion-item>
-      <ion-item-options>
+      <!-- <ion-item-options>
         <ion-item-option color="primary">
           <ion-icon slot="start" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
           Accept
@@ -29,9 +29,9 @@
         <ion-item-option color="secondary">
           <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
           Delete
-        </ion-item-option>
+        </ion-item-option> 
       </ion-item-options>
-    </ion-item-sliding>
+    </ion-item-sliding> -->
     <!-- <ion-item routerLink="/request-details">
       <ion-label>
         <h3>Prashant Sharma</h3>

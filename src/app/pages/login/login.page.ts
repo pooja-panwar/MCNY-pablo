@@ -63,24 +63,32 @@ export class LoginPage implements OnInit {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
       //ajax hit for login authentication
-      const param = {
-        email: value.email,
-        password: value.password,
-        // deviceToken: this.common.getFromLocal('device_token'),
-      };
-      this.user.loginUser(param).subscribe((data) => {
-        if (data.status === 'success') {
-          this.saveUserToLocal('userData', data.data);
-          //check if user has checked true to remember me
-          if (value.rememberMe) {
-            this.saveUserToLocal('rememberMe', 'true');
-          } else {
-            this.saveUserToLocal('rememberMe', 'false');
-          }
-          // this.common.emitUserSubject(data.data);
-          this.router.navigate(['profile']);
+      
+      this.common.getFromLocal('device_token').then((val) => { //check remember me and navigate to dashboard without login
+        if (val) {
+          console.log('token>>>>>>>',val);
+          const param = {
+            email: value.email,
+            password: value.password,
+            deviceToken: val,
+            deviceType: 'ios'
+          };
+          this.user.loginUser(param).subscribe((data) => {
+            if (data.status === 'success') {
+              this.saveUserToLocal('userData', data.data);
+              //check if user has checked true to remember me
+              if (value.rememberMe) {
+                this.saveUserToLocal('rememberMe', 'true');
+              } else {
+                this.saveUserToLocal('rememberMe', 'false');
+              }
+              // this.common.emitUserSubject(data.data);
+              this.router.navigate(['profile']);
+            }
+          });
         }
-      });
+      })
+      
     }
   }
 
