@@ -56,5 +56,9 @@
   </ion-grid>
 
   <app-view-profile [hidden]="toEditprofile" [user]="user"></app-view-profile>
-  <app-edit-profile *ngIf="toEditprofile" [user]="user"></app-edit-profile>
+  <app-edit-profile
+    *ngIf="toEditprofile"
+    [user]="user"
+    (userData)="emitSaveProfile($event)"
+  ></app-edit-profile>
 </ion-content>

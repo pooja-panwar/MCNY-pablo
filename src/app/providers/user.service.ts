@@ -67,4 +67,12 @@ export class UserService {
   resetPassword(body): Observable<any> {
     return this.http.postHttp(ApiEndPoints.RESET_PASSWORD, body);
   }
+
+  /**
+   * update doctor profile
+   * @param data updated form data for doctor
+   */
+  editDoctorProfile(data): Observable<any> {
+    return this.http.postHttp(ApiEndPoints.EDIT_DOCTOR_PROFILE, data);
+  }
 }

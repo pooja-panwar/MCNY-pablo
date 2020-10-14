@@ -56,5 +56,14 @@ export class ProfilePage implements OnInit {
 
   emitSaveProfile(userData) {
     console.log(userData);
+    delete userData.name;
+    delete userData.email;
+    this.userService.editDoctorProfile(userData).subscribe((data) => {
+      if (data.status === 'success') {
+        this.getUserPofile();
+        this.toEditprofile = false;
+        this.common.presentToast('Your profile is successfully updated');
+      }
+    });
   }
 }
