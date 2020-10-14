@@ -101,12 +101,10 @@ export class AppComponent {
       }) // save the token server-side and use it to push notifications to this device
       .catch((error) => console.error('Error getting token' + error));
 
-    this.firebaseX
-      .onMessageReceived()
-      .subscribe((data) => {
-        console.error(`User opened a notification ${data}`)
-        this.navCtrl.navigateForward('notification');
-      });
+    this.firebaseX.onMessageReceived().subscribe((data) => {
+      console.error(`User opened a notification ${data}`);
+      this.navCtrl.navigateForward('notification');
+    });
   }
 
   checkPermission() {
@@ -168,7 +166,7 @@ export class AppComponent {
   menuClick(menu) {
     switch (menu.title) {
       case 'Logout':
-        this.common.userLogout().subscribe((data) => {
+        this.userService.userLogout().subscribe((data) => {
           this.common.logout();
         });
         break;

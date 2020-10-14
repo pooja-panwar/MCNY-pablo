@@ -28,8 +28,7 @@ export class CommonService {
     private storage: Storage,
     private platform: Platform,
     private router: Router,
-    public menuCtrl: MenuController,
-    private api: CallHttpService
+    public menuCtrl: MenuController
   ) {}
   /**
    * save to local db
@@ -146,10 +145,5 @@ export class CommonService {
     this.removeFromLocal('userData');
     this.menuCtrl.toggle();
     this.router.navigate(['login']);
-  }
-
-  //logout user from app and hit api
-  userLogout(): Observable<any> {
-    return this.api.getHttp(ApiEndPoints.LOGOUT);
   }
 }

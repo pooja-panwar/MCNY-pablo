@@ -18,7 +18,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     public common: CommonService,
     private router: Router,
-    private user: UserDataService
+    private user: UserDataService,
+    private userService: UserService
   ) {}
   intercept(
     request: HttpRequest<any>,
@@ -91,7 +92,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //logout user from app
   logoutUser() {
-    this.common.userLogout().subscribe((res) => {
+    this.userService.userLogout().subscribe((res) => {
       this.common.logout();
     });
   }
