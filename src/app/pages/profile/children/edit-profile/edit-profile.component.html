@@ -1,6 +1,8 @@
 <form [formGroup]="editProfileForm">
   <ion-grid class="mobileEmailInfo">
     <ion-row>
+      <ion-col size="5" class="title">Email</ion-col>
+      <ion-col size="7" class="info">{{ user?.email }}</ion-col>
       <ion-col size="5" class="title">Name</ion-col>
       <ion-col size="7" class="info"
         ><ion-input formControlName="name"></ion-input
@@ -46,10 +48,6 @@
           >
         </ion-select>
       </ion-col>
-      <ion-col size="5" class="title">Email</ion-col>
-      <ion-col size="7" class="info"
-        ><ion-input formControlName="email"></ion-input
-      ></ion-col>
     </ion-row>
   </ion-grid>
 
@@ -111,7 +109,7 @@
     >
   </ion-grid>
 
-  <h2 class="text-center">
+  <h2 style="text-align: center">
     <ion-button (click)="save()" color="warning">Save</ion-button>
   </h2>
 </form>

@@ -22,7 +22,7 @@ import { UserService } from 'src/app/providers/user.service';
 })
 export class EditProfileComponent implements OnInit, OnChanges {
   @Input() user: any;
-  @Output() formData = new EventEmitter();
+  @Output() userData = new EventEmitter();
   masterData: any;
   editProfileForm: FormGroup;
   constructor(private fb: FormBuilder, private userService: UserService) {
@@ -49,7 +49,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
         ],
       ],
       isAvailable: [false],
-      timeFrames: this.fb.array([]),
+      timeframes: this.fb.array([]),
       counselingMethod: ['', [Validators.required]],
       cities: new FormControl('', [Validators.required]),
       expertise: new FormControl('', [Validators.required]),
@@ -81,7 +81,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
    * @param timeFrameInput array containing time frame values
    */
   pushTimeFrameControl(timeFrameInput) {
-    (this.editProfileForm.get('timeFrames') as FormArray).push(
+    (this.editProfileForm.get('timeframes') as FormArray).push(
       new FormControl(timeFrameInput)
     );
   }
@@ -114,16 +114,16 @@ export class EditProfileComponent implements OnInit, OnChanges {
   pushTimeFrameVal(val) {
     console.log(this.editProfileForm.value);
     const isExistingTimeFrame = this.editProfileForm
-      .get('timeFrames')
+      .get('timeframes')
       .value.findIndex((timeFrame) => {
         return timeFrame === val;
       });
     if (isExistingTimeFrame < 0) {
-      (this.editProfileForm.get('timeFrames') as FormArray).push(
+      (this.editProfileForm.get('timeframes') as FormArray).push(
         this.fb.control(val)
       );
     } else {
-      (this.editProfileForm.get('timeFrames') as FormArray).removeAt(
+      (this.editProfileForm.get('timeframes') as FormArray).removeAt(
         isExistingTimeFrame
       );
     }
@@ -131,7 +131,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
 
   save() {
     if (this.editProfileForm.valid) {
-      this.formData.emit(this.editProfileForm.value);
+      this.userData.emit(this.editProfileForm.value);
     }
   }
 }
