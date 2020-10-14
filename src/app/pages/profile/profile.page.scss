@@ -8,6 +8,14 @@
     border: 3px solid #252526;
     border-radius: 100%;
   }
+  .cameraIcon{
+    z-index: 3;
+    position: absolute;
+    right: 173px;
+    bottom: 10px;
+    pointer-events: none;
+    width: 40px;
+  }
 }
 
 .userInfo {

@@ -15,4 +15,5 @@ export const ApiEndPoints = {
   RESET_PASSWORD: `${BASE_URL}doctor/resetPassword`,
   NOTIFICATION: `${BASE_URL}notifications`,
   EDIT_DOCTOR_PROFILE: `${BASE_URL}doctor/editProfile`,
+  PROFILE_PIC: `${BASE_URL}doctor/uploadProfileImage`
 };
