@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -15,6 +22,7 @@ import { UserService } from 'src/app/providers/user.service';
 })
 export class EditProfileComponent implements OnInit, OnChanges {
   @Input() user: any;
+  @Output() formData = new EventEmitter();
   masterData: any;
   editProfileForm: FormGroup;
   constructor(private fb: FormBuilder, private userService: UserService) {
@@ -28,6 +36,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
 
   initForm() {
     this.editProfileForm = this.fb.group({
+      name: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
       insurance: ['', Validators.required],
       email: [
@@ -59,7 +68,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
 
       this.user.timeframes.forEach((userTime) => {
         let selected = this.masterData.timeframes.filter((time) => {
-          return time.timeframe === userTime;
+          return time.timeframe === userTime.timeframe;
         });
         selected[0].checked = true;
         this.pushTimeFrameControl(selected[0].id);
@@ -82,36 +91,20 @@ export class EditProfileComponent implements OnInit, OnChanges {
    * @param user user selected fields data
    */
   fillForm(user) {
-    let insurance = this.masterData.insurance.filter((ins) => {
-      return ins.insurance === user.insurance;
-    });
-
     let citiesArr = [];
     let expertiseArr = [];
     this.user.cities.forEach((selectedCity) => {
-      let selected = this.masterData.cities.filter((city) => {
-        return selectedCity === city.city;
-      });
-      if (selected && selected[0].id) {
-        citiesArr.push(selected[0].id);
-      }
+      citiesArr.push(selectedCity.id);
     });
     this.user.expertises.forEach((selectedExp) => {
-      let selected = this.masterData.expertise.filter((expertise) => {
-        return selectedExp === expertise.expertise;
-      });
-      if (selected && selected[0].id) {
-        expertiseArr.push(selected[0].id);
-      }
-    });
-    let license = this.masterData.license.filter((lic) => {
-      return this.user.license === lic.license;
+      expertiseArr.push(selectedExp.id);
     });
     this.editProfileForm.patchValue(user);
-    this.editProfileForm.patchValue({ insurance: insurance[0].id });
-    this.editProfileForm.get('license').patchValue(license[0].id);
+    this.editProfileForm.patchValue({ insurance: this.user.insurance.id });
+    this.editProfileForm.get('license').patchValue(this.user.license.id);
     this.editProfileForm.get('expertise').patchValue(expertiseArr);
     this.editProfileForm.get('cities').patchValue(citiesArr);
+    console.log(this.editProfileForm.value);
   }
 
   /**
@@ -133,6 +126,12 @@ export class EditProfileComponent implements OnInit, OnChanges {
       (this.editProfileForm.get('timeFrames') as FormArray).removeAt(
         isExistingTimeFrame
       );
+    }
+  }
+
+  save() {
+    if (this.editProfileForm.valid) {
+      this.formData.emit(this.editProfileForm.value);
     }
   }
 }
