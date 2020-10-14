@@ -26,18 +26,22 @@
   <ion-grid class="userInfo">
     <ion-row>
       <ion-col>
-        <h2>
+        <h2 [hidden]="toEditprofile">
           {{user?.name}}
           <ion-button (click)="toEditprofile = !toEditprofile"
             ><img src="../assets/img/edit.png" alt=""
           /></ion-button>
         </h2>
+
+        <!-- <h2 [hidden]="!toEditprofile">
+          <ion-button color="warning">Save</ion-button>
+        </h2> -->
         <p
           [hidden]="toEditprofile"
           *ngFor="let expertise of user?.expertises | slice:0:1"
           class="name"
         >
-          {{expertise}}
+          {{expertise.expertise}}
           <ion-text
             class="showMore"
             (click)="presentPopover()"
@@ -46,7 +50,7 @@
           >
         </p>
 
-        <p [hidden]="toEditprofile">{{user?.license}}</p>
+        <p [hidden]="toEditprofile">{{user?.license.license}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

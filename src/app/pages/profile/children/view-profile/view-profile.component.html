@@ -3,7 +3,7 @@
     <ion-col size="5" class="title">Phone Number</ion-col>
     <ion-col size="7" class="info">{{ user?.phoneNumber }}</ion-col>
     <ion-col size="5" class="title">Insurance</ion-col>
-    <ion-col size="7" class="info">{{ user?.insurance }}</ion-col>
+    <ion-col size="7" class="info">{{ user?.insurance.insurance }}</ion-col>
     <ion-col size="5" class="title">Email</ion-col>
     <ion-col size="7" class="info">{{ user?.email }}</ion-col>
   </ion-row>
@@ -17,12 +17,12 @@
     <ion-col size="6">
       <h3>Available Timeframe</h3>
       <ion-badge *ngFor="let timeFrame of user?.timeframes">{{
-        timeFrame
+        timeFrame.timeframe
       }}</ion-badge>
     </ion-col>
     <ion-col size="6">
       <h3>Cities</h3>
-      <ion-badge *ngFor="let city of user?.cities">{{ city }}</ion-badge>
+      <ion-badge *ngFor="let city of user?.cities">{{ city.city }}</ion-badge>
     </ion-col>
     <ion-col size="6">
       <h3>Counseling Method</h3>

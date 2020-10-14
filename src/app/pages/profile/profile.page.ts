@@ -53,4 +53,8 @@ export class ProfilePage implements OnInit {
     });
     return await popover.present();
   }
+
+  emitSaveProfile(userData) {
+    console.log(userData);
+  }
 }
