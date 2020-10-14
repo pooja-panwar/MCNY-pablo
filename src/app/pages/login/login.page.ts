@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
       ),
       password: new FormControl(
         '',
-        Validators.compose([Validators.minLength(6), Validators.required])
+        Validators.compose([Validators.minLength(8), Validators.required])
       ),
       rememberMe: [false],
     });
@@ -104,8 +104,7 @@ export class LoginPage implements OnInit {
               });
             });
         }
-      })
-      
+      });
     }
   }
 

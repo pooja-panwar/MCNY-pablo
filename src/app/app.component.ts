@@ -9,6 +9,7 @@ import { CommonService } from './providers/global.service';
 
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { UserDataService } from './providers/user-data.service';
+import { UserService } from './providers/user.service';
 
 @Component({
   selector: 'app-root',
@@ -59,7 +60,8 @@ export class AppComponent {
     private common: CommonService,
     private navCtrl: NavController,
     private firebaseX: FirebaseX,
-    private userDataService: UserDataService
+    private userDataService: UserDataService,
+    private userService: UserService
   ) {
     this.initializeApp();
     1;
@@ -99,12 +101,10 @@ export class AppComponent {
       }) // save the token server-side and use it to push notifications to this device
       .catch((error) => console.error('Error getting token' + error));
 
-    this.firebaseX
-      .onMessageReceived()
-      .subscribe((data) => {
-        console.error(`User opened a notification ${data}`)
-        this.navCtrl.navigateForward('notification');
-      });
+    this.firebaseX.onMessageReceived().subscribe((data) => {
+      console.error(`User opened a notification ${data}`);
+      this.navCtrl.navigateForward('notification');
+    });
   }
 
   checkPermission() {
@@ -166,7 +166,9 @@ export class AppComponent {
   menuClick(menu) {
     switch (menu.title) {
       case 'Logout':
-        this.common.logout();
+        this.userService.userLogout().subscribe((data) => {
+          this.common.logout();
+        });
         break;
 
       default:

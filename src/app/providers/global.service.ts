@@ -9,6 +9,8 @@ import {
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CallHttpService } from './call-http.service';
+import { ApiEndPoints } from './constants/api-endpoints';
 
 /**
  * Common service used throughout app
@@ -26,8 +28,7 @@ export class CommonService {
     private storage: Storage,
     private platform: Platform,
     private router: Router,
-    public menuCtrl: MenuController,
-    private navCtrl: NavController
+    public menuCtrl: MenuController
   ) {}
   /**
    * save to local db
