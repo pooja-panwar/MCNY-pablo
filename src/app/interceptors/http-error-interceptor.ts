@@ -75,15 +75,24 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
+    this.common.presentToast(err.error.message);
     if (err.status === 401) {
-      this.common.logout();
+      this.logoutUser();
     } else if (err.err.message === 'Token is not valid') {
-      this.common.logout();
+      this.logoutUser();
     } else if (err.err.message === 'email already exists') {
+      this.common.presentToast('Email already exists. Please login!');
       setTimeout(() => {
         this.router.navigate(['login']);
       }, 5000);
       return throwError(err);
     }
+  }
+
+  //logout user from app
+  logoutUser() {
+    this.common.userLogout().subscribe((res) => {
+      this.common.logout();
+    });
   }
 }

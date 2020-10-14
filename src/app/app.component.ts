@@ -9,6 +9,7 @@ import { CommonService } from './providers/global.service';
 
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { UserDataService } from './providers/user-data.service';
+import { UserService } from './providers/user.service';
 
 @Component({
   selector: 'app-root',
@@ -59,7 +60,8 @@ export class AppComponent {
     private common: CommonService,
     private navCtrl: NavController,
     private firebaseX: FirebaseX,
-    private userDataService: UserDataService
+    private userDataService: UserDataService,
+    private userService: UserService
   ) {
     this.initializeApp();
     1;
@@ -172,7 +174,9 @@ export class AppComponent {
   menuClick(menu) {
     switch (menu.title) {
       case 'Logout':
-        this.common.logout();
+        this.common.userLogout().subscribe((data) => {
+          this.common.logout();
+        });
         break;
 
       default:

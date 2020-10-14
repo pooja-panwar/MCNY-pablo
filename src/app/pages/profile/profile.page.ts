@@ -41,6 +41,7 @@ export class ProfilePage implements OnInit {
     this.menuCtrl.toggle();
   }
 
+  //preset popover to show expertises
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: ExpertisePopoverComponent,
@@ -54,16 +55,23 @@ export class ProfilePage implements OnInit {
     return await popover.present();
   }
 
+  /**
+   * update user data and send details to backend
+   * @param userData user updated form data
+   */
   emitSaveProfile(userData) {
     console.log(userData);
-    delete userData.name;
-    delete userData.email;
-    this.userService.editDoctorProfile(userData).subscribe((data) => {
-      if (data.status === 'success') {
-        this.getUserPofile();
-        this.toEditprofile = false;
-        this.common.presentToast('Your profile is successfully updated');
-      }
-    });
+    if (userData === false) {
+      this.toEditprofile = false;
+    } else {
+      delete userData.name;
+      this.userService.editDoctorProfile(userData).subscribe((data) => {
+        if (data.status === 'success') {
+          this.getUserPofile();
+          this.toEditprofile = false;
+          this.common.presentToast('Your profile is successfully updated');
+        }
+      });
+    }
   }
 }

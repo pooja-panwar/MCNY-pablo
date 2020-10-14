@@ -75,4 +75,9 @@ export class UserService {
   editDoctorProfile(data): Observable<any> {
     return this.http.postHttp(ApiEndPoints.EDIT_DOCTOR_PROFILE, data);
   }
+
+  //logout user from app and hit api
+  userLogout(): Observable<any> {
+    return this.http.getHttp(ApiEndPoints.LOGOUT);
+  }
 }

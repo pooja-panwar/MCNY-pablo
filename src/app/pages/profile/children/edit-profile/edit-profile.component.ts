@@ -39,15 +39,6 @@ export class EditProfileComponent implements OnInit, OnChanges {
       name: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
       insurance: ['', Validators.required],
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            '^[a-zA-Z0-9][-a-zA-Z0-9._]+@([- a-z0-9]+[.])+[a-z]{2,5}$'
-          ),
-        ],
-      ],
       isAvailable: [false],
       timeframes: this.fb.array([]),
       counselingMethod: ['', [Validators.required]],
@@ -129,9 +120,15 @@ export class EditProfileComponent implements OnInit, OnChanges {
     }
   }
 
+  //emti user data emitter
   save() {
     if (this.editProfileForm.valid) {
       this.userData.emit(this.editProfileForm.value);
     }
+  }
+
+  //cancel edit user profile
+  cancel() {
+    this.userData.emit(false);
   }
 }

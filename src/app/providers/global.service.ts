@@ -9,6 +9,8 @@ import {
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CallHttpService } from './call-http.service';
+import { ApiEndPoints } from './constants/api-endpoints';
 
 /**
  * Common service used throughout app
@@ -27,7 +29,7 @@ export class CommonService {
     private platform: Platform,
     private router: Router,
     public menuCtrl: MenuController,
-    private navCtrl: NavController
+    private api: CallHttpService
   ) {}
   /**
    * save to local db
@@ -144,5 +146,10 @@ export class CommonService {
     this.removeFromLocal('userData');
     this.menuCtrl.toggle();
     this.router.navigate(['login']);
+  }
+
+  //logout user from app and hit api
+  userLogout(): Observable<any> {
+    return this.api.getHttp(ApiEndPoints.LOGOUT);
   }
 }

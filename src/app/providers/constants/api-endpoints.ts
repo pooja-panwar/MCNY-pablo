@@ -14,4 +14,5 @@ export const ApiEndPoints = {
   FORGOT_PASSWORD: `${BASE_URL}doctor/forgotPassword`,
   RESET_PASSWORD: `${BASE_URL}doctor/resetPassword`,
   EDIT_DOCTOR_PROFILE: `${BASE_URL}doctor/editProfile`,
+  LOGOUT: `${BASE_URL}doctor/logout`,
 };
