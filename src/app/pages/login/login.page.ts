@@ -84,23 +84,22 @@ export class LoginPage implements OnInit {
       const param = {
         email: value.email,
         password: value.password,
-        deviceToken: this.deviceToken,
-        deviceType: this.platformName,
+        deviceToken: 'asdasdasd',
+        deviceType: 'android',
       };
       this.user.loginUser(param).subscribe((data) => {
         if (data.status === 'success') {
           this.common
             .saveLocal('userData', JSON.stringify(data.data))
             .then((res) => {
-              console.log(value);
-              //check if user has checked true to remember me
-              if (value.rememberMe) {
-                this.saveUserToLocal('rememberMe', 'true');
-              } else {
-                this.saveUserToLocal('rememberMe', 'false');
-              }
               // this.common.emitUserSubject(data.data);
-              this.userData.setUserData().then((val) => {
+              this.userData.setUserData().then(() => {
+                //check if user has checked true to remember me
+                if (value.rememberMe) {
+                  this.saveUserToLocal('rememberMe', 'true');
+                } else {
+                  this.saveUserToLocal('rememberMe', 'false');
+                }
                 this.router.navigate(['profile']);
               });
             });

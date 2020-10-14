@@ -32,8 +32,21 @@
             ><img src="../assets/img/edit.png" alt=""
           /></ion-button>
         </h2>
-        <p class="name">Antisocial Personality</p>
-        <p>{{user?.license}}</p>
+        <p
+          [hidden]="toEditprofile"
+          *ngFor="let expertise of user?.expertises | slice:0:1"
+          class="name"
+        >
+          {{expertise}}
+          <ion-text
+            class="showMore"
+            (click)="presentPopover()"
+            title="Show more"
+            >...</ion-text
+          >
+        </p>
+
+        <p [hidden]="toEditprofile">{{user?.license}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

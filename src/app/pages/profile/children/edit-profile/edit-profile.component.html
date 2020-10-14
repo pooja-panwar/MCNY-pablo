@@ -1,41 +1,108 @@
 <form [formGroup]="editProfileForm">
   <ion-grid class="mobileEmailInfo">
     <ion-row>
+      <ion-col size="5" class="title">Expertise</ion-col>
+      <ion-col size="7" class="info">
+        <ion-select formControlName="expertise" multiple>
+          <ion-select-option
+            *ngFor="let expertise of masterData?.expertise"
+            [value]="expertise.id"
+            >{{ expertise.expertise }}</ion-select-option
+          >
+        </ion-select>
+      </ion-col>
+
+      <ion-col size="5" class="title">License</ion-col>
+      <ion-col size="7" class="info">
+        <ion-select formControlName="license">
+          <ion-select-option
+            *ngFor="let license of masterData?.license"
+            [value]="license.id"
+            >{{ license.license }}</ion-select-option
+          >
+        </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="mobileEmailInfo">
+    <ion-row>
       <ion-col size="5" class="title">Phone Number</ion-col>
       <ion-col size="7" class="info"
         ><ion-input formControlName="phoneNumber"></ion-input
       ></ion-col>
       <ion-col size="5" class="title">Insurance</ion-col>
-      <ion-col size="7" class="info"
-        ><ion-input formControlName="insurance"></ion-input
-      ></ion-col>
+      <ion-col size="7" class="info">
+        <ion-select formControlName="insurance">
+          <ion-select-option
+            *ngFor="let insurance of masterData?.insurance"
+            [value]="insurance.id"
+            >{{ insurance.insurance }}</ion-select-option
+          >
+        </ion-select>
+      </ion-col>
       <ion-col size="5" class="title">Email</ion-col>
       <ion-col size="7" class="info"
         ><ion-input formControlName="email"></ion-input
       ></ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid class="acceptingAvailableInfo">
+
+  <ion-grid class="mobileEmailInfo">
     <ion-row>
-      <ion-col size="6">
-        <h3>Accepting Clients</h3>
+      <ion-col size="7" class="title">Availability</ion-col>
+      <ion-col size="5" class="info">
         <ion-toggle formControlName="isAvailable"></ion-toggle>
       </ion-col>
-      <ion-col size="6">
-        <h3>Available Timeframe</h3>
-        <ion-badge
-          *ngFor="let timeFrame of masterData?.timeframes; let i = index"
-          >{{ timeFrame }}</ion-badge
-        >
+
+      <ion-col size="5" class="title">Available Timeframe</ion-col>
+      <ion-col size="7" class="info">
+        <ion-list class="TimeframeGridWrap">
+          <ion-item>
+            <ion-grid>
+              <ion-row
+                *ngFor="let timeFrame of masterData?.timeframes; let i = index"
+              >
+                <ion-col>
+                  <ion-checkbox
+                    (click)="pushTimeFrameVal(timeFrame.id)"
+                    [id]="timeFrame"
+                    [checked]="timeFrame.checked"
+                  ></ion-checkbox>
+                  <ion-label>{{ timeFrame.timeframe }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
       </ion-col>
-      <ion-col size="6">
-        <h3>Cities</h3>
-        <ion-badge *ngFor="let city of user?.cities">{{ city }}</ion-badge>
+
+      <ion-col size="5" class="title">Cities</ion-col>
+      <ion-col size="7" class="info">
+        <ion-label position="stacked">Cities</ion-label>
+        <ion-select multiple formControlName="cities">
+          <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
+          <ion-select-option
+            *ngFor="let city of masterData?.cities"
+            [value]="city.id"
+            >{{ city.city }}</ion-select-option
+          >
+        </ion-select>
       </ion-col>
-      <ion-col size="6">
-        <h3>Counseling Method</h3>
-        <ion-badge>{{ user?.counselingMethod }}</ion-badge>
-      </ion-col>
-    </ion-row>
+      <span
+        class="error ion-padding"
+        *ngIf="isSubmitted && errorControl.cities.errors?.required"
+      >
+        Cities are required.
+      </span>
+
+      <ion-col size="5" class="title">Councelling Method</ion-col>
+      <ion-col size="7" class="info">
+        <ion-select formControlName="counselingMethod">
+          <ion-select-option value="in-person">Person</ion-select-option>
+          <ion-select-option value="telehealth">Telehealth</ion-select-option>
+        </ion-select>
+      </ion-col></ion-row
+    >
   </ion-grid>
 </form>

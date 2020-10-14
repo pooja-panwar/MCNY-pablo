@@ -67,6 +67,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then((source) => {
+      this.userDataService.setUserData();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.checkPermission();
