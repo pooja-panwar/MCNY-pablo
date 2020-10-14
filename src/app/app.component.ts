@@ -72,19 +72,10 @@ export class AppComponent {
       this.userDataService.setUserData();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      // this.common.getFromLocal('rememberMe').then((val) => {
-      //   //check remember me and navigate to dashboard without login
-      //   if (val && val == 'true') {
-      //     this.navCtrl.navigateRoot('profile');
-      //   }
-      // });
-
       this.checkPermission();
     });
   }
   ngOnInit() {
-    // console.log(this.platform.platforms());
-
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(
@@ -112,7 +103,10 @@ export class AppComponent {
 
     this.firebaseX
       .onMessageReceived()
-      .subscribe((data) => console.error(`User opened a notification ${data}`));
+      .subscribe((data) => {
+        console.error(`User opened a notification ${data}`)
+        this.navCtrl.navigateForward('notification');
+      });
   }
 
   checkPermission() {

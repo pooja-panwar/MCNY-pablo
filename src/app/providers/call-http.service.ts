@@ -28,21 +28,11 @@ export class CallHttpService {
    * @param url : url to call
    * @param isHeader : true/false
    */
-  getHttp(url, isHeader = false): Observable<any> {
-    if (isHeader ) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': `Bearer token`
-        })
-      };
-      return this.http.get(url, httpOptions).pipe(
-        catchError(this.handleError('get request error'))
-      )
-    } else {
-      return this.http.get(url).pipe(
-        catchError(this.handleError('get request error'))
-      )
-    }
+  getHttp(url): Observable<any> {
+    return this.http.get(url).pipe(
+      catchError(this.handleError('get request error'))
+    )
+    
   }
 
   /**
@@ -51,23 +41,11 @@ export class CallHttpService {
    * @param param : request param
    * @param isHeader : true/false
    */
-  postHttp(url, param, isHeader = false): Observable<any> {
-    if (isHeader ) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': `Bearer token`
-        })
-      };
-      return this.http.post(url, param, httpOptions)
-        .pipe(
-          catchError(this.handleError('post request error', param))
-      )
-    } else {
-      return this.http.post(url, param)
-        .pipe(
-          catchError(this.handleError('post request error', param))
-      )
-    }
+  postHttp(url, param): Observable<any> {
+    return this.http.post(url, param)
+      .pipe(
+        catchError(this.handleError('post request error', param))
+    )
   }
 
   /**
