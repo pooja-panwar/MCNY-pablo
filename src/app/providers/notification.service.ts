@@ -7,8 +7,10 @@ import { ApiEndPoints } from './constants/api-endpoints';
   providedIn: 'root',
 })
 export class NotificationService {
-    constructor() {
+    constructor(private http: CallHttpService) {
 
     } 
-    
+    getNotifyData() {
+      return this.http.getHttp(ApiEndPoints.NOTIFICATION);
+    }
 }

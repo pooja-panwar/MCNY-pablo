@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular'; 
+import { NotificationService } from '../../providers/notification.service';
 
 @Component({
   selector: 'app-notification',
@@ -7,62 +8,28 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./notification.page.scss'],
 })
 export class NotificationPage implements OnInit {
-  notificationData =  {"data": [
-    {
-        "id": 6,
-        "doctorId": 29,
-        "title": "Title 1",
-        "body": "Body 1",
-        "isRead": false,
-        "createdAt": "2020-10-05T05:13:25.000Z",
-        "updatedAt": "2020-10-05T05:13:25.000Z"
-    },
-    {
-        "id": 7,
-        "doctorId": 29,
-        "title": "Title 1",
-        "body": "Body 1",
-        "isRead": false,
-        "createdAt": "2020-10-05T05:13:25.000Z",
-        "updatedAt": "2020-10-05T05:13:25.000Z"
-    },
-    {
-        "id": 8,
-        "doctorId": 29,
-        "title": "Title 1",
-        "body": "Body 1",
-        "isRead": false,
-        "createdAt": "2020-10-05T05:13:25.000Z",
-        "updatedAt": "2020-10-05T05:13:25.000Z"
-    },
-    {
-        "id": 9,
-        "doctorId": 29,
-        "title": "Title 1",
-        "body": "Body 1",
-        "isRead": false,
-        "createdAt": "2020-10-05T05:13:25.000Z",
-        "updatedAt": "2020-10-05T05:13:25.000Z"
-    },
-    {
-        "id": 10,
-        "doctorId": 29,
-        "title": "Title 1",
-        "body": "Body 1",
-        "isRead": false,
-        "createdAt": "2020-10-05T05:13:25.000Z",
-        "updatedAt": "2020-10-05T05:13:25.000Z"
-    }
-]}
+  notificationData = [];
 
   constructor(
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    public notificationService: NotificationService
   ) { }
 
   ngOnInit() {
   }
+
   ionViewWillEnter() {
-      this.menuCtrl.enable(true);
+    this.menuCtrl.enable(true);
   }
 
+  ionViewDidEnter() {
+    this.loadNotification();
+  }
+
+  loadNotification() {
+    this.notificationService.getNotifyData().subscribe(resp => {
+      console.log('resp>>', resp)
+      this.notificationData = resp.data;
+    })
+  }
 }

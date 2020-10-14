@@ -13,4 +13,5 @@ export const ApiEndPoints = {
   GETMASTERDATA: `${BASE_URL}doctor/getSignUpFormData`,
   FORGOT_PASSWORD: `${BASE_URL}doctor/forgotPassword`,
   RESET_PASSWORD: `${BASE_URL}doctor/resetPassword`,
+  NOTIFICATION: `${BASE_URL}notifications`
 };

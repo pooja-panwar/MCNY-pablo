@@ -14,9 +14,9 @@
 <ion-content>
   <ion-list class="notificationWrap">
     <!-- <ion-item-sliding > -->
-      <ion-item *ngFor="let notify of notificationData.data; let i = index" routerLink="/request-details">
+      <ion-item *ngFor="let notify of notificationData; let i = index" routerLink="/request-details">
         <ion-label>
-          <h3>John Due</h3>
+          <h3>{{notify.title}}</h3>
           <p>{{notify.body}}</p>
         </ion-label>
         <ion-badge>{{notify.duration}}</ion-badge>
