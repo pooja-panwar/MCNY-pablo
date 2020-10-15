@@ -88,9 +88,10 @@
               >
                 <ion-col>
                   <ion-checkbox
-                    (click)="pushTimeFrameVal(timeFrame.id)"
-                    [id]="timeFrame"
-                    [checked]="timeFrame.checked"
+                    (click)="pushTimeFrameVal(timeFrame)"
+                    [id]="timeFrame.timeframe"
+                    [(ngModel)]="timeFrame.checked"
+                    [ngModelOptions]="{ standalone: true }"
                   ></ion-checkbox>
                   <ion-label>{{ timeFrame.timeframe }}</ion-label>
                 </ion-col>

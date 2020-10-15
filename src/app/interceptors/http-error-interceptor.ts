@@ -92,8 +92,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //logout user from app
   logoutUser() {
-    this.userService.userLogout().subscribe((res) => {
-      this.common.logout();
-    });
+    this.common.logout();
   }
 }

@@ -42,16 +42,15 @@ export class Signup2Page implements OnInit {
   }
 
   ionViewWillLeave() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   ionViewDidEnter() {
-    this.subscription = this.platform.backButton.subscribeWithPriority(
-      9999,
-      () => {
-        // do nothing
-      }
-    );
+    // this.subscription = this.platform.backButton.subscribeWithPriority(
+    //   9999,
+    //   () => {
+    //   }
+    // );
   }
 
   /**
@@ -72,7 +71,6 @@ export class Signup2Page implements OnInit {
       }
     });
   }
-
   /**
    * disable user to navigate back to signup page 1
    */
@@ -100,7 +98,8 @@ export class Signup2Page implements OnInit {
    * push time frame checkbox value into form array
    * @param val current timeframe checkbox selected by the user
    */
-  pushTimeFrameVal(val) {
+  pushTimeFrameVal(frame) {
+    let val = frame.id;
     const isExistingTimeFrame = this.signUpForm
       .get('timeframes')
       .value.findIndex((timeFrame) => {
@@ -114,6 +113,40 @@ export class Signup2Page implements OnInit {
       (this.signUpForm.get('timeframes') as FormArray).removeAt(
         isExistingTimeFrame
       );
+    }
+    this.handleTimeFrameChecks(frame, isExistingTimeFrame);
+  }
+
+  //delete and add timeframe values in form array accordingly and handle elements
+  handleTimeFrameChecks(val, isExistingTimeFrame) {
+    if (val.id == 1) {
+      if (isExistingTimeFrame < 0) {
+        this.masterData.timeframes.forEach((data, index) => {
+          if (data.id != 1) {
+            data.checked = false;
+          }
+        });
+        for (
+          let i = (this.signUpForm.get('timeframes') as FormArray).length;
+          i >= 0;
+          i--
+        ) {
+          let time = (this.signUpForm.get('timeframes') as FormArray).value[i];
+          if (time != val.id) {
+            (this.signUpForm.get('timeframes') as FormArray).removeAt(i);
+          }
+        }
+      }
+    } else {
+      const anyTimeIndex = this.signUpForm
+        .get('timeframes')
+        .value.findIndex((timeFrame) => {
+          return timeFrame === 1;
+        });
+      this.masterData.timeframes[0].checked = false;
+      if (anyTimeIndex >= 0) {
+        (this.signUpForm.get('timeframes') as FormArray).removeAt(anyTimeIndex);
+      }
     }
   }
 
