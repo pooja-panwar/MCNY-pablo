@@ -28,7 +28,9 @@ export class CommonService {
     private storage: Storage,
     private platform: Platform,
     private router: Router,
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    private navCtrl: NavController,
+
   ) {}
   /**
    * save to local db
@@ -144,6 +146,6 @@ export class CommonService {
     this.removeFromLocal('rememberMe');
     this.removeFromLocal('userData');
     this.menuCtrl.toggle();
-    this.router.navigate(['login']);
+    this.navCtrl.navigateForward(['login']);
   }
 }

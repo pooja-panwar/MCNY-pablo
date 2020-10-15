@@ -55,13 +55,12 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.common.getFromLocal('device_token').then((val) => {
-      this.deviceToken = val;
-    });
+    
     this.checkDevicePlatform();
   }
 
   ionViewWillEnter() {
+    
     this.menuCtrl.enable(false);
   }
 
@@ -85,6 +84,9 @@ export class LoginPage implements OnInit {
    */
   submitLogin(value) {
     this.isSubmitted = true;
+    this.common.getFromLocal('device_token').then((val) => {
+      this.deviceToken = val;
+    
     if (this.loginForm.valid) {
       //create form body parameters
       const param = {
@@ -112,6 +114,7 @@ export class LoginPage implements OnInit {
         }
       });
     }
+    });
   }
 
   /**

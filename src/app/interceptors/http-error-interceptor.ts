@@ -67,9 +67,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         return throwError(error);
       }),
       finalize(() => {
-        // setTimeout(() => {
-        this.common.hideLoader();
-        // }, 1000);
+        //setTimeout(() => {
+          this.common.hideLoader();
+       // }, 1000);
       })
     );
   }
