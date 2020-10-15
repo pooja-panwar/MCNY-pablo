@@ -47,6 +47,7 @@
         >
           {{expertise.expertise}}
           <ion-text
+            *ngIf="user?.expertises?.length > 1"
             class="showMore"
             (click)="presentPopover()"
             title="Show more"
@@ -64,5 +65,6 @@
     *ngIf="toEditprofile"
     [user]="user"
     (userData)="emitSaveProfile($event)"
+    [masterData]="masterData"
   ></app-edit-profile>
 </ion-content>
