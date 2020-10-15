@@ -44,9 +44,10 @@
           </span>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.password.errors?.minlength"
+            *ngIf="isSubmitted && errorControl.password.errors?.pattern"
           >
-            Password should be of minimum 8 characters.
+            Password must contain atleast 8 characters with one special
+            character, one capital and one small letter.
           </span>
 
           <ion-item class="login-remember-class" lines="none">
