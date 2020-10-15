@@ -22,15 +22,15 @@ import { UserService } from 'src/app/providers/user.service';
 })
 export class EditProfileComponent implements OnInit, OnChanges {
   @Input() user: any;
+  @Input() masterData: any;
   @Output() userData = new EventEmitter();
-  masterData: any;
   editProfileForm: FormGroup;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.initForm();
   }
 
   ngOnInit() {
-    this.getRegisterMasterData();
+    this.preFillFormDetails(this.user);
   }
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {}
 
@@ -49,21 +49,18 @@ export class EditProfileComponent implements OnInit, OnChanges {
   }
 
   /**
-   * get master data for all the
-   * required fields used in signup
+   * fill form for user edit
+   * @param user user details for filling form
    */
-  getRegisterMasterData() {
-    this.userService.getSignUpMasterData().subscribe((data) => {
-      this.masterData = data.data;
-      this.fillForm(this.user);
+  preFillFormDetails(user) {
+    this.fillForm(user);
 
-      this.user.timeframes.forEach((userTime) => {
-        let selected = this.masterData.timeframes.filter((time) => {
-          return time.timeframe === userTime.timeframe;
-        });
-        selected[0].checked = true;
-        this.pushTimeFrameControl(selected[0].id);
+    this.user.timeframes.forEach((userTime) => {
+      let selected = this.masterData.timeframes.filter((time) => {
+        return time.timeframe === userTime.timeframe;
       });
+      selected[0].checked = true;
+      this.pushTimeFrameControl(selected[0].id);
     });
   }
 
@@ -95,7 +92,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
     this.editProfileForm.get('license').patchValue(this.user.license.id);
     this.editProfileForm.get('expertise').patchValue(expertiseArr);
     this.editProfileForm.get('cities').patchValue(citiesArr);
-    console.log(this.editProfileForm.value);
+    //console.log(this.editProfileForm.value);
   }
 
   /**

@@ -12,8 +12,9 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  public user;
+  public user: any;
   toEditprofile = false;
+  public masterData: any;
   constructor(
     public menuCtrl: MenuController,
     private userService: UserService,
@@ -24,6 +25,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.getUserPofile();
+    this.getRegisterMasterData();
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
@@ -73,5 +75,14 @@ export class ProfilePage implements OnInit {
         }
       });
     }
+  }
+  /**
+   * get master data for all the
+   * required fields used in signup
+   */
+  getRegisterMasterData() {
+    this.userService.getSignUpMasterData().subscribe((data) => {
+      this.masterData = data.data;
+    });
   }
 }
