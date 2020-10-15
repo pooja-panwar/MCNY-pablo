@@ -34,7 +34,6 @@ export class UserDataService {
         );
       }
     });
-    console.log(this.userData);
   }
 }
 

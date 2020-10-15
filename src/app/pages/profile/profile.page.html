@@ -43,6 +43,7 @@
         >
           {{expertise.expertise}}
           <ion-text
+            *ngIf="user?.expertises?.length > 1"
             class="showMore"
             (click)="presentPopover()"
             title="Show more"

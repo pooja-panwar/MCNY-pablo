@@ -66,7 +66,6 @@ export class ProfilePage implements OnInit {
     if (userData === false) {
       this.toEditprofile = false;
     } else {
-      delete userData.name;
       this.userService.editDoctorProfile(userData).subscribe((data) => {
         if (data.status === 'success') {
           this.getUserPofile();
