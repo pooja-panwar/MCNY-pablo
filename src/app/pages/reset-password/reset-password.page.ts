@@ -77,6 +77,7 @@ export class ResetPasswordPage implements OnInit {
       value.email = this.email;
       this.user.resetPassword(value).subscribe((data) => {
         this.resetPassForm.reset();
+        this.isSubmitted = false;
         this.common.presentToast(
           'Your password is successfully changed. Please Login again.'
         );

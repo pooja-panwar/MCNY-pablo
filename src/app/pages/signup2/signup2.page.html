@@ -9,15 +9,15 @@
       </h4>
 
       <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
-        <ion-list>
-          <ion-item>
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Expertise</ion-label>
             <ion-select
               multiple
               formControlName="expertise"
+              placeholder="Select Expertise"
               [class.error-input]="isSubmitted && errorControl.expertise.errors"
             >
-              <!-- <ion-select-option value="">Select Expertise</ion-select-option> -->
               <ion-select-option
                 *ngFor="let expertise of masterData?.expertise"
                 [value]="expertise.id"
@@ -32,11 +32,11 @@
             Expertise details are required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label class="mb-0">Availability</ion-label>
             <ion-toggle formControlName="isAvailable"></ion-toggle>
           </ion-item>
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Available Timeframe</ion-label>
             <ion-list class="TimeframeGridWrap">
               <ion-item>
@@ -47,7 +47,10 @@
                       *ngFor="let timeFrame of masterData?.timeframes; let i = index"
                     >
                       <ion-checkbox
-                        (click)="pushTimeFrameVal(timeFrame.id)"
+                        (click)="pushTimeFrameVal(timeFrame)"
+                        [(ngModel)]="timeFrame.checked"
+                        [id]="timeFrame.timeframe"
+                        [ngModelOptions]="{ standalone: true }"
                       ></ion-checkbox>
                       <ion-label>{{timeFrame.timeframe}}</ion-label>
                     </ion-col>
@@ -56,14 +59,14 @@
               </ion-item>
             </ion-list>
           </ion-item>
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Cities</ion-label>
             <ion-select
               multiple
+              placeholder="Select Cities"
               formControlName="cities"
               [class.error-input]="isSubmitted && errorControl.cities?.errors"
             >
-              <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
               <ion-select-option
                 *ngFor="let city of masterData?.cities"
                 [value]="city.id"
@@ -78,7 +81,7 @@
             Cities are required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked"
               >Preferred Counseling Method</ion-label
             >

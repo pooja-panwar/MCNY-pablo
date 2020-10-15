@@ -9,8 +9,8 @@
       </h4>
 
       <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
-        <ion-list>
-          <ion-item>
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Name</ion-label>
             <ion-input
               formControlName="name"
@@ -24,7 +24,7 @@
             Name is required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">License</ion-label>
             <ion-select
               formControlName="license"
@@ -44,7 +44,7 @@
             License is required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Phone Number</ion-label>
             <ion-input
               formControlName="phoneNumber"
@@ -59,7 +59,7 @@
             Phone Number is required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Insurance</ion-label>
             <ion-select
               formControlName="insurance"
@@ -79,7 +79,7 @@
             Insurance is required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Email</ion-label>
             <ion-input
               formControlName="email"
@@ -99,7 +99,7 @@
             Please provide valid email id.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Gender</ion-label>
             <ion-select
               formControlName="gender"
@@ -117,7 +117,7 @@
             Gender is required.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Password</ion-label>
             <ion-input
               type="password"
@@ -139,7 +139,7 @@
             character, one capital and one small letter.
           </span>
 
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Confirm Password</ion-label>
             <ion-input
               type="password"

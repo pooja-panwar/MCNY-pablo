@@ -8,8 +8,8 @@
     <ion-card-content>
       <h4>Log in</h4>
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)">
-        <ion-list>
-          <ion-item>
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Email Id</ion-label>
             <ion-input
               formControlName="email"
@@ -28,7 +28,7 @@
           >
             Please provide valid email id.
           </span>
-          <ion-item>
+          <ion-item class="hideErrorLine">
             <ion-label position="stacked">Password</ion-label>
             <ion-input
               type="password"

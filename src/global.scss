@@ -134,3 +134,10 @@ ion-toolbar {
   border: 1px solid red !important;
   border-radius: 5px !important;
 }
+.hideErrorLine {
+  --highlight-background: transparent;
+}
+
+ion-item {
+  margin-bottom: 3px !important;
+}

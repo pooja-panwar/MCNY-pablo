@@ -25,6 +25,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
   @Input() masterData: any;
   @Output() userData = new EventEmitter();
   isSubmitted = false;
+  isTimeframeOtherVal = false;
   editProfileForm: FormGroup;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.initForm();
@@ -111,21 +112,59 @@ export class EditProfileComponent implements OnInit, OnChanges {
     const isExistingTimeFrame = this.editProfileForm
       .get('timeframes')
       .value.findIndex((timeFrame) => {
-        return timeFrame === val;
+        return timeFrame === val.id;
       });
     if (isExistingTimeFrame < 0) {
       (this.editProfileForm.get('timeframes') as FormArray).push(
-        this.fb.control(val)
+        this.fb.control(val.id)
       );
     } else {
       (this.editProfileForm.get('timeframes') as FormArray).removeAt(
         isExistingTimeFrame
       );
     }
+    this.handleTimeFrameChecks(val, isExistingTimeFrame);
+  }
+
+  //delete and add timeframe values in form array accordingly and handle elements
+  handleTimeFrameChecks(val, isExistingTimeFrame) {
+    if (val.id == 1) {
+      if (isExistingTimeFrame < 0) {
+        this.masterData.timeframes.forEach((data, index) => {
+          if (data.id != 1) {
+            data.checked = false;
+          }
+        });
+        for (
+          let i = (this.editProfileForm.get('timeframes') as FormArray).length;
+          i >= 0;
+          i--
+        ) {
+          let time = (this.editProfileForm.get('timeframes') as FormArray)
+            .value[i];
+          if (time != val.id) {
+            (this.editProfileForm.get('timeframes') as FormArray).removeAt(i);
+          }
+        }
+      }
+    } else {
+      const anyTimeIndex = this.editProfileForm
+        .get('timeframes')
+        .value.findIndex((timeFrame) => {
+          return timeFrame === 1;
+        });
+      this.masterData.timeframes[0].checked = false;
+      if (anyTimeIndex >= 0) {
+        (this.editProfileForm.get('timeframes') as FormArray).removeAt(
+          anyTimeIndex
+        );
+      }
+    }
   }
 
   //emti user data emitter
   save() {
+    this.editProfileForm.value.phoneNumber = `${this.editProfileForm.value.phoneNumber}`;
     this.isSubmitted = true;
     if (this.isEditFormValid()) {
       this.userData.emit(this.editProfileForm.value);
