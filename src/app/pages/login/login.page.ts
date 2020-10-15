@@ -80,7 +80,7 @@ export class LoginPage implements OnInit {
   submitLogin(value) {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
-      //ajax hit for login authentication
+      //create form body parameters
       const param = {
         email: value.email,
         password: value.password,
