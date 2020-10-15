@@ -24,6 +24,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
   @Input() user: any;
   @Input() masterData: any;
   @Output() userData = new EventEmitter();
+  isSubmitted = false;
   editProfileForm: FormGroup;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.initForm();
@@ -54,6 +55,14 @@ export class EditProfileComponent implements OnInit, OnChanges {
    */
   preFillFormDetails(user) {
     this.fillForm(user);
+
+    this.handleTimeFrameVals();
+  }
+
+  handleTimeFrameVals() {
+    this.masterData.timeframes.forEach((timeFrame) => {
+      timeFrame.checked = false;
+    });
 
     this.user.timeframes.forEach((userTime) => {
       let selected = this.masterData.timeframes.filter((time) => {
@@ -92,7 +101,6 @@ export class EditProfileComponent implements OnInit, OnChanges {
     this.editProfileForm.get('license').patchValue(this.user.license.id);
     this.editProfileForm.get('expertise').patchValue(expertiseArr);
     this.editProfileForm.get('cities').patchValue(citiesArr);
-    //console.log(this.editProfileForm.value);
   }
 
   /**
@@ -100,7 +108,6 @@ export class EditProfileComponent implements OnInit, OnChanges {
    * @param val current timeframe checkbox selected by the user
    */
   pushTimeFrameVal(val) {
-    console.log(this.editProfileForm.value);
     const isExistingTimeFrame = this.editProfileForm
       .get('timeframes')
       .value.findIndex((timeFrame) => {
@@ -119,7 +126,8 @@ export class EditProfileComponent implements OnInit, OnChanges {
 
   //emti user data emitter
   save() {
-    if (this.editProfileForm.valid) {
+    this.isSubmitted = true;
+    if (this.isEditFormValid()) {
       this.userData.emit(this.editProfileForm.value);
     }
   }
@@ -127,5 +135,30 @@ export class EditProfileComponent implements OnInit, OnChanges {
   //cancel edit user profile
   cancel() {
     this.userData.emit(false);
+  }
+  //check if form is valid or not and return
+  isEditFormValid() {
+    return (
+      this.editProfileForm.valid &&
+      this.isTimeFramesValid &&
+      this.isExpertisesValid &&
+      this.isCitiesValid
+    );
+  }
+  //check validation for timeframe form array
+  get isTimeFramesValid() {
+    return this.editProfileForm.get('timeframes').value.length ? true : false;
+  }
+  //check validation for expertise form array
+  get isExpertisesValid() {
+    return this.editProfileForm.get('expertise').value.length ? true : false;
+  }
+  //check validation for cities form array
+  get isCitiesValid() {
+    return this.editProfileForm.get('cities').value.length ? true : false;
+  }
+  //return form control for checking field erros
+  get errorControl() {
+    return this.editProfileForm.controls;
   }
 }

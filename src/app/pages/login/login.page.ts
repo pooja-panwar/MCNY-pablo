@@ -42,7 +42,13 @@ export class LoginPage implements OnInit {
       ),
       password: new FormControl(
         '',
-        Validators.compose([Validators.minLength(8), Validators.required])
+        Validators.compose([
+          Validators.pattern(
+            '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+          ),
+          ,
+          Validators.required,
+        ])
       ),
       rememberMe: [false],
     });
@@ -80,7 +86,7 @@ export class LoginPage implements OnInit {
   submitLogin(value) {
     this.isSubmitted = true;
     if (this.loginForm.valid) {
-      //ajax hit for login authentication
+      //create form body parameters
       const param = {
         email: value.email,
         password: value.password,

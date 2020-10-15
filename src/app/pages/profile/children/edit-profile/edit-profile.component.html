@@ -5,12 +5,19 @@
       <ion-col size="7" class="info">{{ user?.email }}</ion-col>
       <ion-col size="5" class="title">Name</ion-col>
       <ion-col size="7" class="info"
-        ><ion-input formControlName="name"></ion-input
+        ><ion-input
+          formControlName="name"
+          [class.error-input]="isSubmitted && errorControl.name.errors"
+        ></ion-input
       ></ion-col>
 
       <ion-col size="5" class="title">Expertise</ion-col>
       <ion-col size="7" class="info">
-        <ion-select formControlName="expertise" multiple>
+        <ion-select
+          formControlName="expertise"
+          multiple
+          [class.error-input]="isSubmitted && !isExpertisesValid"
+        >
           <ion-select-option
             *ngFor="let expertise of masterData?.expertise"
             [value]="expertise.id"
@@ -21,7 +28,10 @@
 
       <ion-col size="5" class="title">License</ion-col>
       <ion-col size="7" class="info">
-        <ion-select formControlName="license">
+        <ion-select
+          formControlName="license"
+          [class.error-input]="isSubmitted && errorControl.license.errors"
+        >
           <ion-select-option
             *ngFor="let license of masterData?.license"
             [value]="license.id"
@@ -36,11 +46,18 @@
     <ion-row>
       <ion-col size="5" class="title">Phone Number</ion-col>
       <ion-col size="7" class="info"
-        ><ion-input formControlName="phoneNumber"></ion-input
+        ><ion-input
+          formControlName="phoneNumber"
+          type="number"
+          [class.error-input]="isSubmitted && errorControl.phoneNumber.errors"
+        ></ion-input
       ></ion-col>
       <ion-col size="5" class="title">Insurance</ion-col>
       <ion-col size="7" class="info">
-        <ion-select formControlName="insurance">
+        <ion-select
+          formControlName="insurance"
+          [class.error-input]="isSubmitted && errorControl.insurance.errors"
+        >
           <ion-select-option
             *ngFor="let insurance of masterData?.insurance"
             [value]="insurance.id"
@@ -61,6 +78,9 @@
       <ion-col size="5" class="title">Available Timeframe</ion-col>
       <ion-col size="7" class="info">
         <ion-list class="TimeframeGridWrap">
+          <span *ngIf="isSubmitted && !isTimeFramesValid" class="error"
+            >Please select your preferred timeframe.</span
+          >
           <ion-item>
             <ion-grid>
               <ion-row
@@ -83,7 +103,11 @@
       <ion-col size="5" class="title">Cities</ion-col>
       <ion-col size="7" class="info">
         <ion-label position="stacked">Cities</ion-label>
-        <ion-select multiple formControlName="cities">
+        <ion-select
+          multiple
+          formControlName="cities"
+          [class.error-input]="isSubmitted && !isCitiesValid"
+        >
           <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
           <ion-select-option
             *ngFor="let city of masterData?.cities"
@@ -92,16 +116,15 @@
           >
         </ion-select>
       </ion-col>
-      <span
-        class="error ion-padding"
-        *ngIf="isSubmitted && errorControl.cities.errors?.required"
-      >
-        Cities are required.
-      </span>
 
       <ion-col size="5" class="title">Councelling Method</ion-col>
       <ion-col size="7" class="info">
-        <ion-select formControlName="counselingMethod">
+        <ion-select
+          formControlName="counselingMethod"
+          [class.error-input]="
+            isSubmitted && errorControl.counselingMethod.errors
+          "
+        >
           <ion-select-option value="in-person">Person</ion-select-option>
           <ion-select-option value="telehealth">Telehealth</ion-select-option>
         </ion-select>
