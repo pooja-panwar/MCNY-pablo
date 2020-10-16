@@ -49,7 +49,7 @@ export class ProfilePage implements OnInit {
       this.getRegisterMasterData();
       this.user = data.data.doctor;
       this.profileImage = data.data.doctor.profileImage;
-      this.notifyCount = data.data.doctor.notifyCount
+      this.notifyCount = data.data.doctor.notificationCount
       this.common.emitUserSubject(this.user);
     });
   }
