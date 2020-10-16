@@ -21,6 +21,7 @@ export class ProfilePage implements OnInit {
   toEditprofile = false;
   profileImage: string;
   imageDataFromPlugin: string;
+  notifyCount: number = 0;
   public masterData: any;
   constructor(
     public menuCtrl: MenuController,
@@ -37,7 +38,6 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.getUserPofile();
-    
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
@@ -49,6 +49,7 @@ export class ProfilePage implements OnInit {
       this.getRegisterMasterData();
       this.user = data.data.doctor;
       this.profileImage = data.data.doctor.profileImage;
+      this.notifyCount = data.data.doctor.notifyCount
       this.common.emitUserSubject(this.user);
     });
   }
@@ -87,12 +88,13 @@ export class ProfilePage implements OnInit {
           this.common.presentToast('Your profile is successfully updated');
         }
       });
+      if(this.imageDataFromPlugin) {
+        let param = { imageData: this.imageDataFromPlugin };
+        this.takePhoto.startUpload(param);
+        this.imageDataFromPlugin = '';
+      }
     }
-    if(this.imageDataFromPlugin) {
-      let param = { imageData: this.imageDataFromPlugin };
-      this.takePhoto.startUpload(param);
-      this.imageDataFromPlugin = '';
-    }
+    
     
   }
 

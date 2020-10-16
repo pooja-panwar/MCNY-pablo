@@ -90,21 +90,9 @@ export class TakePhotoService {
    */
   async uploadImageData(formData: FormData) {
     this.callHttp.postHttp(ApiEndPoints.PROFILE_PIC, formData).subscribe(res => {
-        //if (res.status) {
-          //update user data
-          // this.currUser.userData = new User(
-          //   res.data.id, 
-          //   res.data.address, 
-          //   res.data.name, 
-          //   res.data.mobile_number, 
-          //   res.data.profile_image, 
-            
-          // );
-          //update local db logged in user data
-          //this.commonService.saveLocal('userData',JSON.stringify(this.currUser.userData));
+        
           console.log('photo success>>>', res)
           this.commonService.presentToast(res.message);
-        //}
       })
   }
 }

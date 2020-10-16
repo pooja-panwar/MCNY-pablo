@@ -7,7 +7,7 @@
     <ion-buttons slot="end" class="menuIcon">
       <ion-button routerLink="/notification">
         <img src="../assets/img/notification.png" />
-        <ion-badge class="notiCount">10</ion-badge>
+        <ion-badge class="notiCount">{{notifyCount}}</ion-badge>
       </ion-button>
       <ion-menu-button>
         <img src="assets/img/menu.png" />
@@ -22,7 +22,7 @@
         <img [src]="profileImage" *ngIf="profileImage" />
         <img alt="" src="../assets/img/profile-pic.png" *ngIf="!profileImage"/>
 
-        <img *ngIf = "toEditprofile" src="../assets/img/edit.png" alt="" class="cameraIcon"/>
+        <img *ngIf = "toEditprofile" src="../assets/img/profiledit.jpg" alt="" class="cameraIcon"/>
       </ion-col>
     </ion-row>
   </ion-grid>
