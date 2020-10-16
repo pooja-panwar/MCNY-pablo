@@ -14,7 +14,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { UserService } from 'src/app/providers/user.service';
-
+import { constant } from '../../../../providers/constants/config';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -131,7 +131,8 @@ export class EditProfileComponent implements OnInit, OnChanges {
     if (val.id == 1) {
       if (isExistingTimeFrame < 0) {
         this.masterData.timeframes.forEach((data, index) => {
-          if (data.id != 1) {
+          //set checked attr of all the timeframes excpt anytime to false
+          if (data.id != constant.TIMEFRAME_ANYTIMEID) {
             data.checked = false;
           }
         });
@@ -151,7 +152,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
       const anyTimeIndex = this.editProfileForm
         .get('timeframes')
         .value.findIndex((timeFrame) => {
-          return timeFrame === 1;
+          return timeFrame === constant.TIMEFRAME_ANYTIMEID;
         });
       this.masterData.timeframes[0].checked = false;
       if (anyTimeIndex >= 0) {

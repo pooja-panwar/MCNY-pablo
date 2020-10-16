@@ -3,6 +3,7 @@ import { MenuController, Platform } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
+import { constant } from '../../providers/constants/config';
 
 @Component({
   selector: 'app-signup2',
@@ -119,7 +120,7 @@ export class Signup2Page implements OnInit {
 
   //delete and add timeframe values in form array accordingly and handle elements
   handleTimeFrameChecks(val, isExistingTimeFrame) {
-    if (val.id == 1) {
+    if (val.id == constant.TIMEFRAME_ANYTIMEID) {
       if (isExistingTimeFrame < 0) {
         this.masterData.timeframes.forEach((data, index) => {
           if (data.id != 1) {
@@ -141,7 +142,7 @@ export class Signup2Page implements OnInit {
       const anyTimeIndex = this.signUpForm
         .get('timeframes')
         .value.findIndex((timeFrame) => {
-          return timeFrame === 1;
+          return timeFrame === constant.TIMEFRAME_ANYTIMEID;
         });
       this.masterData.timeframes[0].checked = false;
       if (anyTimeIndex >= 0) {
@@ -165,9 +166,7 @@ export class Signup2Page implements OnInit {
             this.router.navigate(['registration-success-message']);
           }
         },
-        (error) => {
-          console.log(error);
-        }
+        (error) => {}
       );
     }
   }
