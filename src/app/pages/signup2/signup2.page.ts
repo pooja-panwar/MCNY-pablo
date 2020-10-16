@@ -66,10 +66,21 @@ export class Signup2Page implements OnInit {
 
   //subscirbe to signup required master data
   subscribeToMasterData() {
-    this.user.signUpMasterDataSubject.subscribe((data) => {
-      if (data) {
-        this.masterData = data.data;
-      }
+    // this.user.signUpMasterDataSubject.subscribe((data) => {
+    //   if (data) {
+    //     this.masterData = data.data;
+    //   }
+    // });
+    this.getMasterDataa();
+  }
+
+  /**
+   * get master data for all the
+   * required fields used in signup
+   */
+  getMasterDataa() {
+    this.user.getSignUpMasterData().subscribe((data) => {
+      this.masterData = data.data;
     });
   }
   /**
@@ -156,7 +167,8 @@ export class Signup2Page implements OnInit {
    */
   submitSignUp() {
     this.isSubmitted = true;
-    if (this.signUpForm.valid) {
+    console.log(this.signUpForm.value);
+    if (this.signUpForm.valid && this.signUpForm.value.timeframes.length) {
       //create form data by merging signup1 and signup2 data
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.toString();
       const userData = { ...this.userDetails, ...this.signUpForm.value };
