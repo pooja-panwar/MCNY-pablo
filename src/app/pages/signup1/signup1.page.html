@@ -49,7 +49,7 @@
             <ion-input
               formControlName="phoneNumber"
               type="number"
-              [class.error-input]="isSubmitted && errorControl.phoneNumber.errors"
+              [class.error-input]="isSubmitted && errorControl.phoneNumber?.errors"
             ></ion-input>
           </ion-item>
           <span
@@ -58,7 +58,6 @@
           >
             Phone Number is required.
           </span>
-
           <ion-item class="hideErrorLine">
             <ion-label position="stacked">Insurance</ion-label>
             <ion-select
