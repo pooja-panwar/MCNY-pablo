@@ -25,7 +25,6 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.getUserPofile();
-    this.getRegisterMasterData();
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
@@ -34,6 +33,7 @@ export class ProfilePage implements OnInit {
   //get current user profile details
   getUserPofile() {
     this.userService.getUserProfile().subscribe((data) => {
+      this.getRegisterMasterData();
       this.user = data.data.doctor;
       this.common.emitUserSubject(this.user);
     });

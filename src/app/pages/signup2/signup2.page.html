@@ -55,6 +55,11 @@
                       <ion-label>{{timeFrame.timeframe}}</ion-label>
                     </ion-col>
                   </ion-row>
+                  <span
+                    *ngIf="isSubmitted && !signUpForm.value.timeframes?.length"
+                    class="error ion-padding"
+                    >Please select your preferred timeframe</span
+                  >
                 </ion-grid>
               </ion-item>
             </ion-list>
