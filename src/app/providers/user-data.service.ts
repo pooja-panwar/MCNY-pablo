@@ -32,6 +32,8 @@ export class UserDataService {
           user.doctor.email,
           user.token
         );
+      } else {
+        this.userData = new User('', '', '', '', '');
       }
     });
   }

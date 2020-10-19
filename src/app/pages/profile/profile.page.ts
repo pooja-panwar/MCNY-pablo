@@ -13,6 +13,7 @@ import { PopoverController } from '@ionic/angular';
 })
 export class ProfilePage implements OnInit {
   public user: any;
+  subscribed;
   toEditprofile = false;
   public masterData: any;
   constructor(
@@ -23,11 +24,12 @@ export class ProfilePage implements OnInit {
     public popoverController: PopoverController
   ) {}
 
-  ngOnInit() {
-    this.getUserPofile();
-  }
+  ngOnInit() {}
   ionViewWillEnter() {
+    this.user = [];
+    this.toEditprofile = false;
     this.menuCtrl.enable(true);
+    this.getUserPofile();
   }
 
   //get current user profile details
@@ -62,7 +64,6 @@ export class ProfilePage implements OnInit {
    * @param userData user updated form data
    */
   emitSaveProfile(userData) {
-    console.log(userData);
     if (userData === false) {
       this.toEditprofile = false;
     } else {

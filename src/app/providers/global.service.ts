@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CallHttpService } from './call-http.service';
 import { ApiEndPoints } from './constants/api-endpoints';
+import { UserDataService } from './user-data.service';
 
 /**
  * Common service used throughout app
@@ -137,13 +138,5 @@ export class CommonService {
         }
       });
     });
-  }
-
-  //logout user and delete local stored details of the
-  logout() {
-    this.removeFromLocal('rememberMe');
-    this.removeFromLocal('userData');
-    this.menuCtrl.toggle();
-    this.router.navigate(['login']);
   }
 }

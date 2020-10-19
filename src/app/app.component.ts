@@ -167,7 +167,7 @@ export class AppComponent {
     switch (menu.title) {
       case 'Logout':
         this.userService.userLogout().subscribe((data) => {
-          this.common.logout();
+          this.userService.logout();
         });
         break;
 

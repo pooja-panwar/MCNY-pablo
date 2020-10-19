@@ -137,12 +137,13 @@ ion-input {
   border: 2px solid #ddd;
   max-width: 100%;
   width: 100%;
-  --padding-start: 15px;
+  --padding-start: 15px !important;
   --padding-end: 15px;
   color: #2b2b2c;
   font-weight: 400;
   font-size: 16px;
 }
+
 ion-toggle {
   --handle-background: #ebc104;
   --background: #fff;

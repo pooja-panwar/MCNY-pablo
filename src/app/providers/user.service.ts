@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { CallHttpService } from './call-http.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ApiEndPoints } from './constants/api-endpoints';
+import { CommonService } from './global.service';
+import { Router } from '@angular/router';
+import { UserDataService } from './user-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +12,12 @@ import { ApiEndPoints } from './constants/api-endpoints';
 export class UserService {
   signUpMasterDataSubject = new BehaviorSubject(null);
 
-  constructor(private http: CallHttpService) {}
+  constructor(
+    private http: CallHttpService,
+    private common: CommonService,
+    private userDataService: UserDataService,
+    private router: Router
+  ) {}
 
   /**
    *
@@ -79,5 +87,14 @@ export class UserService {
   //logout user from app and hit api
   userLogout(): Observable<any> {
     return this.http.getHttp(ApiEndPoints.LOGOUT);
+  }
+
+  //logout user and delete local stored details of the
+  logout() {
+    this.common.removeFromLocal('rememberMe');
+    this.common.removeFromLocal('userData');
+    this.common.menuCtrl.toggle();
+    this.router.navigate(['login']);
+    this.userDataService.setUserData();
   }
 }

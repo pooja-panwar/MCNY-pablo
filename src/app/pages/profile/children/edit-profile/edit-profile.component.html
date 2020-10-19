@@ -2,42 +2,51 @@
   <ion-grid class="mobileEmailInfo">
     <ion-row>
       <ion-col size="5" class="title">Email</ion-col>
-      <ion-col size="7" class="info">{{ user?.email }}</ion-col>
-      <ion-col size="5" class="title">Name</ion-col>
       <ion-col size="7" class="info"
-        ><ion-input
-          formControlName="name"
-          [class.error-input]="isSubmitted && errorControl.name.errors"
-        ></ion-input
+        ><ion-item lines="none">{{ user?.email }}</ion-item></ion-col
+      >
+      <ion-col size="5" class="title">Name</ion-col>
+      <ion-col size="7" class="info">
+        <ion-item lines="none">
+          <ion-input
+            formControlName="name"
+            [class.error-input]="isSubmitted && errorControl.name.errors"
+          ></ion-input></ion-item
       ></ion-col>
 
       <ion-col size="5" class="title">Expertise</ion-col>
       <ion-col size="7" class="info">
-        <ion-select
-          formControlName="expertise"
-          multiple
-          [class.error-input]="isSubmitted && !isExpertisesValid"
-        >
-          <ion-select-option
-            *ngFor="let expertise of masterData?.expertise"
-            [value]="expertise.id"
-            >{{ expertise.expertise }}</ion-select-option
+        <ion-item lines="none">
+          <ion-label position="stacked">Expertise</ion-label>
+          <ion-select
+            formControlName="expertise"
+            multiple
+            [class.error-input]="isSubmitted && !isExpertisesValid"
           >
-        </ion-select>
+            <ion-select-option
+              *ngFor="let expertise of masterData?.expertise"
+              [value]="expertise.id"
+              >{{ expertise.expertise }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
       </ion-col>
 
       <ion-col size="5" class="title">License</ion-col>
       <ion-col size="7" class="info">
-        <ion-select
-          formControlName="license"
-          [class.error-input]="isSubmitted && errorControl.license.errors"
-        >
-          <ion-select-option
-            *ngFor="let license of masterData?.license"
-            [value]="license.id"
-            >{{ license.license }}</ion-select-option
+        <ion-item lines="none">
+          <ion-label position="stacked">License</ion-label>
+          <ion-select
+            formControlName="license"
+            [class.error-input]="isSubmitted && errorControl.license.errors"
           >
-        </ion-select>
+            <ion-select-option
+              *ngFor="let license of masterData?.license"
+              [value]="license.id"
+              >{{ license.license }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -46,24 +55,28 @@
     <ion-row>
       <ion-col size="5" class="title">Phone Number</ion-col>
       <ion-col size="7" class="info"
-        ><ion-input
-          formControlName="phoneNumber"
-          type="number"
-          [class.error-input]="isSubmitted && errorControl.phoneNumber.errors"
-        ></ion-input
+        ><ion-item lines="none"
+          ><ion-input
+            formControlName="phoneNumber"
+            type="number"
+            [class.error-input]="isSubmitted && errorControl.phoneNumber.errors"
+          ></ion-input></ion-item
       ></ion-col>
       <ion-col size="5" class="title">Insurance</ion-col>
       <ion-col size="7" class="info">
-        <ion-select
-          formControlName="insurance"
-          [class.error-input]="isSubmitted && errorControl.insurance.errors"
-        >
-          <ion-select-option
-            *ngFor="let insurance of masterData?.insurance"
-            [value]="insurance.id"
-            >{{ insurance.insurance }}</ion-select-option
+        <ion-item lines="none">
+          <ion-label position="stacked">Insurance</ion-label>
+          <ion-select
+            formControlName="insurance"
+            [class.error-input]="isSubmitted && errorControl.insurance.errors"
           >
-        </ion-select>
+            <ion-select-option
+              *ngFor="let insurance of masterData?.insurance"
+              [value]="insurance.id"
+              >{{ insurance.insurance }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -77,7 +90,7 @@
 
       <ion-col size="5" class="title">Available Timeframe</ion-col>
       <ion-col size="7" class="info">
-        <ion-list class="TimeframeGridWrap">
+        <ion-list class="TimeframeGridWrap" lines="none">
           <span *ngIf="isSubmitted && !isTimeFramesValid" class="error"
             >Please select your preferred timeframe.</span
           >
@@ -103,32 +116,37 @@
 
       <ion-col size="5" class="title">Cities</ion-col>
       <ion-col size="7" class="info">
-        <ion-label position="stacked">Cities</ion-label>
-        <ion-select
-          multiple
-          formControlName="cities"
-          [class.error-input]="isSubmitted && !isCitiesValid"
-        >
-          <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
-          <ion-select-option
-            *ngFor="let city of masterData?.cities"
-            [value]="city.id"
-            >{{ city.city }}</ion-select-option
+        <ion-item lines="none">
+          <ion-label position="stacked">Cities</ion-label>
+          <ion-select
+            multiple
+            formControlName="cities"
+            [class.error-input]="isSubmitted && !isCitiesValid"
           >
-        </ion-select>
+            <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
+            <ion-select-option
+              *ngFor="let city of masterData?.cities"
+              [value]="city.id"
+              >{{ city.city }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
       </ion-col>
 
-      <ion-col size="5" class="title">Councelling Method</ion-col>
+      <ion-col size="5" class="title">Counseling Method</ion-col>
       <ion-col size="7" class="info">
-        <ion-select
-          formControlName="counselingMethod"
-          [class.error-input]="
-            isSubmitted && errorControl.counselingMethod.errors
-          "
-        >
-          <ion-select-option value="in-person">Person</ion-select-option>
-          <ion-select-option value="telehealth">Telehealth</ion-select-option>
-        </ion-select>
+        <ion-item lines="none">
+          <ion-label position="stacked">Counseling Method</ion-label>
+          <ion-select
+            formControlName="counselingMethod"
+            [class.error-input]="
+              isSubmitted && errorControl.counselingMethod.errors
+            "
+          >
+            <ion-select-option value="in-person">Person</ion-select-option>
+            <ion-select-option value="telehealth">Telehealth</ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-col></ion-row
     >
   </ion-grid>
