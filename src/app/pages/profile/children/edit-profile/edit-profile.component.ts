@@ -27,6 +27,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
   isSubmitted = false;
   isTimeframeOtherVal = false;
   editProfileForm: FormGroup;
+
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.initForm();
   }

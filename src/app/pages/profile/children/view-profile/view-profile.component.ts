@@ -9,6 +9,7 @@ import { CommonService } from 'src/app/providers/global.service';
 })
 export class ViewProfileComponent implements OnInit {
   @Input() user;
+
   constructor(
     private userService: UserService,
     private common: CommonService

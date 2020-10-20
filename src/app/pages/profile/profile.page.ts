@@ -18,6 +18,7 @@ import { ActionSheetService } from '../../providers/action-sheet.service';
 })
 export class ProfilePage implements OnInit {
   public user: any;
+  subscribed;
   toEditprofile = false;
   profileImage: string;
   imageDataFromPlugin: string;
@@ -36,11 +37,12 @@ export class ProfilePage implements OnInit {
     private sanitizer: DomSanitizer,
   ) {}
 
-  ngOnInit() {
-    this.getUserPofile();
-  }
+  ngOnInit() {}
   ionViewWillEnter() {
+    this.user = [];
+    this.toEditprofile = false;
     this.menuCtrl.enable(true);
+    this.getUserPofile();
   }
 
   //get current user profile details
@@ -77,7 +79,6 @@ export class ProfilePage implements OnInit {
    * @param userData user updated form data
    */
   emitSaveProfile(userData) {
-    console.log(userData);
     if (userData === false) {
       this.toEditprofile = false;
     } else {
