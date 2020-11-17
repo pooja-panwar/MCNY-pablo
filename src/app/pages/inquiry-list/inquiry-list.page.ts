@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import {PatientInquiryService} from '../../providers/patient-inquiry.service';
 import { Router, NavigationExtras } from '@angular/router';
 
-
 @Component({
-  selector: 'app-accepted-requests',
-  templateUrl: './accepted-requests.page.html',
-  styleUrls: ['./accepted-requests.page.scss'],
+  selector: 'app-inquiry-list',
+  templateUrl: './inquiry-list.page.html',
+  styleUrls: ['./inquiry-list.page.scss'],
 })
-export class AcceptedRequestsPage implements OnInit {
+export class InquiryListPage implements OnInit {
   activeInquiries: any;
+  activeClass: boolean = true;
+  activeInquiriesAll: any;
+
   constructor(
     private patientInquiry: PatientInquiryService,
     private router: Router,
@@ -23,9 +25,10 @@ export class AcceptedRequestsPage implements OnInit {
   }
 
   loadAcceptedRequest() {
-    this.patientInquiry.getAllInquiries('active').subscribe(res=>{
+    this.patientInquiry.getAllInquiries('all').subscribe(res=>{
       console.log(res);
-      this.activeInquiries = res.data;
+      this.activeInquiriesAll = res.data.filter(inquiry => inquiry.status != 'inactive');
+      this.selectTab('pending')
     })
   }
 
@@ -34,11 +37,18 @@ export class AcceptedRequestsPage implements OnInit {
       state: {
         inquiryId: inquiryId,
         reqId: reqId,
-        page: 'accepted-requests',
+        page: 'inquiry-list',
         inquiryStatus: inquiryStatus
       }
     };
     this.router.navigate(['request-details'], navigationExtras);
+  }
+
+  selectTab(tab) {
+    this.activeClass = tab == 'active' ? true: false;
+    //let matchStatus = tab == 'active'? 'purchased': 'non purchased';
+    this.activeInquiries = this.activeInquiriesAll.filter(inquiry => inquiry.status == tab);
+    console.log(this.activeInquiries);
   }
 
 }

@@ -82,6 +82,7 @@ ion-toolbar {
   ion-buttons {
     margin: 0px;
     &.menuIcon {
+      margin-right:10px;
       ion-menu-button {
         img {
           width: 20px;
@@ -104,8 +105,8 @@ ion-toolbar {
         letter-spacing: 1px;
         right: -4px;
         top: 1px;
-        height: 15px;
-        width: 15px;
+        height: 18px;
+        width: 18px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -140,4 +141,8 @@ ion-toolbar {
 
 ion-item {
   margin-bottom: 3px !important;
+}
+
+.alignError {
+  margin-left: 20px;
 }

@@ -27,14 +27,14 @@ export class AppComponent {
       class: 'icon1',
     },
     {
-      title: 'View Requests',
+      title: 'Accepted Requests',
       url: '/accepted-requests',
       icon: 'assets/img/request.png',
       class: 'icon2',
     },
     {
       title: 'Inquiry List',
-      url: '/request-details',
+      url: '/inquiry-list',
       icon: 'assets/img/call.png',
       class: 'icon3',
     },
@@ -86,7 +86,7 @@ export class AppComponent {
     this.allowSideMenu();
   }
   toggleMenu() {
-    this.menuCtrl.toggle();
+    this.menuCtrl.toggle('end');
   }
 
   /**
@@ -172,7 +172,7 @@ export class AppComponent {
         break;
 
       default:
-        this.navCtrl.navigateForward(menu.url);
+        this.navCtrl.navigateBack(menu.url);
         break;
     }
   }

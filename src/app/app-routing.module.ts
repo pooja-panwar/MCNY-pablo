@@ -59,14 +59,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
-  {
-    path: 'accepted-requests-details',
-    loadChildren: () =>
-      import(
-        './pages/accepted-requests-details/accepted-requests-details.module'
-      ).then((m) => m.AcceptedRequestsDetailsPageModule),
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: 'accepted-requests-details',
+  //   loadChildren: () =>
+  //     import(
+  //       './pages/accepted-requests-details/accepted-requests-details.module'
+  //     ).then((m) => m.AcceptedRequestsDetailsPageModule),
+  //   canActivate: [AuthGuard],
+  // },
   {
     path: '',
     redirectTo: 'login',
@@ -86,6 +86,10 @@ const routes: Routes = [
       import('./pages/reset-password/reset-password.module').then(
         (m) => m.ResetPasswordPageModule
       ),
+  },
+  {
+    path: 'inquiry-list',
+    loadChildren: () => import('./pages/inquiry-list/inquiry-list.module').then( m => m.InquiryListPageModule)
   },
 ];
 

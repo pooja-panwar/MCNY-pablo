@@ -5,6 +5,7 @@ import { ApiEndPoints } from './constants/api-endpoints';
 import { CommonService } from './global.service';
 import { Router } from '@angular/router';
 import { UserDataService } from './user-data.service';
+import { NavController} from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,9 @@ export class UserService {
     private http: CallHttpService,
     private common: CommonService,
     private userDataService: UserDataService,
-    private router: Router
+    // private router: Router,
+    private navCtrl: NavController,
+
   ) {}
 
   /**
@@ -94,7 +97,12 @@ export class UserService {
     this.common.removeFromLocal('rememberMe');
     this.common.removeFromLocal('userData');
     this.common.menuCtrl.toggle();
-    this.router.navigate(['login']);
+    this.navCtrl.navigateForward(['login']);
     this.userDataService.setUserData();
+  }
+
+  //get county based on zipcode
+  getCountyByZip(zipcode) {
+    return this.http.getHttp(`${ApiEndPoints.GET_COUNTY}/${zipcode}/counties`)
   }
 }

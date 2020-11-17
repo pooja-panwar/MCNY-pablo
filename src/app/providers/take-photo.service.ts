@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { File, FileEntry } from '@ionic-native/file/ngx';
+// import { BehaviorSubject, Observable } from 'rxjs';
+import { Crop } from '@ionic-native/crop/ngx';
 
 //custom service import
 import { CommonService } from './global.service';
 import { CallHttpService } from './call-http.service';
 import { ApiEndPoints } from './constants/api-endpoints';
-import { User, UserDataService } from './user-data.service';
+// import { User, UserDataService } from './user-data.service';
 
 /**
  * Upload Photo service
@@ -21,18 +23,25 @@ export class TakePhotoService {
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE,
     saveToPhotoAlbum: false,
-    allowEdit: true,
-    correctOrientation: true
+    //allowEdit: true,
+    correctOrientation: true,
+    // targetHeight: 200,
+    // targetWidth: 200
   }
+
+  //private profilePhotoUpload: BehaviorSubject<object>;
+
 
   constructor(
     private camera: Camera,
     private callHttp: CallHttpService,
     private file: File,
     private commonService: CommonService,
-    private currUser: UserDataService
-  ) { }
+    private crop: Crop,
+  ) { 
+    }
 
+  
   /**
    * Actionsheet with 2 options of upload
    * @param type : library/capture
@@ -41,6 +50,7 @@ export class TakePhotoService {
     let sourceType: PictureSourceType;
     sourceType = type == 'library' ? this.camera.PictureSourceType.PHOTOLIBRARY : this.camera.PictureSourceType.CAMERA;
     this.options.sourceType = sourceType;
+    console.log('options>>', this.options)
     return this.camera.getPicture(this.options);
   }
 
@@ -90,9 +100,13 @@ export class TakePhotoService {
    */
   async uploadImageData(formData: FormData) {
     this.callHttp.postHttp(ApiEndPoints.PROFILE_PIC, formData).subscribe(res => {
-        
           console.log('photo success>>>', res)
+          //this.profilePhotoUpload.next(res);
           this.commonService.presentToast(res.message);
       })
+  }
+
+  cropImage(fileUrl) {
+    return this.crop.crop(fileUrl, { quality: 100, targetWidth: -1, targetHeight: -1 })
   }
 }

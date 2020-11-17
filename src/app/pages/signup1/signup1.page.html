@@ -61,11 +61,12 @@
           <ion-item class="hideErrorLine">
             <ion-label position="stacked">Insurance</ion-label>
             <ion-select
-              formControlName="insurance"
-              [class.error-input]="isSubmitted && errorControl.insurance.errors"
+              multiple
+              formControlName="insurances"
+              [class.error-input]="isSubmitted && errorControl.insurances.errors"
             >
               <ion-select-option
-                *ngFor="let insurance of masterData?.insurance"
+                *ngFor="let insurance of masterData?.insurances"
                 [value]="insurance.id"
                 >{{insurance.insurance}}</ion-select-option
               >
@@ -73,7 +74,7 @@
           </ion-item>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.insurance.errors?.required"
+            *ngIf="isSubmitted && errorControl.insurances.errors?.required"
           >
             Insurance is required.
           </span>
@@ -106,7 +107,7 @@
             >
               <ion-select-option value="Male">Male</ion-select-option>
               <ion-select-option value="Female">Female</ion-select-option>
-              <ion-select-option value="Male">non-binary/other</ion-select-option>
+              <ion-select-option value="non-binary/other">Non-binary/other</ion-select-option>
             </ion-select>
           </ion-item>
           <span

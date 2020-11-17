@@ -76,7 +76,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
-    this.common.presentToast(err.error.message);
+    console.log(err);
+    this.common.presentToast(err.error.message? err.error.message: 'Please try again!');
     if (err.status === 401) {
       this.logoutUser();
     } else if (err.err.message === 'Token is not valid') {
@@ -92,6 +93,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //logout user from app
   logoutUser() {
-    this.userService.logout();
+    // this.userService.userLogout().subscribe((data) => {
+      this.userService.logout();
+    // });
   }
 }

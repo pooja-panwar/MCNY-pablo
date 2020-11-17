@@ -42,7 +42,7 @@ export class Signup1Page implements OnInit {
           '',
           Validators.compose([Validators.required, Validators.minLength(10)]),
         ],
-        insurance: [null, [Validators.required]],
+        insurances: [null, [Validators.required]],
         email: [
           '',
           [

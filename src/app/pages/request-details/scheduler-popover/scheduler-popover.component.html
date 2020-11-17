@@ -1,0 +1,15 @@
+<ion-item>
+<ion-label>Schedule Date</ion-label>
+<ion-datetime value="scheduleDate" [(ngModel)]="scheDate" placeholder="Select Date" [min] = "scheduleDate"></ion-datetime>
+</ion-item>
+<!-- <ion-item-divider></ion-item-divider> -->
+<ion-item>
+<ion-label>Schedule Time</ion-label>
+<ion-datetime display-format="h:mm A" [(ngModel)]="scheTime" placeholder="Select Time" picker-format="h:mm A" [min] = "scheduleTime" ></ion-datetime>
+</ion-item>
+<ion-item>
+  <ion-buttons class="expandBtn">
+    <ion-button class="download" (click) ="schedule()">Schedule</ion-button>
+  </ion-buttons>
+
+</ion-item>

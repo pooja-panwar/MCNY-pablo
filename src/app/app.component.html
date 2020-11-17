@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="push" *ngIf="showMenuBar">
+    <ion-menu side="end" contentId="main-content" type="push" *ngIf="showMenuBar">
       <ion-content class="sideMenuWrap">
         <ion-button class="closeBtn" (click)="toggleMenu()">
           <img src="../assets/img/close-menu.png" />
@@ -12,7 +12,6 @@
           >
             <ion-item
               (click)="selectedIndex = i; menuClick(p)"
-              routerDirection="root"
               lines="none"
               detail="false"
               [class.selected]="selectedIndex == i"

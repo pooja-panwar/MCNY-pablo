@@ -68,41 +68,86 @@
               </ion-item>
             </ion-list>
           </ion-item>
-          <ion-item class="hideErrorLine">
-            <ion-label position="stacked">Cities</ion-label>
-            <ion-select
-              multiple
-              placeholder="Select Cities"
-              formControlName="cities"
-              [class.error-input]="isSubmitted && errorControl.cities?.errors"
-            >
-              <ion-select-option
-                *ngFor="let city of masterData?.cities"
-                [value]="city.id"
-                >{{city.city}}</ion-select-option
-              >
-            </ion-select>
+          <!-- <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Zipcode</ion-label>
+            <ion-input
+              formControlName="zipcode"
+              [class.error-input]="isSubmitted && errorControl.zipcode.errors"
+              (focusout)="getCounty($event.target.value)"
+            ></ion-input>
           </ion-item>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.cities.errors?.required"
+            *ngIf="isSubmitted && errorControl.zipcode.errors?.required"
           >
-            Cities are required.
+          Zipcode is required.
           </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && (errorControl.zipcode.errors?.minlength || errorControl.zipcode.errors?.maxLength)">
+            Zipcode should be 5 to 9 characters.
+          </span> -->
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">County</ion-label>
+            <ion-select
+              formControlName="counties"
+              multiple
+              [class.error-input]="isSubmitted && errorControl.counties.errors"
+            >
+              <ion-select-option
+                *ngFor="let county of countyDB"
+                [value]="county?.id"
+                >{{county?.county}}</ion-select-option
+              >
+            </ion-select>
 
+            <!-- <ion-input
+              formControlName="county"
+              [class.error-input]="isSubmitted && errorControl.county.errors"
+              readonly
+            ></ion-input> -->
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.counties.errors?.required"
+          >
+            County is required.
+          </span>
+          <!-- <ion-item class="hideErrorLine">
+            <ion-label position="stacked">City</ion-label>
+            <ion-input
+              formControlName="city"
+              [class.error-input]="isSubmitted && errorControl.city.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.city.errors?.required"
+          >
+            City is required.
+          </span> -->
           <ion-item class="hideErrorLine">
             <ion-label position="stacked"
               >Preferred Counseling Method</ion-label
             >
             <ion-select
               formControlName="counselingMethod"
+              placeholder="Select Counseling Method"
+              [class.error-input]="isSubmitted && errorControl.counselingMethod.errors">
+              <ion-select-option *ngFor="let key of objectKeys( masterData?.counselingMethods)" [value]="key">{{masterData?.counselingMethods[key]}}</ion-select-option>
+            </ion-select>
+            <!-- <ion-select
+              formControlName="counselingMethod"
               [class.error-input]="isSubmitted && errorControl.counselingMethod?.errors"
+              placeholder="Select Counseling Method"
+              
             >
-              <ion-select-option value="In-person">Person</ion-select-option>
+              <ion-select-option value="
+              -person">Person</ion-select-option>
               <ion-select-option value="Telehealth"
                 >Telehealth</ion-select-option
               >
-            </ion-select>
+              <ion-select-option value="both">Both</ion-select-option>
+
+            </ion-select> -->
           </ion-item>
           <span
             class="error ion-padding"

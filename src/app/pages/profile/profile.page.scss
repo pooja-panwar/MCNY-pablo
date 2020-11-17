@@ -9,12 +9,11 @@
     border-radius: 100%;
   }
   .cameraIcon{
-    z-index: 3;
-    position: absolute;
-    right: 173px;
-    bottom: 10px;
     pointer-events: none;
     width: 40px;
+    margin: auto;
+    display: block;
+    margin-top: -43px;
   }
 }
 
@@ -160,4 +159,14 @@ ion-select {
 
 .showMore {
   cursor: pointer;
+}
+
+ion-header  {
+  ion-toolbar {
+    position: relative;
+    ion-buttons {
+      position: absolute;
+      right: 0;
+    }
+  }
 }

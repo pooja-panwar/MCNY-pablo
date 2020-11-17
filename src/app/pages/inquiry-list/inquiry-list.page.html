@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="profile"></ion-back-button>
     </ion-buttons>
-    <ion-title>Accepted Requests</ion-title>   
+    <ion-title>Inquiry List</ion-title>   
     <ion-buttons slot="end" class="menuIcon">
       <ion-menu-button>
 	  	<img src="../assets/img/menu.png"> 
@@ -12,8 +12,17 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-buttons class="search tabWrap">
+    <ion-button [ngClass]="!activeClass ? 'activeTab': ''" (click)="selectTab('pending')">
+      Pending Inquiries
+    </ion-button>
+    <ion-button [ngClass]="activeClass ? 'activeTab':''" (click)="selectTab('active')">
+      Accepted Inquiries
+    </ion-button>
+
+  </ion-buttons>
   <ion-list class="notificationWrap">
-    <ion-item *ngFor = "let inquiry of activeInquiries" (click) = "openDetail(inquiry?.patientEnquiryId, inquiry?.id,  inquiry?.status)">
+    <ion-item *ngFor = "let inquiry of activeInquiries" (click) = "openDetail(inquiry?.patientEnquiryId, inquiry?.id, inquiry?.status)">
       <ion-label>
         <h3>{{inquiry.patientDetails.clientName}}</h3>
         <p>{{inquiry.description}}</p>

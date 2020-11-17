@@ -10,6 +10,8 @@ import { ExpertisePopoverComponent } from './popover/expertise-popover/expertise
 import { PopoverController } from '@ionic/angular';
 import { TakePhotoService } from '../../providers/take-photo.service';
 import { ActionSheetService } from '../../providers/action-sheet.service';
+// import { ImageCroppedEvent } from 'ngx-image-cropper';
+// import { Crop } from '@ionic-native/crop/ngx';
 
 @Component({
   selector: 'app-profile',
@@ -20,10 +22,12 @@ export class ProfilePage implements OnInit {
   public user: any;
   subscribed;
   toEditprofile = false;
-  profileImage: string;
+  profileImage: string; ////
+  // imageChangedEvent: any = '';
   imageDataFromPlugin: string;
   notifyCount: number = 0;
   public masterData: any;
+  
   constructor(
     public menuCtrl: MenuController,
     private userService: UserService,
@@ -35,29 +39,39 @@ export class ProfilePage implements OnInit {
     private platform: Platform,
     private webview: WebView,
     private sanitizer: DomSanitizer,
+    // private crop: Crop
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
   ionViewWillEnter() {
     this.user = [];
     this.toEditprofile = false;
     this.menuCtrl.enable(true);
-    this.getUserPofile();
+    this.getUserPofile('init');
   }
 
+
   //get current user profile details
-  getUserPofile() {
+  getUserPofile(fromCall) {
     this.userService.getUserProfile().subscribe((data) => {
       this.getRegisterMasterData();
       this.user = data.data.doctor;
-      this.profileImage = data.data.doctor.profileImage;
+      if(this.user && this.user.insurances) {
+        this.user.insurances1 = this.user.insurances.map(insurance => insurance.insurance);
+        console.log('insurance>>>',this.user.insurances1)
+      }
+      this.user.counselingDisplay = this.user && this.user.counselingMethod ? Object.values(this.user.counselingMethod)[0]: ''
+      if(fromCall == "init") {
+        this.profileImage = data.data.doctor.profileImage;
+      }
       this.notifyCount = data.data.doctor.notificationCount
       this.common.emitUserSubject(this.user);
     });
   }
 
   open() {
-    this.menuCtrl.toggle();
+    this.menuCtrl.toggle('end');
   }
 
   //preset popover to show expertises
@@ -84,7 +98,7 @@ export class ProfilePage implements OnInit {
     } else {
       this.userService.editDoctorProfile(userData).subscribe((data) => {
         if (data.status === 'success') {
-          this.getUserPofile();
+          this.getUserPofile('save');
           this.toEditprofile = false;
           this.common.presentToast('Your profile is successfully updated');
         }
@@ -121,7 +135,28 @@ export class ProfilePage implements OnInit {
           text: 'Load from Library',
           handler: () => {
             this.takePhoto.takePicture('library').then((imageData) => {
-              this.setPhotoOnView(imageData);
+              console.log('imagedata lib in profile comp', imageData);
+              let file_url = '';
+              if(this.platform.is('ios')){
+                file_url = imageData;
+              } else {
+                file_url = 'file://' + imageData;
+              }
+              console.log('imagedata after>', file_url)
+
+              this.takePhoto.cropImage(file_url)
+              .then(
+                newPath => {
+                  console.log('new path lib>>>', newPath)
+                  this.setPhotoOnView(newPath);
+                },
+                error => {
+                  //alert('Error cropping image' + error);
+                  console.log(error); 
+
+                }
+              )
+              //this.setPhotoOnView(imageData);
             }, (err) => {
               console.log(err);
             });
@@ -131,8 +166,27 @@ export class ProfilePage implements OnInit {
           text: 'Use Camera',
           handler: () => {
             this.takePhoto.takePicture('camera').then((imageData) => {
-              this.setPhotoOnView(imageData);
+              console.log('imagedata camera in profile comp', imageData);
+              let file_url = '';
+              if(this.platform.is('ios')){
+                file_url = imageData;
+              } else {
+                file_url = 'file://' + imageData;
+              }
+              console.log('imagedata after>', file_url)
+              this.takePhoto.cropImage(file_url)
+              .then(
+                newPath => {
+                  console.log('new path>>>', newPath)
+                  this.setPhotoOnView(newPath);
+                },
+                error => {
+                  //alert('Error cropping image' + error);
+                  console.log(error);
+                }
+              )
             }, (err) => {
+              console.log('error>>');
               console.log(err);
             });
           }

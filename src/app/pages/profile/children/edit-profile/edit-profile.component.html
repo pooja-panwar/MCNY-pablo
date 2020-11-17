@@ -67,11 +67,12 @@
         <ion-item lines="none">
           <ion-label position="stacked">Insurance</ion-label>
           <ion-select
-            formControlName="insurance"
-            [class.error-input]="isSubmitted && errorControl.insurance.errors"
+            multiple
+            formControlName="insurances"
+            [class.error-input]="isSubmitted && errorControl.insurances.errors"
           >
             <ion-select-option
-              *ngFor="let insurance of masterData?.insurance"
+              *ngFor="let insurance of masterData?.insurances"
               [value]="insurance.id"
               >{{ insurance.insurance }}</ion-select-option
             >
@@ -91,7 +92,7 @@
       <ion-col size="5" class="title">Available Timeframe</ion-col>
       <ion-col size="7" class="info">
         <ion-list class="TimeframeGridWrap" lines="none">
-          <span *ngIf="isSubmitted && !isTimeFramesValid" class="error"
+          <span *ngIf="isSubmitted && !isTimeFramesValid" class="error alignError"
             >Please select your preferred timeframe.</span
           >
           <ion-item>
@@ -113,42 +114,58 @@
           </ion-item>
         </ion-list>
       </ion-col>
-
-      <ion-col size="5" class="title">Cities</ion-col>
+      <!-- <ion-col size="5" class="title">Zipcode</ion-col>
+      <ion-col size="7" class="info"
+        ><ion-item lines="none"
+          ><ion-input
+            formControlName="zipcode"
+            type="text"
+            [class.error-input]="isSubmitted && errorControl.zipcode.errors"
+            (focusout)="getCounty($event.target.value)"
+          ></ion-input></ion-item
+      ></ion-col> -->
+      <ion-col size="5" class="title">County</ion-col>
       <ion-col size="7" class="info">
+        <span *ngIf="isSubmitted && !isCountiessValid" class="error alignError"
+            >County is required.</span
+        >
         <ion-item lines="none">
-          <ion-label position="stacked">Cities</ion-label>
+          <!-- <ion-label position="stacked">County</ion-label> -->
           <ion-select
             multiple
-            formControlName="cities"
-            [class.error-input]="isSubmitted && !isCitiesValid"
+            formControlName="counties"
+            [class.error-input]="isSubmitted && errorControl.counties.errors"
           >
             <!-- <ion-select-option value="">Select Cities</ion-select-option> -->
             <ion-select-option
-              *ngFor="let city of masterData?.cities"
-              [value]="city.id"
-              >{{ city.city }}</ion-select-option
-            >
+                *ngFor="let county of countyDB"
+                [value]="county?.id"
+                >{{county?.county}}</ion-select-option
+              >
           </ion-select>
         </ion-item>
       </ion-col>
-
+      <!-- <ion-col size="5" class="title">City</ion-col>
+      <ion-col size="7" class="info"
+        ><ion-item lines="none"
+          ><ion-input
+            formControlName="city"
+            type="text"
+            [class.error-input]="isSubmitted && errorControl.city.errors"
+          ></ion-input></ion-item
+      ></ion-col> -->
       <ion-col size="5" class="title">Counseling Method</ion-col>
       <ion-col size="7" class="info">
         <ion-item lines="none">
-          <ion-label position="stacked">Counseling Method</ion-label>
+          <!-- <ion-label position="stacked">Counseling Method</ion-label> -->
           <ion-select
             formControlName="counselingMethod"
-            [class.error-input]="
-              isSubmitted && errorControl.counselingMethod.errors
-            "
-          >
-            <ion-select-option value="in-person">Person</ion-select-option>
-            <ion-select-option value="telehealth">Telehealth</ion-select-option>
+            [class.error-input]="isSubmitted && errorControl.counselingMethod.errors">
+            <ion-select-option *ngFor="let key of objectKeys( masterData?.counselingMethods)" [value]="key">{{masterData?.counselingMethods[key]}}</ion-select-option>
           </ion-select>
         </ion-item>
-      </ion-col></ion-row
-    >
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
   <h2 class="text-center">

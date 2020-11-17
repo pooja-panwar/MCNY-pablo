@@ -17,4 +17,8 @@ export const ApiEndPoints = {
   EDIT_DOCTOR_PROFILE: `${BASE_URL}doctor/editProfile`,
   PROFILE_PIC: `${BASE_URL}doctor/uploadProfileImage`,
   LOGOUT: `${BASE_URL}doctor/logout`,
+  PATIENT_INQUIRY: `${BASE_URL}enquiryForm`,
+  DOWNLOAD_INQUIRY: `${BASE_URL}requests/contact/download`,
+  REQUESTS: `${BASE_URL}requests`,
+  GET_COUNTY: `${BASE_URL}enquiryForm/zip`
 };
