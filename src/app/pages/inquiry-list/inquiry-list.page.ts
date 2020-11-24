@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {PatientInquiryService} from '../../providers/patient-inquiry.service';
+import { PatientInquiryService } from '../../providers/patient-inquiry.service';
 import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
@@ -14,22 +14,22 @@ export class InquiryListPage implements OnInit {
 
   constructor(
     private patientInquiry: PatientInquiryService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewDidEnter() {
     this.loadAcceptedRequest();
   }
 
   loadAcceptedRequest() {
-    this.patientInquiry.getAllInquiries('all').subscribe(res=>{
-      console.log(res);
-      this.activeInquiriesAll = res.data.filter(inquiry => inquiry.status != 'inactive');
-      this.selectTab('pending')
-    })
+    this.patientInquiry.getAllInquiries('all').subscribe((res) => {
+      this.activeInquiriesAll = res.data.filter(
+        (inquiry) => inquiry.status != 'inactive'
+      );
+      this.selectTab('pending');
+    });
   }
 
   openDetail(inquiryId = 0, reqId = 0, inquiryStatus) {
@@ -38,17 +38,17 @@ export class InquiryListPage implements OnInit {
         inquiryId: inquiryId,
         reqId: reqId,
         page: 'inquiry-list',
-        inquiryStatus: inquiryStatus
-      }
+        inquiryStatus: inquiryStatus,
+      },
     };
     this.router.navigate(['request-details'], navigationExtras);
   }
 
   selectTab(tab) {
-    this.activeClass = tab == 'active' ? true: false;
+    this.activeClass = tab == 'active' ? true : false;
     //let matchStatus = tab == 'active'? 'purchased': 'non purchased';
-    this.activeInquiries = this.activeInquiriesAll.filter(inquiry => inquiry.status == tab);
-    console.log(this.activeInquiries);
+    this.activeInquiries = this.activeInquiriesAll.filter(
+      (inquiry) => inquiry.status == tab
+    );
   }
-
 }

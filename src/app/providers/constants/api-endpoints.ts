@@ -20,5 +20,6 @@ export const ApiEndPoints = {
   PATIENT_INQUIRY: `${BASE_URL}enquiryForm`,
   DOWNLOAD_INQUIRY: `${BASE_URL}requests/contact/download`,
   REQUESTS: `${BASE_URL}requests`,
-  GET_COUNTY: `${BASE_URL}enquiryForm/zip`
+  GET_COUNTY: `${BASE_URL}enquiryForm/zip`,
+  scheduleAppointment: `${BASE_URL}requests/scheduleAppointment`,
 };

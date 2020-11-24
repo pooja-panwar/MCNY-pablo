@@ -55,12 +55,10 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    
     this.checkDevicePlatform();
   }
 
   ionViewWillEnter() {
-    
     this.menuCtrl.enable(false);
   }
 
@@ -86,34 +84,34 @@ export class LoginPage implements OnInit {
     this.isSubmitted = true;
     this.common.getFromLocal('device_token').then((val) => {
       this.deviceToken = val;
-    
-    if (this.loginForm.valid) {
-      //create form body parameters
-      const param = {
-        email: value.email,
-        password: value.password,
-        deviceToken: this.deviceToken,
-        deviceType: this.platformName,
-      };
-      this.user.loginUser(param).subscribe((data) => {
-        if (data.status === 'success') {
-          this.common
-            .saveLocal('userData', JSON.stringify(data.data))
-            .then((res) => {
-              // this.common.emitUserSubject(data.data);
-              this.userData.setUserData().then(() => {
-                //check if user has checked true to remember me
-                if (value.rememberMe) {
-                  this.saveUserToLocal('rememberMe', 'true');
-                } else {
-                  this.saveUserToLocal('rememberMe', 'false');
-                }
-                this.router.navigate(['profile']);
+
+      if (this.loginForm.valid) {
+        //create form body parameters
+        const param = {
+          email: value.email,
+          password: value.password,
+          deviceToken: this.deviceToken,
+          deviceType: this.platformName,
+        };
+        this.user.loginUser(param).subscribe((data) => {
+          if (data.status === 'success') {
+            this.common
+              .saveLocal('userData', JSON.stringify(data.data))
+              .then((res) => {
+                // this.common.emitUserSubject(data.data);
+                this.userData.setUserData().then(() => {
+                  //check if user has checked true to remember me
+                  if (value.rememberMe) {
+                    this.saveUserToLocal('rememberMe', 'true');
+                  } else {
+                    this.saveUserToLocal('rememberMe', 'false');
+                  }
+                  this.router.navigate(['profile']);
+                });
               });
-            });
-        }
-      });
-    }
+          }
+        });
+      }
     });
   }
 

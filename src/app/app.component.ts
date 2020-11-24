@@ -4,7 +4,7 @@ import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { MenuController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { CommonService } from './providers/global.service';
 
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
@@ -103,7 +103,19 @@ export class AppComponent {
 
     this.firebaseX.onMessageReceived().subscribe((data) => {
       console.error(`User opened a notification ${data}`);
-      this.navCtrl.navigateForward('notification');
+      if (data.page === 'request-details') {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            inquiryId: data.inquiryId,
+            reqId: data.reqId,
+            page: 'accepted-requests',
+            inquiryStatus: data.inquiryStatus,
+          },
+        };
+        this.router.navigate(['request-details'], navigationExtras);
+      } else {
+        this.navCtrl.navigateForward('notification');
+      }
     });
   }
 

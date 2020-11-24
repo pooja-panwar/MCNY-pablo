@@ -9,6 +9,7 @@ import {
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { Location } from '@angular/common';
 
 /**
  * Common service used throughout app
@@ -20,6 +21,7 @@ export class CommonService {
   loading: any;
   isLoading: boolean = false;
   userSubject = new BehaviorSubject(null);
+  isEditPage = false;
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
@@ -28,7 +30,7 @@ export class CommonService {
     private router: Router,
     public menuCtrl: MenuController,
     private navCtrl: NavController,
-
+    private location: Location
   ) {}
   /**
    * save to local db
@@ -110,10 +112,13 @@ export class CommonService {
     this.platform.backButton.subscribe(() => {
       //back handle for android
       if (this.router.url === '/profile' || this.router.url === '/login') {
-        navigator['app'].exitApp();
-      }
-      if (this.router.url === '/signup1') {
+        if (!this.isEditPage) {
+          navigator['app'].exitApp();
+        }
+      } else if (this.router.url === '/signup1') {
         this.router.navigate(['login']);
+      } else {
+        this.location.back();
       }
     });
   }

@@ -82,7 +82,7 @@ ion-toolbar {
   ion-buttons {
     margin: 0px;
     &.menuIcon {
-      margin-right:10px;
+      margin-right: 10px;
       ion-menu-button {
         img {
           width: 20px;
@@ -94,6 +94,7 @@ ion-toolbar {
       --padding-start: 0px;
       --padding-end: 5px;
       position: relative;
+      outline: none;
 
       .notiCount {
         position: absolute;
@@ -129,6 +130,7 @@ ion-toolbar {
 .error {
   color: red;
   font-size: 13px;
+  padding-left: 0 !important;
 }
 
 .error-input {

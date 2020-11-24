@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 import { UserService } from 'src/app/providers/user.service';
 import { CommonService } from 'src/app/providers/global.service';
 import { Router } from '@angular/router';
@@ -27,7 +27,7 @@ export class ProfilePage implements OnInit {
   imageDataFromPlugin: string;
   notifyCount: number = 0;
   public masterData: any;
-  
+
   constructor(
     public menuCtrl: MenuController,
     private userService: UserService,
@@ -38,34 +38,51 @@ export class ProfilePage implements OnInit {
     private actionSheet: ActionSheetService,
     private platform: Platform,
     private webview: WebView,
-    private sanitizer: DomSanitizer,
-    // private crop: Crop
+    private sanitizer: DomSanitizer, // private crop: Crop
+    private navCtrl: NavController
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   ionViewWillEnter() {
     this.user = [];
     this.toEditprofile = false;
     this.menuCtrl.enable(true);
     this.getUserPofile('init');
+    this.common.isEditPage = false;
+
+    this.platform.backButton.subscribeWithPriority(0, () => {
+      //back handle for android
+      if (this.router.url === '/profile') {
+        if (this.toEditprofile) {
+          this.toEditprofile = !this.toEditprofile;
+          this.common.isEditPage = this.toEditprofile;
+        }
+      }
+    });
   }
 
+  ionViewDidLeave() {
+    this.common.isEditPage = false;
+  }
 
   //get current user profile details
   getUserPofile(fromCall) {
     this.userService.getUserProfile().subscribe((data) => {
       this.getRegisterMasterData();
       this.user = data.data.doctor;
-      if(this.user && this.user.insurances) {
-        this.user.insurances1 = this.user.insurances.map(insurance => insurance.insurance);
-        console.log('insurance>>>',this.user.insurances1)
+      if (this.user && this.user.insurances) {
+        this.user.insurances1 = this.user.insurances.map(
+          (insurance) => insurance.insurance
+        );
       }
-      this.user.counselingDisplay = this.user && this.user.counselingMethod ? Object.values(this.user.counselingMethod)[0]: ''
-      if(fromCall == "init") {
+      this.user.counselingDisplay =
+        this.user && this.user.counselingMethod
+          ? Object.values(this.user.counselingMethod)[0]
+          : '';
+      if (fromCall == 'init') {
         this.profileImage = data.data.doctor.profileImage;
       }
-      this.notifyCount = data.data.doctor.notificationCount
+      this.notifyCount = data.data.doctor.notificationCount;
       this.common.emitUserSubject(this.user);
     });
   }
@@ -95,22 +112,22 @@ export class ProfilePage implements OnInit {
   emitSaveProfile(userData) {
     if (userData === false) {
       this.toEditprofile = false;
+      this.common.isEditPage = false;
     } else {
       this.userService.editDoctorProfile(userData).subscribe((data) => {
         if (data.status === 'success') {
           this.getUserPofile('save');
           this.toEditprofile = false;
+          this.common.isEditPage = false;
           this.common.presentToast('Your profile is successfully updated');
         }
       });
-      if(this.imageDataFromPlugin) {
+      if (this.imageDataFromPlugin) {
         let param = { imageData: this.imageDataFromPlugin };
         this.takePhoto.startUpload(param);
         this.imageDataFromPlugin = '';
       }
     }
-    
-    
   }
 
   /**
@@ -119,80 +136,84 @@ export class ProfilePage implements OnInit {
   setPhotoOnView(imageData) {
     this.imageDataFromPlugin = imageData;
     let converted;
-    if(this.platform.is('ios')){
-      converted = this.sanitizer.bypassSecurityTrustResourceUrl(this.webview.convertFileSrc(imageData));
+    if (this.platform.is('ios')) {
+      converted = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.webview.convertFileSrc(imageData)
+      );
     } else {
       converted = this.webview.convertFileSrc(imageData);
     }
-    
+
     this.profileImage = converted;
   }
 
   async editProfile() {
-    if(this.toEditprofile) {
+    if (this.toEditprofile) {
       await this.actionSheet.present([
         {
           text: 'Load from Library',
           handler: () => {
-            this.takePhoto.takePicture('library').then((imageData) => {
-              console.log('imagedata lib in profile comp', imageData);
-              let file_url = '';
-              if(this.platform.is('ios')){
-                file_url = imageData;
-              } else {
-                file_url = 'file://' + imageData;
-              }
-              console.log('imagedata after>', file_url)
-
-              this.takePhoto.cropImage(file_url)
-              .then(
-                newPath => {
-                  console.log('new path lib>>>', newPath)
-                  this.setPhotoOnView(newPath);
-                },
-                error => {
-                  //alert('Error cropping image' + error);
-                  console.log(error); 
-
+            this.takePhoto.takePicture('library').then(
+              (imageData) => {
+                console.log('imagedata lib in profile comp', imageData);
+                let file_url = '';
+                if (this.platform.is('ios')) {
+                  file_url = imageData;
+                } else {
+                  file_url = 'file://' + imageData;
                 }
-              )
-              //this.setPhotoOnView(imageData);
-            }, (err) => {
-              console.log(err);
-            });
-          }
+                console.log('imagedata after>', file_url);
+
+                this.takePhoto.cropImage(file_url).then(
+                  (newPath) => {
+                    console.log('new path lib>>>', newPath);
+                    this.setPhotoOnView(newPath);
+                  },
+                  (error) => {
+                    //alert('Error cropping image' + error);
+                    console.log(error);
+                  }
+                );
+                //this.setPhotoOnView(imageData);
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+          },
         },
         {
           text: 'Use Camera',
           handler: () => {
-            this.takePhoto.takePicture('camera').then((imageData) => {
-              console.log('imagedata camera in profile comp', imageData);
-              let file_url = '';
-              if(this.platform.is('ios')){
-                file_url = imageData;
-              } else {
-                file_url = 'file://' + imageData;
-              }
-              console.log('imagedata after>', file_url)
-              this.takePhoto.cropImage(file_url)
-              .then(
-                newPath => {
-                  console.log('new path>>>', newPath)
-                  this.setPhotoOnView(newPath);
-                },
-                error => {
-                  //alert('Error cropping image' + error);
-                  console.log(error);
+            this.takePhoto.takePicture('camera').then(
+              (imageData) => {
+                console.log('imagedata camera in profile comp', imageData);
+                let file_url = '';
+                if (this.platform.is('ios')) {
+                  file_url = imageData;
+                } else {
+                  file_url = 'file://' + imageData;
                 }
-              )
-            }, (err) => {
-              console.log('error>>');
-              console.log(err);
-            });
-          }
-        }
+                console.log('imagedata after>', file_url);
+                this.takePhoto.cropImage(file_url).then(
+                  (newPath) => {
+                    console.log('new path>>>', newPath);
+                    this.setPhotoOnView(newPath);
+                  },
+                  (error) => {
+                    //alert('Error cropping image' + error);
+                    console.log(error);
+                  }
+                );
+              },
+              (err) => {
+                console.log('error>>');
+                console.log(err);
+              }
+            );
+          },
+        },
       ]);
-
     }
   }
   /**
@@ -203,5 +224,9 @@ export class ProfilePage implements OnInit {
     this.userService.getSignUpMasterData().subscribe((data) => {
       this.masterData = data.data;
     });
+  }
+  changeAction() {
+    this.toEditprofile = !this.toEditprofile;
+    this.common.isEditPage = this.toEditprofile;
   }
 }

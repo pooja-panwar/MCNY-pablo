@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
-import {formatDate } from '@angular/common';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { PopoverController, NavParams } from '@ionic/angular';
+import { formatDate } from '@angular/common';
+import { PatientInquiryService } from 'src/app/providers/patient-inquiry.service';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-scheduler-popover',
@@ -8,29 +10,56 @@ import {formatDate } from '@angular/common';
   styleUrls: ['./scheduler-popover.component.scss'],
 })
 export class SchedulerPopoverComponent implements OnInit {
-  scheduleDate:any;
+  scheduleDate: any;
   minDate: any;
-  scheduleTime:any;
-  scheDate:any;
-  scheTime:any;
-  
+  scheduleTime: any;
+  scheDate: any;
+  scheTime: any;
+  @Output() status = new EventEmitter();
+  patientEnquiryId: any;
   constructor(
     public popoverController: PopoverController,
-    ) {
-    // this.expertises = this.navParams.get('expertises');
+    private patient: PatientInquiryService,
+    private navParams: NavParams
+  ) {
+    this.patientEnquiryId = this.navParams.get('patientEnquiryId');
     this.scheduleDate = new Date().toISOString();
     this.minDate = new Date().toISOString();
-    this.scheduleTime = formatDate(this.scheduleDate, 'hh:mm:ss', 'en-US', '+0530');
-
+    this.scheduleTime = formatDate(
+      this.scheduleDate,
+      'hh:mm:ss',
+      'en-US',
+      '+0530'
+    );
   }
 
   ngOnInit() {}
 
   schedule() {
-    this.scheDate = formatDate(this.scheDate, 'dd-MM-yyyy', 'en-US', '+0530');
-    this.scheTime = formatDate(this.scheTime, 'hh:mm:ss', 'en-US', '+0530');
-    console.log(this.scheDate, this.scheTime);
-    this.popoverController.dismiss();
+    if (this.scheDate && this.scheTime) {
+      const selDate = formatDate(this.scheDate, 'yyyy-MM-dd', 'en-US', '+0530');
+      //const selTime = formatDate(this.scheTime, 'hh:mm:ss', 'en-US', '+0530');
+      let t = new Date(this.scheTime);
+      const selTime = `${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}`;
+      const schedule = selDate + ' ' + selTime;
+      const body = {
+        appointmentTime: new Date(schedule).toISOString(),
+        patientEnquiryId: this.patientEnquiryId,
+        timeZone: moment.tz.guess(),
+      };
+      this.patient.scheduleAppointment(body).subscribe((data) => {
+        this.popoverController.dismiss();
+        this.patient.scheduleStatus.next(true);
+      });
+    }
   }
-
+  dateSelected(e) {
+    const selectedDate = new Date(e);
+    if (
+      selectedDate.getMonth() === new Date().getMonth() &&
+      selectedDate.getDate() == new Date().getDate()
+    ) {
+      this.scheduleTime;
+    }
+  }
 }

@@ -3,33 +3,38 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="profile"></ion-back-button>
     </ion-buttons>
-    <ion-title>Notification</ion-title>   
+    <ion-title>Notification</ion-title>
     <ion-buttons slot="end" class="menuIcon">
       <ion-menu-button>
-	  	<img src="../assets/img/menu.png"> 
-	  </ion-menu-button>
+        <img src="../assets/img/menu.png" />
+      </ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list class="notificationWrap">
     <!-- <ion-item-sliding > -->
-      <ion-item *ngFor="let notify of notificationData; let i = index" (click) = "openDetail(notify?.id, notify?.enquiryRequest?.patientEnquiryId, notify?.enquiryRequest?.id)" >
-        <ion-label>
-          <h3>{{notify.title}}</h3>
-          <p>{{notify.body}}</p>
-        </ion-label>
-        <ion-badge>{{notify.duration}}</ion-badge>
-      </ion-item>
-      <ion-item *ngIf="!notificationData || notificationData.length == 0">
-        <ion-label>
-          <p>No Notifications.</p>
-        </ion-label>
-      </ion-item>
-      <ion-item *ngIf="notificationData && notificationData.length >= limit">
-        <ion-label class="allNotiLabel">
-          <a class="seeAllLink" (click) = "loadNotification()">See all notifications.</a>
-        </ion-label>
-      </ion-item>
-  </ion-list> 
+    <ion-item
+      *ngFor="let notify of notificationData; let i = index"
+      (click)="openDetail(notify?.id, notify?.enquiryRequest?.patientEnquiryId, notify?.enquiryRequest?.id)"
+    >
+      <ion-label>
+        <h3>{{notify.title}}</h3>
+        <p>{{notify.body}}</p>
+      </ion-label>
+      <ion-badge>{{notify.duration}}</ion-badge>
+    </ion-item>
+    <ion-item *ngIf="!notificationData || notificationData.length == 0">
+      <ion-label>
+        <p>No Notifications.</p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="notificationData && notificationData.length >= limit">
+      <ion-label class="allNotiLabel">
+        <a class="seeAllLink" (click)="loadNotification()"
+          >See all notifications.</a
+        >
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
