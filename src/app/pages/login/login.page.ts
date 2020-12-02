@@ -90,8 +90,8 @@ export class LoginPage implements OnInit {
         const param = {
           email: value.email,
           password: value.password,
-          deviceToken: 'this.deviceToken',
-          deviceType: 'android',
+          deviceToken: this.deviceToken,
+          deviceType: this.platformName,
         };
         this.user.loginUser(param).subscribe((data) => {
           if (data.status === 'success') {
