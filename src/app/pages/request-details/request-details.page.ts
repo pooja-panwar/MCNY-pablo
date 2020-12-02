@@ -6,7 +6,9 @@ import {
 } from '../../providers/patient-inquiry.service';
 //import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { SchedulerPopoverComponent } from './scheduler-popover/scheduler-popover.component';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, Platform, NavController } from '@ionic/angular';
+import { Location } from '@angular/common';
+import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
   selector: 'app-request-details',
@@ -25,24 +27,28 @@ export class RequestDetailsPage implements OnInit {
   pageTitle: string = 'Inquiry';
   setSchedule = true;
   inquiryStatus: string = 'pending';
+  popover: any;
+  fromNotification = false;
+  appointmentOver = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private patientInquiry: PatientInquiryService,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    public navCtrl: NavController,
+    private common: CommonService
   ) {
     this.route.queryParams.subscribe((params) => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.inquiryId = this.router.getCurrentNavigation().extras.state.inquiryId;
         this.inquiryReqId = this.router.getCurrentNavigation().extras.state.reqId;
+        // this.fromNotification = this.router.getCurrentNavigation().extras.state.fromNotification;
         this.fromPage = this.router.getCurrentNavigation().extras.state.page;
         this.inquiryStatus = this.router.getCurrentNavigation().extras.state
           .inquiryStatus
           ? this.router.getCurrentNavigation().extras.state.inquiryStatus
           : 'pending';
-        console.log('Inquiry is ' + this.inquiryStatus);
-
         this.pageTitle =
           this.fromPage == 'notification' || this.fromPage == 'inquiry-list'
             ? 'Inquiry'
@@ -55,11 +61,31 @@ export class RequestDetailsPage implements OnInit {
             : 'reject';
       }
     });
+    this.patientInquiry.downloadEnqSubject.subscribe((data) => {
+      if (data === true) {
+        this.rejectAction = 'cancel';
+        this.inquiryStatus = 'active';
+      }
+    });
+    // this.platform.backButton.subscribeWithPriority(0, () => {
+    //   if (this.popover) {
+    //     this.popover.dismiss();
+    //   } else {
+    //     this.location.back();
+    //   }
+    // });
   }
 
   ngOnInit() {
     this.patientInquiry.changeDisable().subscribe((value) => {
       this.disableDownload = value;
+    });
+
+    this.patientInquiry.schedulePopupClosed.subscribe((data) => {
+      if (data) {
+        this.popover = null;
+        this.common.isPopupOpened = false;
+      }
     });
   }
 
@@ -73,12 +99,28 @@ export class RequestDetailsPage implements OnInit {
     });
   }
 
+  ionViewDidLeave() {
+    this.popoverController.dismiss();
+    this.rejectAction = 'reject';
+    this.inquiryStatus = 'pending';
+    this.appointmentOver = false;
+  }
+
   loadPatientInquiry() {
-    this.inqueryData = this.patientInquiry.emptyInquiry();
     this.patientInquiry.getPatientInquiry(this.inquiryId).subscribe((resp) => {
       this.inqueryData = resp;
       this.inquiryFileName = resp.vcfFileName;
+      this.isAppointmentDone();
     });
+  }
+  isAppointmentDone() {
+    if (this.inqueryData.appointment) {
+      if (
+        new Date(this.inqueryData.appointment).getTime() < new Date().getTime()
+      ) {
+        this.appointmentOver = true;
+      }
+    }
   }
 
   downloadInquiry() {
@@ -90,7 +132,7 @@ export class RequestDetailsPage implements OnInit {
         this.inquiryStatus
       )
       .then((res) => {
-        this.rejectAction = 'cancel';
+        //this.rejectAction = 'cancel';
       });
   }
 
@@ -108,16 +150,17 @@ export class RequestDetailsPage implements OnInit {
   }
 
   async schedule(ev: any) {
-    const popover = await this.popoverController.create({
+    this.popover = await this.popoverController.create({
       component: SchedulerPopoverComponent,
       cssClass: 'my-custom-class',
       event: ev,
       translucent: true,
-      backdropDismiss: false,
+      backdropDismiss: true,
       componentProps: {
         patientEnquiryId: this.inqueryData.id,
       },
     });
-    return await popover.present();
+    this.common.isPopupOpened = true;
+    this.popover.present();
   }
 }

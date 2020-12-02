@@ -8,7 +8,7 @@ import { Router, NavigationExtras } from '@angular/router';
   styleUrls: ['./accepted-requests.page.scss'],
 })
 export class AcceptedRequestsPage implements OnInit {
-  activeInquiries: any;
+  activeInquiries = null;
   constructor(
     private patientInquiry: PatientInquiryService,
     private router: Router
@@ -18,6 +18,10 @@ export class AcceptedRequestsPage implements OnInit {
 
   ionViewDidEnter() {
     this.loadAcceptedRequest();
+  }
+
+  ionViewDidLeave() {
+    this.activeInquiries = null;
   }
 
   loadAcceptedRequest() {

@@ -13,8 +13,8 @@ import { InquiryListPage } from './inquiry-list.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    InquiryListPageRoutingModule
+    InquiryListPageRoutingModule,
   ],
-  declarations: [InquiryListPage]
+  declarations: [InquiryListPage],
 })
 export class InquiryListPageModule {}

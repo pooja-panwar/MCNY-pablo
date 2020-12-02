@@ -55,7 +55,9 @@ export class ProfilePage implements OnInit {
       if (this.router.url === '/profile') {
         if (this.toEditprofile) {
           this.toEditprofile = !this.toEditprofile;
-          this.common.isEditPage = this.toEditprofile;
+          //this.common.isEditPage = this.toEditprofile;
+        } else {
+          navigator['app'].exitApp();
         }
       }
     });

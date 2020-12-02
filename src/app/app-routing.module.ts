@@ -41,7 +41,6 @@ const routes: Routes = [
       import('./pages/notification/notification.module').then(
         (m) => m.NotificationPageModule
       ),
-    canActivate: [AuthGuard],
   },
   {
     path: 'request-details',
@@ -49,7 +48,6 @@ const routes: Routes = [
       import('./pages/request-details/request-details.module').then(
         (m) => m.RequestDetailsPageModule
       ),
-    canActivate: [AuthGuard],
   },
   {
     path: 'accepted-requests',
@@ -69,7 +67,7 @@ const routes: Routes = [
   // },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'profile',
     pathMatch: 'full',
   },
   {
@@ -89,7 +87,10 @@ const routes: Routes = [
   },
   {
     path: 'inquiry-list',
-    loadChildren: () => import('./pages/inquiry-list/inquiry-list.module').then( m => m.InquiryListPageModule)
+    loadChildren: () =>
+      import('./pages/inquiry-list/inquiry-list.module').then(
+        (m) => m.InquiryListPageModule
+      ),
   },
 ];
 

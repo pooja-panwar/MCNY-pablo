@@ -8,8 +8,9 @@ import { RequestDetailsPageRoutingModule } from './request-details-routing.modul
 
 import { RequestDetailsPage } from './request-details.page';
 //import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {SchedulerPopoverComponent} from './scheduler-popover/scheduler-popover.component';
+import { SchedulerPopoverComponent } from './scheduler-popover/scheduler-popover.component';
 
 @NgModule({
   imports: [
@@ -17,9 +18,9 @@ import {SchedulerPopoverComponent} from './scheduler-popover/scheduler-popover.c
     FormsModule,
     IonicModule,
     RequestDetailsPageRoutingModule,
-    
+    NgbModule,
   ],
   //providers: [FileTransfer],
-  declarations: [RequestDetailsPage, SchedulerPopoverComponent]
+  declarations: [RequestDetailsPage, SchedulerPopoverComponent],
 })
 export class RequestDetailsPageModule {}

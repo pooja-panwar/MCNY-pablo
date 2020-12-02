@@ -41,9 +41,11 @@ export class InquiryDetail {
 })
 export class PatientInquiryService {
   path: string = '';
-  scheduleStatus = new BehaviorSubject(null);
+  scheduleStatus = new BehaviorSubject(false);
+  schedulePopupClosed = new BehaviorSubject(false);
   downloadPath: string = '';
   showPath;
+  downloadEnqSubject = new BehaviorSubject(false);
   private disableDownload: BehaviorSubject<boolean>;
 
   constructor(
@@ -97,31 +99,6 @@ export class PatientInquiryService {
       );
   }
 
-  emptyInquiry() {
-    return new InquiryDetail(
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    );
-  }
-
   async getDownloadPath() {
     if (this.platform.is('ios')) {
       return this.file.documentsDirectory;
@@ -165,7 +142,9 @@ export class PatientInquiryService {
               console.log('res>>>', res);
               this.fileOpener
                 .open(res.nativeURL, 'text/x-vcard')
-                .then(() => console.log('File is opened'))
+                .then(() => {
+                  this.downloadEnqSubject.next(true);
+                })
                 .catch((e) => console.log('Error opening file', e));
             });
         });
@@ -180,7 +159,7 @@ export class PatientInquiryService {
           console.log('res>>>', res);
           this.fileOpener
             .open(res.nativeURL, 'text/x-vcard')
-            .then(() => console.log('File is opened'))
+            .then(() => {})
             .catch((e) => console.log('Error opening file', e));
         });
     }
@@ -209,9 +188,13 @@ export class PatientInquiryService {
     let confirmMesssage = '';
 
     if (confirmType == 'accept') {
-      confirmMesssage = 'Do you want to accept the request?';
+      let msg =
+        inquiryStatus === 'active'
+          ? 'Do you want to download the request?'
+          : 'Do you want to accept the request?';
+      confirmMesssage = msg;
     } else {
-      confirmMesssage = 'Do you want to reject the request?';
+      confirmMesssage = `Do you want to ${confirmType} the request?`;
     }
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

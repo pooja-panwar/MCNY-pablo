@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { UserService } from 'src/app/providers/user.service';
 import { constant } from '../../../../providers/constants/config';
+import { CommonService } from 'src/app/providers/global.service';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -30,7 +31,11 @@ export class EditProfileComponent implements OnInit, OnChanges {
   objectKeys = Object.keys;
   countyDB = [];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    public common: CommonService
+  ) {
     this.initForm();
   }
 
@@ -42,7 +47,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
 
   initForm() {
     this.editProfileForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
       insurances: ['', Validators.required],
       isAvailable: [false],
@@ -62,7 +67,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
    */
   preFillFormDetails(user) {
     this.fillForm(user);
-    console.log('pre fill>>>>', user)
+    console.log('pre fill>>>>', user);
 
     this.handleTimeFrameVals();
   }
@@ -100,8 +105,8 @@ export class EditProfileComponent implements OnInit, OnChanges {
     let expertiseArr = [];
     let insurances = [];
     let counselingKey = this.objectKeys(user.counselingMethod)[0];
-    console.log('counselingKey', counselingKey)
-    console.log('user', this.user)
+    console.log('counselingKey', counselingKey);
+    console.log('user', this.user);
     console.log('masterdata', this.masterData);
     this.user.counties.forEach((selectedCounty) => {
       countiesArr.push(selectedCounty.id);
@@ -109,7 +114,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
     this.user.expertises.forEach((selectedExp) => {
       expertiseArr.push(selectedExp.id);
     });
-    this.user.insurances.forEach(insurance => {
+    this.user.insurances.forEach((insurance) => {
       insurances.push(insurance.id);
     });
     this.editProfileForm.patchValue(user);
@@ -117,12 +122,11 @@ export class EditProfileComponent implements OnInit, OnChanges {
     this.editProfileForm.get('license').patchValue(this.user.license.id);
     this.editProfileForm.get('expertise').patchValue(expertiseArr);
     this.countyDB = this.masterData.counties;
-    setTimeout(()=>{
+    setTimeout(() => {
       //this.editProfileForm.get('county').patchValue(this.user.county.id);
       this.editProfileForm.get('counties').patchValue(countiesArr);
-    }, 500)
+    }, 500);
     this.editProfileForm.get('counselingMethod').patchValue(counselingKey);
-
   }
 
   /**
@@ -210,6 +214,9 @@ export class EditProfileComponent implements OnInit, OnChanges {
   //emti user data emitter
   save() {
     this.editProfileForm.value.phoneNumber = `${this.editProfileForm.value.phoneNumber}`;
+    this.editProfileForm
+      .get('name')
+      .setValue(this.editProfileForm.value.name.trim());
     this.isSubmitted = true;
     if (this.isEditFormValid()) {
       this.userData.emit(this.editProfileForm.value);

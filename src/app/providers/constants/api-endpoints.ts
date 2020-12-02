@@ -8,6 +8,7 @@ export const IMG_URL = '';
 export const ApiEndPoints = {
   LOGIN: `${BASE_URL}doctor/login`,
   REGISTER: `${BASE_URL}doctor/signup`,
+  ISUNIQUEDOCTOR: `${BASE_URL}doctor/uniqueDoctorCheck`,
   VERIFY_EMAIL: `${BASE_URL}verify-email`,
   GETUSERPROFILE: `${BASE_URL}doctor/getProfileData`,
   GETMASTERDATA: `${BASE_URL}doctor/getSignUpFormData`,

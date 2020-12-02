@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/providers/user.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,7 +15,8 @@ export class ForgotPasswordPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private user: UserService,
-    private router: Router
+    private router: Router,
+    private common: CommonService
   ) {}
 
   ngOnInit() {
@@ -41,12 +43,17 @@ export class ForgotPasswordPage implements OnInit {
     if (this.forgotPassForm.valid) {
       this.user.forgotPassword(value).subscribe((data) => {
         if (data.status === 'success') {
+          this.common.presentToast(
+            'OTP has been sent to your registered email account. Please check.'
+          );
           const navigationExtras: NavigationExtras = {
             state: {
               email: value.email,
             },
           };
-          this.router.navigate(['reset-password'], navigationExtras);
+          setTimeout(() => {
+            this.router.navigate(['reset-password'], navigationExtras);
+          }, 3000);
         }
       });
     }

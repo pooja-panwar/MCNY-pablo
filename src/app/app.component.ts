@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 
 import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { CommonService } from './providers/global.service';
-
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { UserDataService } from './providers/user-data.service';
 import { UserService } from './providers/user.service';
@@ -70,11 +69,17 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then((source) => {
       this.userDataService.setUserData();
-      this.statusBar.styleDefault();
+      // let status bar overlay webview
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.styleLightContent();
+      // set status bar to app default header color
+      this.statusBar.backgroundColorByHexString('#1b346a');
+      //this.splashScreen.hide();
       this.splashScreen.hide();
       this.checkPermission();
     });
   }
+
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
@@ -110,11 +115,17 @@ export class AppComponent {
             reqId: data.reqId,
             page: 'accepted-requests',
             inquiryStatus: data.inquiryStatus,
+            fromNotification: true,
           },
         };
         this.router.navigate(['request-details'], navigationExtras);
       } else {
-        this.navCtrl.navigateForward('notification');
+        let navigationExtras: NavigationExtras = {
+          state: {
+            fromNotification: true,
+          },
+        };
+        this.router.navigate(['notification'], navigationExtras);
       }
     });
   }

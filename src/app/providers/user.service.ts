@@ -5,7 +5,7 @@ import { ApiEndPoints } from './constants/api-endpoints';
 import { CommonService } from './global.service';
 import { Router } from '@angular/router';
 import { UserDataService } from './user-data.service';
-import { NavController} from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +18,7 @@ export class UserService {
     private common: CommonService,
     private userDataService: UserDataService,
     // private router: Router,
-    private navCtrl: NavController,
-
+    private navCtrl: NavController
   ) {}
 
   /**
@@ -43,6 +42,14 @@ export class UserService {
    */
   registerUser(body): Observable<any> {
     return this.http.postHttp(ApiEndPoints.REGISTER, body);
+  }
+
+  /**
+   * check in first page if same email or phone number exists in record
+   * @param body user deatils with email and phone number
+   */
+  uniqueDoctorCheck(body): Observable<any> {
+    return this.http.postHttp(ApiEndPoints.ISUNIQUEDOCTOR, body);
   }
 
   verifyUserEmail(body): Observable<any> {
@@ -103,6 +110,6 @@ export class UserService {
 
   //get county based on zipcode
   getCountyByZip(zipcode) {
-    return this.http.getHttp(`${ApiEndPoints.GET_COUNTY}/${zipcode}/counties`)
+    return this.http.getHttp(`${ApiEndPoints.GET_COUNTY}/${zipcode}/counties`);
   }
 }

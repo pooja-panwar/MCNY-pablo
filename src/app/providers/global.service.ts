@@ -5,6 +5,7 @@ import {
   Platform,
   MenuController,
   NavController,
+  PopoverController,
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
@@ -22,6 +23,8 @@ export class CommonService {
   isLoading: boolean = false;
   userSubject = new BehaviorSubject(null);
   isEditPage = false;
+  isMenuOpened = false;
+  isPopupOpened = false;
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
@@ -30,7 +33,8 @@ export class CommonService {
     private router: Router,
     public menuCtrl: MenuController,
     private navCtrl: NavController,
-    private location: Location
+    private location: Location,
+    private popoverController: PopoverController
   ) {}
   /**
    * save to local db
@@ -111,15 +115,33 @@ export class CommonService {
   handleBackNavigation() {
     this.platform.backButton.subscribe(() => {
       //back handle for android
-      if (this.router.url === '/profile' || this.router.url === '/login') {
-        if (!this.isEditPage) {
-          navigator['app'].exitApp();
+      this.menuCtrl.isOpen().then((status) => {
+        if (status === true) {
+          this.menuCtrl.close();
+        } else {
+          if (this.isPopupOpened) {
+            this.popoverController.dismiss();
+            this.isPopupOpened = false;
+          } else {
+            if (
+              this.router.url === '/profile' ||
+              this.router.url === '/login'
+            ) {
+              if (!this.isEditPage) {
+                navigator['app'].exitApp();
+              }
+            } else if (this.router.url === '/signup1') {
+              this.router.navigate(['login']);
+            }
+            // else if (this.router.url === '/notification') {
+            //   this.router.navigate(['profile']);
+            // }
+            else {
+              this.location.back();
+            }
+          }
         }
-      } else if (this.router.url === '/signup1') {
-        this.router.navigate(['login']);
-      } else {
-        this.location.back();
-      }
+      });
     });
   }
 
@@ -144,6 +166,12 @@ export class CommonService {
     });
   }
 
+  // validation for no whote spaces in text
+  noWhiteSpace(e) {
+    if (e.key === ' ') {
+      return false;
+    }
+  }
   // //logout user and delete local stored details of the
   // logout() {
   //   this.removeFromLocal('rememberMe');

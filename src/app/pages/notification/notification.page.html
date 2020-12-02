@@ -24,7 +24,7 @@
       </ion-label>
       <ion-badge>{{notify.duration}}</ion-badge>
     </ion-item>
-    <ion-item *ngIf="!notificationData || notificationData.length == 0">
+    <ion-item *ngIf="notificationData?.length == 0">
       <ion-label>
         <p>No Notifications.</p>
       </ion-label>

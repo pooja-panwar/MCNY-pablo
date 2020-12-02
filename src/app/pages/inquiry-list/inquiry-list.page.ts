@@ -8,7 +8,7 @@ import { Router, NavigationExtras } from '@angular/router';
   styleUrls: ['./inquiry-list.page.scss'],
 })
 export class InquiryListPage implements OnInit {
-  activeInquiries: any;
+  activeInquiries = null;
   activeClass: boolean = true;
   activeInquiriesAll: any;
 
@@ -21,6 +21,9 @@ export class InquiryListPage implements OnInit {
 
   ionViewDidEnter() {
     this.loadAcceptedRequest();
+  }
+  ionViewDidLeave() {
+    this.activeInquiries = null;
   }
 
   loadAcceptedRequest() {

@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpErrorInterceptor } from './interceptors/http-error-interceptor';
 import { IonicStorageModule } from '@ionic/storage';
 import { UserDataService } from './providers/user-data.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { UserDataService } from './providers/user-data.service';
     AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
+    NgbModule,
   ],
   providers: [
     StatusBar,
