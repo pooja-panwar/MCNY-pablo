@@ -116,6 +116,7 @@ export class ProfilePage implements OnInit {
       this.toEditprofile = false;
       this.common.isEditPage = false;
     } else {
+      userData.phoneNumber = `${userData.phoneNumber}`;
       this.userService.editDoctorProfile(userData).subscribe((data) => {
         if (data.status === 'success') {
           this.getUserPofile('save');
