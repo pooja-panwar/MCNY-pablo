@@ -68,15 +68,16 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then((source) => {
-      this.userDataService.setUserData();
-      // let status bar overlay webview
-      this.statusBar.overlaysWebView(false);
-      this.statusBar.styleLightContent();
-      // set status bar to app default header color
-      this.statusBar.backgroundColorByHexString('#1b346a');
-      //this.splashScreen.hide();
-      this.splashScreen.hide();
-      this.checkPermission();
+      this.userDataService.setUserData().then((res) => {
+        // let status bar overlay webview
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.styleLightContent();
+        // set status bar to app default header color
+        this.statusBar.backgroundColorByHexString('#1b346a');
+        //this.splashScreen.hide();
+        this.splashScreen.hide();
+        this.checkPermission();
+      });
     });
   }
 

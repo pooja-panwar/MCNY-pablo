@@ -30,7 +30,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     if (request.url !== `${ApiEndPoints.GETMASTERDATA}`) {
       this.common.displayLoader();
     }
-
     let userToken = '';
     if (this.user.userData && this.user.userData.token) {
       userToken = this.user.userData.token;
@@ -80,7 +79,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
-    console.log(err);
     this.common.presentToast(
       err.error.message ? err.error.message : 'Please try again!'
     );

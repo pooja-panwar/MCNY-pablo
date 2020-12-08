@@ -22,7 +22,7 @@ export class UserDataService {
   }
 
   async setUserData() {
-    await this.common.getFromLocal('userData').then((val) => {
+    return await this.common.getFromLocal('userData').then((val) => {
       if (val && JSON.parse(val)) {
         const user = JSON.parse(val);
         this.userData = new User(
