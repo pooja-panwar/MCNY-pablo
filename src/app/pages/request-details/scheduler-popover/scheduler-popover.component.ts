@@ -3,6 +3,7 @@ import { PopoverController, NavParams } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { PatientInquiryService } from 'src/app/providers/patient-inquiry.service';
 import * as moment from 'moment-timezone';
+import * as momentjs from 'moment';
 import { CommonService } from 'src/app/providers/global.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -60,12 +61,15 @@ export class SchedulerPopoverComponent implements OnInit {
       //const selTime = formatDate(this.scheTime, 'hh:mm:ss', 'en-US', '+0530');
       let t = new Date(this.scheTime);
       const selTime = `${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}`;
-      const schedule = selDate + ' ' + selTime;
+      let schedule;
+      schedule = new Date(selDate);
+      schedule = new Date(new Date((schedule.setHours(t.getHours()))).setMinutes(t.getMinutes())).toISOString();
       const body = {
-        appointmentTime: new Date(schedule).toISOString(),
+        appointmentTime: schedule,
         patientEnquiryId: this.patientEnquiryId,
         timeZone: moment.tz.guess(),
       };
+
       this.patient.scheduleAppointment(body).subscribe((data) => {
         this.popoverController.dismiss();
         this.patient.scheduleStatus.next(true);
@@ -87,9 +91,6 @@ export class SchedulerPopoverComponent implements OnInit {
   }
 
   resetMinTime() {
-    // return new Date(
-    //   new Date().setHours(new Date().getHours(), new Date().getMinutes(), 0)
-    // ).toISOString();
     return formatDate(
       this.scheduleDate,
       'hh:mm',
