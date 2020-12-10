@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://3.138.95.10:3001/',
+  apiUrl: 'https://3.138.95.10:3001/',
   //apiUrl: 'http://localhost:3001',
+  //apiUrl: 'https://mcnyclientrequest.com:3001/'
 };
 
 /*
