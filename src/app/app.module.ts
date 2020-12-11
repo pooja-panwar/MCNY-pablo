@@ -33,7 +33,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
-    NgbModule,
+    NgbModule
+  
   ],
   providers: [
     StatusBar,

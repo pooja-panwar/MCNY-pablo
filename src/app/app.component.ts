@@ -60,10 +60,9 @@ export class AppComponent {
     private navCtrl: NavController,
     private firebaseX: FirebaseX,
     private userDataService: UserDataService,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.initializeApp();
-    1;
   }
 
   initializeApp() {
@@ -77,6 +76,7 @@ export class AppComponent {
         //this.splashScreen.hide();
         this.splashScreen.hide();
         this.checkPermission();
+        
       });
     });
   }
@@ -90,6 +90,7 @@ export class AppComponent {
     }
     this.handleBackNav();
     this.allowSideMenu();
+
   }
   toggleMenu() {
     this.menuCtrl.toggle('end');
