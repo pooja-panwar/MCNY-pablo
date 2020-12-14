@@ -3,6 +3,8 @@ import { PopoverController, NavParams } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { PatientInquiryService } from 'src/app/providers/patient-inquiry.service';
 import * as moment from 'moment-timezone';
+import * as momentjs from 'moment';
+
 import { CommonService } from 'src/app/providers/global.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -99,15 +101,27 @@ export class SchedulerPopoverComponent implements OnInit {
   }
   timeSelected(e) {
     this.invalidTime = false;
+    console.log(
+      momentjs(`${e.hour}:${e.minute}`).isSame(momentjs(new Date(), 'HH:mm'))
+    );
+    console.log(momentjs(new Date(), 'HH:mm'));
+
     if (e && this.scheDate) {
       let time = new Date(new Date().setHours(e.hour));
       time = new Date(time.setMinutes(e.minute));
       this.scheTime = time;
       const selectedDate = new Date(this.scheDate);
       if (
-        selectedDate.getMonth() === new Date().getMonth() &&
-        selectedDate.getDate() == new Date().getDate() &&
-        selectedDate.getFullYear() == new Date().getFullYear()
+        momentjs(
+          formatDate(
+            this.scheDate,
+            'yyyy-MM-dd',
+            'en-US',
+            `${moment.tz.guess()}`
+          )
+        ).isSame(
+          formatDate(new Date(), 'yyyy-MM-dd', 'en-US', `${moment.tz.guess()}`)
+        )
       ) {
         if (time.getTime() < new Date().getTime()) {
           this.invalidTime = true;

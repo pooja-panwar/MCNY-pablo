@@ -32,7 +32,8 @@ export class InquiryDetail {
     public serviceStart: string,
     public vcfFileName: string,
     public zip: string,
-    public appointment: Date
+    public appointment: Date,
+    public edUser: boolean
   ) {}
 }
 
@@ -93,7 +94,8 @@ export class PatientInquiryService {
             res.data.serviceStart,
             res.data.vcfFileName,
             res.data.zip,
-            res.data.appointment
+            res.data.appointment,
+            res.data.edUser
           );
         })
       );
