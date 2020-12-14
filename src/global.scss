@@ -117,6 +117,10 @@ ion-toolbar {
   }
 }
 
+ion-button{
+  -webkit-appearance: button-bevel!important;
+}
+
 .alert-radio-label {
   font-size: 15px !important;
   text-overflow: unset !important;
@@ -148,3 +152,6 @@ ion-item {
 .alignError {
   margin-left: 20px;
 }
+
+
+
