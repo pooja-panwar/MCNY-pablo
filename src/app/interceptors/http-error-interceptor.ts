@@ -49,6 +49,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     const req = request.clone({
       setHeaders: headers,
     });
+    console.log('Req***', req);
 
     return next.handle(req).pipe(
       tap((data) => console.log(data)),
@@ -79,6 +80,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
+    console.log('Http Error**************', err);
     this.common.presentToast(
       err.error.message ? err.error.message : 'Please try again!'
     );

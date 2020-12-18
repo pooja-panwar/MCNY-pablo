@@ -23,7 +23,6 @@ export class Signup2Page implements OnInit, OnDestroy {
   objectKeys = Object.keys;
   countyDB = [];
 
-
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
@@ -57,7 +56,6 @@ export class Signup2Page implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter');
-    
   }
 
   /**
@@ -74,12 +72,12 @@ export class Signup2Page implements OnInit, OnDestroy {
   subscribeToMasterData() {
     // this.masterData = [];
     this.user.signUpMasterDataSubject.subscribe((data) => {
-      console.log('master data subscribe>>', data)
+      console.log('master data subscribe>>', data);
       if (data) {
         //setTimeout(()=>{
-          //this.masterData.timeframes = [];
-          this.masterData = data.data;
-          this.countyDB = this.masterData.counties;
+        //this.masterData.timeframes = [];
+        this.masterData = data.data;
+        this.countyDB = this.masterData.counties;
         //}, 500)
         // setTimeout(()=>{
         //   this.masterData.timeframes = [];
@@ -155,7 +153,7 @@ export class Signup2Page implements OnInit, OnDestroy {
   //         this.signUpForm.get('county').patchValue(this.countyDB[0].id);
   //       },500)
   //     }
-      
+
   //   });
   // }
 
@@ -246,7 +244,7 @@ export class Signup2Page implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('page leave');
-    this.masterData.timeframes.forEach(timeframe => {
+    this.masterData.timeframes.forEach((timeframe) => {
       timeframe.checked = false;
     });
   }
