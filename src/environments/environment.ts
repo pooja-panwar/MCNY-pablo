@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //apiUrl: 'http://api.mcnyclientrequest.com/',
-  apiUrl: 'http://3.138.95.10:3000/',
+  apiUrl: 'https://api.mcnyclientrequest.com/',
+  //apiUrl: 'http://3.138.95.10:3001/',
   //apiUrl: 'https://mcnyclientrequest.com:3001/',
 };
 
