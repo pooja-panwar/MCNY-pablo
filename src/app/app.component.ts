@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 
 import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { MenuController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { CommonService } from './providers/global.service';
-
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { UserDataService } from './providers/user-data.service';
 import { UserService } from './providers/user.service';
@@ -27,14 +26,14 @@ export class AppComponent {
       class: 'icon1',
     },
     {
-      title: 'View Requests',
+      title: 'Accepted Requests',
       url: '/accepted-requests',
       icon: 'assets/img/request.png',
       class: 'icon2',
     },
     {
       title: 'Inquiry List',
-      url: '/request-details',
+      url: '/inquiry-list',
       icon: 'assets/img/call.png',
       class: 'icon3',
     },
@@ -61,20 +60,27 @@ export class AppComponent {
     private navCtrl: NavController,
     private firebaseX: FirebaseX,
     private userDataService: UserDataService,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.initializeApp();
-    1;
   }
 
   initializeApp() {
     this.platform.ready().then((source) => {
-      this.userDataService.setUserData();
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.checkPermission();
+      this.userDataService.setUserData().then((res) => {
+        // let status bar overlay webview
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.styleLightContent();
+        // set status bar to app default header color
+        this.statusBar.backgroundColorByHexString('#1b346a');
+        //this.splashScreen.hide();
+        this.splashScreen.hide();
+        this.checkPermission();
+        
+      });
     });
   }
+
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
@@ -84,9 +90,10 @@ export class AppComponent {
     }
     this.handleBackNav();
     this.allowSideMenu();
+
   }
   toggleMenu() {
-    this.menuCtrl.toggle();
+    this.menuCtrl.toggle('end');
   }
 
   /**
@@ -103,7 +110,25 @@ export class AppComponent {
 
     this.firebaseX.onMessageReceived().subscribe((data) => {
       console.error(`User opened a notification ${data}`);
-      this.navCtrl.navigateForward('notification');
+      if (data.page === 'request-details') {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            inquiryId: data.inquiryId,
+            reqId: data.reqId,
+            page: 'accepted-requests',
+            inquiryStatus: data.inquiryStatus,
+            fromNotification: true,
+          },
+        };
+        this.router.navigate(['request-details'], navigationExtras);
+      } else {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            fromNotification: true,
+          },
+        };
+        this.router.navigate(['notification'], navigationExtras);
+      }
     });
   }
 
@@ -172,7 +197,7 @@ export class AppComponent {
         break;
 
       default:
-        this.navCtrl.navigateForward(menu.url);
+        this.navCtrl.navigateBack(menu.url);
         break;
     }
   }

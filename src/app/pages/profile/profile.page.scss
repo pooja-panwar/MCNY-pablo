@@ -8,6 +8,13 @@
     border: 3px solid #252526;
     border-radius: 100%;
   }
+  .cameraIcon {
+    pointer-events: none;
+    width: 40px;
+    margin: auto;
+    display: block;
+    margin-top: -43px;
+  }
 }
 
 .userInfo {
@@ -152,4 +159,16 @@ ion-select {
 
 .showMore {
   cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+ion-header {
+  ion-toolbar {
+    position: relative;
+    ion-buttons {
+      position: absolute;
+      right: 0;
+    }
+  }
 }

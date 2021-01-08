@@ -1,66 +1,37 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="notification"></ion-back-button>
+      <ion-back-button defaultHref="profile"></ion-back-button>
     </ion-buttons>
-    <ion-title>Accepted Requests</ion-title>   
+    <ion-title>Accepted Requests</ion-title>
     <ion-buttons slot="end" class="menuIcon">
       <ion-menu-button>
-	  	<img src="../assets/img/menu.png"> 
-	  </ion-menu-button>
+        <img src="../assets/img/menu.png" />
+      </ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list class="notificationWrap">
-    <ion-item routerLink="/accepted-requests-details">
+    <ion-item
+      *ngFor="let inquiry of activeInquiries"
+      (click)="openDetail(inquiry?.patientEnquiryId, inquiry?.id,  inquiry?.status)"
+    >
       <ion-label>
-        <h3>John Due</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
+        <h3>
+          {{inquiry.patientDetails.clientName}}
+          <span class="noScheCSS" *ngIf="!inquiry?.appointmentTime"
+            >(not scheduled)</span
+          >
+        </h3>
+        <p>{{inquiry.description}}</p>
       </ion-label>
-      <ion-badge>3 min ago</ion-badge>
+      <ion-badge>{{inquiry.acceptTime}}</ion-badge>
     </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
+    <ion-item *ngIf="activeInquiries?.length == 0">
       <ion-label>
-        <h3>Prashant Sharma</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
+        <p>No Records Found.</p>
       </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
-      <ion-label>
-        <h3>Sameer</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
-      <ion-label>
-        <h3>Tarun</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
-      <ion-label>
-        <h3>Nav</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
-      <ion-label>
-        <h3>Micheal</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/accepted-requests-details">
-      <ion-label>
-        <h3>John Due</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

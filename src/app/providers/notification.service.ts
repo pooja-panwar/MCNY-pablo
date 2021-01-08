@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CallHttpService } from './call-http.service';
-import { Observable } from 'rxjs';
 import { ApiEndPoints } from './constants/api-endpoints';
 
 @Injectable({
@@ -10,7 +9,13 @@ export class NotificationService {
     constructor(private http: CallHttpService) {
 
     } 
-    getNotifyData() {
-      return this.http.getHttp(ApiEndPoints.NOTIFICATION);
+    getNotifyData(limit) {
+      console.log(limit)
+      let apiURL = limit==0? ApiEndPoints.NOTIFICATION : `${ApiEndPoints.NOTIFICATION}?limit=${limit}`;
+      return this.http.getHttp(apiURL);
+    }
+
+    readNotification(notifyId) {
+      return this.http.putHttp(`${ApiEndPoints.NOTIFICATION}/${notifyId}`)
     }
 }

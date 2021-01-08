@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AcceptedRequestsDetailsPage } from './accepted-requests-details.page';
+import { SchedulerPopoverComponent } from './scheduler-popover.component';
 
-describe('AcceptedRequestsDetailsPage', () => {
-  let component: AcceptedRequestsDetailsPage;
-  let fixture: ComponentFixture<AcceptedRequestsDetailsPage>;
+describe('SchedulerPopoverComponent', () => {
+  let component: SchedulerPopoverComponent;
+  let fixture: ComponentFixture<SchedulerPopoverComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AcceptedRequestsDetailsPage ],
+      declarations: [ SchedulerPopoverComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AcceptedRequestsDetailsPage);
+    fixture = TestBed.createComponent(SchedulerPopoverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -15,5 +15,6 @@ export class ViewProfileComponent implements OnInit {
     private common: CommonService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

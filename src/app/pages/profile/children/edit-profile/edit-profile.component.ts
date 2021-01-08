@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { UserService } from 'src/app/providers/user.service';
 import { constant } from '../../../../providers/constants/config';
+import { CommonService } from 'src/app/providers/global.service';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -27,25 +28,34 @@ export class EditProfileComponent implements OnInit, OnChanges {
   isSubmitted = false;
   isTimeframeOtherVal = false;
   editProfileForm: FormGroup;
+  objectKeys = Object.keys;
+  countyDB = [];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    public common: CommonService
+  ) {
     this.initForm();
   }
 
   ngOnInit() {
     this.preFillFormDetails(this.user);
+    //this.loadCounty();
   }
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {}
 
   initForm() {
     this.editProfileForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
-      insurance: ['', Validators.required],
+      insurances: ['', Validators.required],
       isAvailable: [false],
       timeframes: this.fb.array([]),
       counselingMethod: ['', [Validators.required]],
-      cities: new FormControl('', [Validators.required]),
+      counties: ['', [Validators.required]],
+      // zipcode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(9)]],
+      // city: ['', [Validators.required]],
       expertise: new FormControl('', [Validators.required]),
       license: new FormControl('', [Validators.required]),
     });
@@ -57,6 +67,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
    */
   preFillFormDetails(user) {
     this.fillForm(user);
+    console.log('pre fill>>>>', user);
 
     this.handleTimeFrameVals();
   }
@@ -90,19 +101,32 @@ export class EditProfileComponent implements OnInit, OnChanges {
    * @param user user selected fields data
    */
   fillForm(user) {
-    let citiesArr = [];
+    let countiesArr = [];
     let expertiseArr = [];
-    this.user.cities.forEach((selectedCity) => {
-      citiesArr.push(selectedCity.id);
+    let insurances = [];
+    let counselingKey = this.objectKeys(user.counselingMethod)[0];
+    console.log('counselingKey', counselingKey);
+    console.log('user', this.user);
+    console.log('masterdata', this.masterData);
+    this.user.counties.forEach((selectedCounty) => {
+      countiesArr.push(selectedCounty.id);
     });
     this.user.expertises.forEach((selectedExp) => {
       expertiseArr.push(selectedExp.id);
     });
+    this.user.insurances.forEach((insurance) => {
+      insurances.push(insurance.id);
+    });
     this.editProfileForm.patchValue(user);
-    this.editProfileForm.patchValue({ insurance: this.user.insurance.id });
+    this.editProfileForm.patchValue({ insurances: insurances });
     this.editProfileForm.get('license').patchValue(this.user.license.id);
     this.editProfileForm.get('expertise').patchValue(expertiseArr);
-    this.editProfileForm.get('cities').patchValue(citiesArr);
+    this.countyDB = this.masterData.counties;
+    setTimeout(() => {
+      //this.editProfileForm.get('county').patchValue(this.user.county.id);
+      this.editProfileForm.get('counties').patchValue(countiesArr);
+    }, 500);
+    this.editProfileForm.get('counselingMethod').patchValue(counselingKey);
   }
 
   /**
@@ -164,9 +188,35 @@ export class EditProfileComponent implements OnInit, OnChanges {
     }
   }
 
+  // getCounty(zip) {
+  //   console.log(zip)
+  //   if(zip.length >= 5 && zip.length <= 9) {
+  //     this.userService.getCountyByZip(zip).subscribe(res => {
+  //       console.log(res);
+  //       this.countyDB = res.data;
+  //           // console.log(this.countyDB[0].id);
+  //         if(this.countyDB[0] && this.countyDB[0].id) {
+  //           setTimeout(() =>{
+  //             this.editProfileForm.get('county').patchValue(this.countyDB[0].id);
+  //           },500)
+  //         }
+  //     }, error=>{
+  //       console.log('err1', error)
+  //       //if(error.status == 404){
+  //         this.countyDB = [];
+  //         this.editProfileForm.get('county').patchValue('');
+
+  //       //}
+  //     })
+  //   }
+  // }
+
   //emti user data emitter
   save() {
     this.editProfileForm.value.phoneNumber = `${this.editProfileForm.value.phoneNumber}`;
+    this.editProfileForm
+      .get('name')
+      .setValue(this.editProfileForm.value.name.trim());
     this.isSubmitted = true;
     if (this.isEditFormValid()) {
       this.userData.emit(this.editProfileForm.value);
@@ -183,7 +233,7 @@ export class EditProfileComponent implements OnInit, OnChanges {
       this.editProfileForm.valid &&
       this.isTimeFramesValid &&
       this.isExpertisesValid &&
-      this.isCitiesValid
+      this.isCountiessValid
     );
   }
   //check validation for timeframe form array
@@ -194,9 +244,9 @@ export class EditProfileComponent implements OnInit, OnChanges {
   get isExpertisesValid() {
     return this.editProfileForm.get('expertise').value.length ? true : false;
   }
-  //check validation for cities form array
-  get isCitiesValid() {
-    return this.editProfileForm.get('cities').value.length ? true : false;
+  //check validation for counties form array
+  get isCountiessValid() {
+    return this.editProfileForm.get('counties').value.length ? true : false;
   }
   //return form control for checking field erros
   get errorControl() {

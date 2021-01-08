@@ -13,8 +13,8 @@ import { AcceptedRequestsPage } from './accepted-requests.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    AcceptedRequestsPageRoutingModule
+    AcceptedRequestsPageRoutingModule,
   ],
-  declarations: [AcceptedRequestsPage]
+  declarations: [AcceptedRequestsPage],
 })
 export class AcceptedRequestsPageModule {}

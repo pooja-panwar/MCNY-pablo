@@ -2,7 +2,7 @@
   <ion-card class="formWrap">
     <ion-card-content>
       <h4>
-        Sign up
+        Account Registration
         <ion-button (click)="close()"
           ><img routerLink="/login" src="../assets/img/close.png"
         /></ion-button>
@@ -22,6 +22,12 @@
             *ngIf="isSubmitted && errorControl.name.errors?.required"
           >
             Name is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.name.errors?.minlength"
+          >
+            Enter valid name (must contain atleast 3 characters).
           </span>
 
           <ion-item class="hideErrorLine">
@@ -61,11 +67,12 @@
           <ion-item class="hideErrorLine">
             <ion-label position="stacked">Insurance</ion-label>
             <ion-select
-              formControlName="insurance"
-              [class.error-input]="isSubmitted && errorControl.insurance.errors"
+              multiple
+              formControlName="insurances"
+              [class.error-input]="isSubmitted && errorControl.insurances.errors"
             >
               <ion-select-option
-                *ngFor="let insurance of masterData?.insurance"
+                *ngFor="let insurance of masterData?.insurances"
                 [value]="insurance.id"
                 >{{insurance.insurance}}</ion-select-option
               >
@@ -73,7 +80,7 @@
           </ion-item>
           <span
             class="error ion-padding"
-            *ngIf="isSubmitted && errorControl.insurance.errors?.required"
+            *ngIf="isSubmitted && errorControl.insurances.errors?.required"
           >
             Insurance is required.
           </span>
@@ -82,6 +89,7 @@
             <ion-label position="stacked">Email</ion-label>
             <ion-input
               formControlName="email"
+              (keyup)="common.noWhiteSpace($event)"
               [class.error-input]="isSubmitted && errorControl.email.errors"
             ></ion-input>
           </ion-item>
@@ -106,7 +114,9 @@
             >
               <ion-select-option value="Male">Male</ion-select-option>
               <ion-select-option value="Female">Female</ion-select-option>
-              <ion-select-option value="Male">other</ion-select-option>
+              <ion-select-option value="non-binary/other"
+                >Non-binary/other</ion-select-option
+              >
             </ion-select>
           </ion-item>
           <span
@@ -121,6 +131,7 @@
             <ion-input
               type="password"
               formControlName="password"
+              (keyup)="common.noWhiteSpace($event)"
               [class.error-input]="isSubmitted && errorControl.password.errors"
             ></ion-input>
           </ion-item>
@@ -135,13 +146,14 @@
             *ngIf="isSubmitted && errorControl.password.errors?.pattern"
           >
             Password must contain atleast 8 characters with one special
-            character, one capital and one small letter.
+            character, one capital, one small letter and no blank spaces.
           </span>
 
           <ion-item class="hideErrorLine">
             <ion-label position="stacked">Confirm Password</ion-label>
             <ion-input
               type="password"
+              (keyup)="common.noWhiteSpace($event)"
               formControlName="confirmPassword"
               [class.error-input]="isSubmitted && errorControl.confirmPassword.errors"
             ></ion-input>

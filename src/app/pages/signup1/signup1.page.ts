@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { MustMatch } from 'src/app/providers/_helpers/must-match.validator';
 import { UserService } from 'src/app/providers/user.service';
+import { CommonService } from 'src/app/providers/global.service';
 
 @Component({
   selector: 'app-signup1',
@@ -18,7 +19,8 @@ export class Signup1Page implements OnInit {
     public menuCtrl: MenuController,
     private fb: FormBuilder,
     private router: Router,
-    private user: UserService
+    private user: UserService,
+    public common: CommonService
   ) {}
 
   ngOnInit() {
@@ -36,13 +38,10 @@ export class Signup1Page implements OnInit {
   initForm() {
     this.signUpForm = this.fb.group(
       {
-        name: ['', [Validators.required]],
+        name: ['', [Validators.required, Validators.minLength(3)]],
         license: ['', [Validators.required]],
-        phoneNumber: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(10)]),
-        ],
-        insurance: [null, [Validators.required]],
+        phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
+        insurances: [null, [Validators.required]],
         email: [
           '',
           [
@@ -74,15 +73,24 @@ export class Signup1Page implements OnInit {
    * when user clicks next to submit signup form 1
    */
   submitSignUp() {
+    this.signUpForm.get('name').setValue(this.signUpForm.value.name.trim());
     this.isSubmitted = true;
     if (this.signUpForm.valid) {
-      delete this.signUpForm.value.confirmPassword;
-      const navigationExtras: NavigationExtras = {
-        state: {
-          userDetails: this.signUpForm.value,
-        },
+      const body = {
+        email: this.signUpForm.value.email,
+        phoneNumber: this.signUpForm.value.phoneNumber,
       };
-      this.router.navigate(['signup2'], navigationExtras);
+      this.user.uniqueDoctorCheck(body).subscribe((data) => {
+        if (data.status === 'success') {
+          delete this.signUpForm.value.confirmPassword;
+          const navigationExtras: NavigationExtras = {
+            state: {
+              userDetails: this.signUpForm.value,
+            },
+          };
+          this.router.navigate(['signup2'], navigationExtras);
+        }
+      });
     }
   }
 

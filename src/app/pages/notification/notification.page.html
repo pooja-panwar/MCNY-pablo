@@ -3,76 +3,38 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="profile"></ion-back-button>
     </ion-buttons>
-    <ion-title>Notification</ion-title>   
+    <ion-title>Notification</ion-title>
     <ion-buttons slot="end" class="menuIcon">
       <ion-menu-button>
-	  	<img src="../assets/img/menu.png"> 
-	  </ion-menu-button>
+        <img src="../assets/img/menu.png" />
+      </ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list class="notificationWrap">
     <!-- <ion-item-sliding > -->
-      <ion-item *ngFor="let notify of notificationData; let i = index" routerLink="/request-details">
-        <ion-label>
-          <h3>{{notify.title}}</h3>
-          <p>{{notify.body}}</p>
-        </ion-label>
-        <ion-badge>{{notify.duration}}</ion-badge>
-      </ion-item>
-      <!-- <ion-item-options>
-        <ion-item-option color="primary">
-          <ion-icon slot="start" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-          Accept
-        </ion-item-option>
-        <ion-item-option color="secondary">
-          <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
-          Delete
-        </ion-item-option> 
-      </ion-item-options>
-    </ion-item-sliding> -->
-    <!-- <ion-item routerLink="/request-details">
+    <ion-item
+      *ngFor="let notify of notificationData; let i = index"
+      (click)="openDetail(notify?.id, notify?.enquiryRequest?.patientEnquiryId, notify?.enquiryRequest?.id)"
+    >
       <ion-label>
-        <h3>Prashant Sharma</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
+        <h3>{{notify.title}}</h3>
+        <p>{{notify.body}}</p>
       </ion-label>
-      <ion-badge>3 min ago</ion-badge>
+      <ion-badge>{{notify.duration}}</ion-badge>
     </ion-item>
-    <ion-item routerLink="/request-details">
+    <ion-item *ngIf="notificationData?.length == 0">
       <ion-label>
-        <h3>Sameer</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
+        <p>No Notifications.</p>
       </ion-label>
-      <ion-badge>3 min ago</ion-badge>
     </ion-item>
-    <ion-item routerLink="/request-details">
-      <ion-label>
-        <h3>Tarun</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
+    <ion-item *ngIf="notificationData && notificationData.length >= limit">
+      <ion-label class="allNotiLabel">
+        <a class="seeAllLink" (click)="loadNotification()"
+          >See all notifications.</a
+        >
       </ion-label>
-      <ion-badge>3 min ago</ion-badge>
     </ion-item>
-    <ion-item routerLink="/request-details">
-      <ion-label>
-        <h3>Nav</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/request-details">
-      <ion-label>
-        <h3>Micheal</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>
-    <ion-item routerLink="/request-details">
-      <ion-label>
-        <h3>John Due</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur </p>
-      </ion-label>
-      <ion-badge>3 min ago</ion-badge>
-    </ion-item>-->
-  </ion-list> 
+  </ion-list>
 </ion-content>

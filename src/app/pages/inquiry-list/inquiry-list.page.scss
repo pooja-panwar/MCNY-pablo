@@ -1,0 +1,83 @@
+.notificationWrap{
+    padding-bottom: 30px;
+    padding-top:0px;
+   .item{
+       --border-color: #f0f0f0;
+       --padding-start: 15px;
+        --padding-end: 15px;
+        --detail-icon-opacity:0px;
+        --detail-icon-font-size:0px;
+        --inner-padding-end: 0px;
+        padding-top:20px;
+        align-items:flex-start;
+        --background-activated-opacity: 0;
+        --background-hover-opacity: 0;
+        --background-focus-opacity: 0;
+        ion-label{
+            padding-left:5px;
+            margin:0px;
+            h3{
+                font-size: 18px;
+                color: #2b2b2c;
+                font-weight: 500;
+                margin-bottom:7px;
+            }
+            p{
+                font-size: 16px;
+                color: #616263;
+                font-weight: 400;
+                margin-bottom:20px;
+            }
+        }
+        ion-badge {
+            background: transparent;
+            color: #9fa0a3;
+            font-weight: 400;
+            font-size: 14px;
+        }
+   }
+   
+}
+.tabWrap {
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 1px solid #1b346a;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 90%;
+    margin-left: 5%;
+    .button {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin: 0px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        text-align: center;
+        font-size: 16px;
+        height: auto;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+        --color: #656565;
+        background:#fff;
+        &.activeTab {
+            background-color: #1b346a;
+            --color: #fff;
+        }
+        &.md {
+            font-size: 13px!important;
+        }
+    }
+    
+   
+}
+ion-toolbar {
+    @media only screen and (max-width: 360px) {
+        ion-title {
+            padding-left:0px;
+            padding-right:0px;
+        }
+    }
+}

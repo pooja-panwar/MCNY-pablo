@@ -1,22 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuController, Platform } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/providers/user.service';
 import { constant } from '../../providers/constants/config';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-signup2',
   templateUrl: './signup2.page.html',
   styleUrls: ['./signup2.page.scss'],
 })
-export class Signup2Page implements OnInit {
+export class Signup2Page implements OnInit, OnDestroy {
   signUpForm: FormGroup;
   isSubmitted = false;
   userDetails;
   masterData;
   timeFrames = [];
   subscription: any;
+  objectKeys = Object.keys;
+  countyDB = [];
+
   constructor(
     public menuCtrl: MenuController,
     private fb: FormBuilder,
@@ -34,11 +40,13 @@ export class Signup2Page implements OnInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
     this.initForm();
     this.subscribeToMasterData();
     // this.disableBackNav();
   }
   ionViewWillEnter() {
+    console.log('ionViewWillEnter');
     this.menuCtrl.enable(false);
   }
 
@@ -47,11 +55,7 @@ export class Signup2Page implements OnInit {
   }
 
   ionViewDidEnter() {
-    // this.subscription = this.platform.backButton.subscribeWithPriority(
-    //   9999,
-    //   () => {
-    //   }
-    // );
+    console.log('ionViewDidEnter');
   }
 
   /**
@@ -66,12 +70,44 @@ export class Signup2Page implements OnInit {
 
   //subscirbe to signup required master data
   subscribeToMasterData() {
+    // this.masterData = [];
     this.user.signUpMasterDataSubject.subscribe((data) => {
+      console.log('master data subscribe>>', data);
       if (data) {
+        //setTimeout(()=>{
+        //this.masterData.timeframes = [];
         this.masterData = data.data;
+        this.countyDB = this.masterData.counties;
+        //}, 500)
+        // setTimeout(()=>{
+        //   this.masterData.timeframes = [];
+        // }, 2000)
       }
     });
   }
+
+  // getCounty(zip) {
+  //   console.log(zip)
+  //   if(zip.length >= 5 && zip.length <= 9) {
+  //     this.user.getCountyByZip(zip).subscribe(res => {
+  //       console.log('res zip>', res);
+  //       this.countyDB = res.data;
+  //           // console.log(this.countyDB[0].id);
+  //         if(this.countyDB[0] && this.countyDB[0].id) {
+  //           setTimeout(() =>{
+  //             this.signUpForm.get('county').patchValue(this.countyDB[0].id);
+  //           },500)
+  //         }
+  //     }, error=>{
+  //       console.log('err1', error)
+  //       //if(error.status == 404){
+  //         this.countyDB = [];
+  //         this.signUpForm.get('county').patchValue('');
+
+  //       //}
+  //     })
+  //   }
+  // }
 
   /**
    * disable user to navigate back to signup page 1
@@ -91,10 +127,35 @@ export class Signup2Page implements OnInit {
       expertise: ['', [Validators.required]],
       isAvailable: [false],
       timeframes: this.fb.array([]),
-      cities: ['', [Validators.required]],
+      counties: ['', [Validators.required]],
       counselingMethod: ['', [Validators.required]],
+      //zipcode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(9)]],
+      //city: ['', [Validators.required]]
     });
+    // this.loadCounty();
   }
+
+  // loadCounty() {
+  //   this.signUpForm.controls.zipcode.valueChanges
+  //   .debounceTime(2000) //reurn ajax hit after 2.5 secs of typing any word
+  //   .distinctUntilChanged()
+  //   .switchMap( zip => {
+  //     if(zip.length >= 5 && zip.length <= 9)
+  //       return this.user.getCountyByZip(zip)
+  //     return [];
+  //   })
+  //   .subscribe(resp => {
+  //     console.log(resp);
+  //     this.countyDB = resp.data;
+  //     // console.log(this.countyDB[0].id);
+  //     if(this.countyDB[0] && this.countyDB[0].id) {
+  //       setTimeout(() =>{
+  //         this.signUpForm.get('county').patchValue(this.countyDB[0].id);
+  //       },500)
+  //     }
+
+  //   });
+  // }
 
   /**
    * push time frame checkbox value into form array
@@ -179,5 +240,12 @@ export class Signup2Page implements OnInit {
   //stop registration and navgitate back to login
   close() {
     this.router.navigate(['login']);
+  }
+
+  ngOnDestroy() {
+    console.log('page leave');
+    this.masterData.timeframes.forEach((timeframe) => {
+      timeframe.checked = false;
+    });
   }
 }

@@ -55,9 +55,6 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.common.getFromLocal('device_token').then((val) => {
-      this.deviceToken = val;
-    });
     this.checkDevicePlatform();
   }
 
@@ -85,33 +82,37 @@ export class LoginPage implements OnInit {
    */
   submitLogin(value) {
     this.isSubmitted = true;
-    if (this.loginForm.valid) {
-      //create form body parameters
-      const param = {
-        email: value.email,
-        password: value.password,
-        deviceToken: this.deviceToken,
-        deviceType: this.platformName,
-      };
-      this.user.loginUser(param).subscribe((data) => {
-        if (data.status === 'success') {
-          this.common
-            .saveLocal('userData', JSON.stringify(data.data))
-            .then((res) => {
-              // this.common.emitUserSubject(data.data);
-              this.userData.setUserData().then(() => {
-                //check if user has checked true to remember me
-                if (value.rememberMe) {
-                  this.saveUserToLocal('rememberMe', 'true');
-                } else {
-                  this.saveUserToLocal('rememberMe', 'false');
-                }
-                this.router.navigate(['profile']);
+    this.common.getFromLocal('device_token').then((val) => {
+      this.deviceToken = val;
+
+      if (this.loginForm.valid) {
+        //create form body parameters
+        const param = {
+          email: value.email,
+          password: value.password,
+          deviceToken: this.deviceToken,
+          deviceType: this.platformName,
+        };
+        this.user.loginUser(param).subscribe((data) => {
+          if (data.status === 'success') {
+            this.common
+              .saveLocal('userData', JSON.stringify(data.data))
+              .then((res) => {
+                // this.common.emitUserSubject(data.data);
+                this.userData.setUserData().then(() => {
+                  //check if user has checked true to remember me
+                  if (value.rememberMe) {
+                    this.saveUserToLocal('rememberMe', 'true');
+                  } else {
+                    this.saveUserToLocal('rememberMe', 'false');
+                  }
+                  this.router.navigate(['profile']);
+                });
               });
-            });
-        }
-      });
-    }
+          }
+        });
+      }
+    });
   }
 
   /**

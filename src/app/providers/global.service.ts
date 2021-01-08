@@ -5,13 +5,12 @@ import {
   Platform,
   MenuController,
   NavController,
+  PopoverController,
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CallHttpService } from './call-http.service';
-import { ApiEndPoints } from './constants/api-endpoints';
-import { UserDataService } from './user-data.service';
+import { BehaviorSubject } from 'rxjs';
+import { Location } from '@angular/common';
 
 /**
  * Common service used throughout app
@@ -23,13 +22,19 @@ export class CommonService {
   loading: any;
   isLoading: boolean = false;
   userSubject = new BehaviorSubject(null);
+  isEditPage = false;
+  isMenuOpened = false;
+  isPopupOpened = false;
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private storage: Storage,
     private platform: Platform,
     private router: Router,
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    private navCtrl: NavController,
+    private location: Location,
+    private popoverController: PopoverController
   ) {}
   /**
    * save to local db
@@ -110,12 +115,33 @@ export class CommonService {
   handleBackNavigation() {
     this.platform.backButton.subscribe(() => {
       //back handle for android
-      if (this.router.url === '/profile' || this.router.url === '/login') {
-        navigator['app'].exitApp();
-      }
-      if (this.router.url === '/signup1') {
-        this.router.navigate(['login']);
-      }
+      this.menuCtrl.isOpen().then((status) => {
+        if (status === true) {
+          this.menuCtrl.close();
+        } else {
+          if (this.isPopupOpened) {
+            this.popoverController.dismiss();
+            this.isPopupOpened = false;
+          } else {
+            if (
+              this.router.url === '/profile' ||
+              this.router.url === '/login'
+            ) {
+              if (!this.isEditPage) {
+                navigator['app'].exitApp();
+              }
+            } else if (this.router.url === '/signup1') {
+              this.router.navigate(['login']);
+            }
+            // else if (this.router.url === '/notification') {
+            //   this.router.navigate(['profile']);
+            // }
+            else {
+              this.location.back();
+            }
+          }
+        }
+      });
     });
   }
 
@@ -139,4 +165,18 @@ export class CommonService {
       });
     });
   }
+
+  // validation for no whote spaces in text
+  noWhiteSpace(e) {
+    if (e.key === ' ') {
+      return false;
+    }
+  }
+  // //logout user and delete local stored details of the
+  // logout() {
+  //   this.removeFromLocal('rememberMe');
+  //   this.removeFromLocal('userData');
+  //   this.menuCtrl.toggle();
+  //   this.navCtrl.navigateForward(['login']);
+  // }
 }

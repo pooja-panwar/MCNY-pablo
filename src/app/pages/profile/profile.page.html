@@ -1,13 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons> -->
-    <ion-title>Profile</ion-title>
+    <ion-buttons
+      *ngIf="toEditprofile"
+      slot="start"
+      style="left: 0; padding-left: 5px"
+    >
+      <ion-button (click)="toEditprofile = false">
+        <img src="back.png" />
+      </ion-button>
+    </ion-buttons>
+    <ion-title><span *ngIf="toEditprofile">Edit</span> Profile</ion-title>
     <ion-buttons slot="end" class="menuIcon">
       <ion-button routerLink="/notification">
         <img src="../assets/img/notification.png" />
-        <ion-badge class="notiCount">10</ion-badge>
+        <ion-badge class="notiCount">{{notifyCount}}</ion-badge>
       </ion-button>
       <ion-menu-button>
         <img src="assets/img/menu.png" />
@@ -19,7 +25,26 @@
   <ion-grid class="bg-blue">
     <ion-row>
       <ion-col class="profileImgWrap">
-        <img alt="" src="../assets/img/profile-pic.png" />
+        <img
+          [src]="profileImage"
+          *ngIf="profileImage"
+          (click)="editProfile()"
+        />
+        <img
+          alt=""
+          src="../assets/img/profile-pic.png"
+          *ngIf="!profileImage"
+          (click)="editProfile()"
+        />
+
+        <img
+          (click)="editProfile()"
+          *ngIf="toEditprofile"
+          src="../assets/img/edit.png"
+          alt=""
+          style="border: none!important"
+          class="cameraIcon"
+        />
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -28,8 +53,8 @@
       <ion-col>
         <h2 [hidden]="toEditprofile">
           {{user?.name}}
-          <ion-button (click)="toEditprofile = !toEditprofile"
-            ><img src="../assets/img/edit.png" alt=""
+          <ion-button (click)="changeAction()">
+            <img src="../assets/img/edit.png" alt=""
           /></ion-button>
         </h2>
 

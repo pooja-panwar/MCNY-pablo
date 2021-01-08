@@ -12,6 +12,8 @@ import { CommonService } from '../providers/global.service';
 import { Router } from '@angular/router';
 import { UserService } from '../providers/user.service';
 import { UserDataService } from '../providers/user-data.service';
+import { environment } from 'src/environments/environment';
+import { ApiEndPoints } from '../providers/constants/api-endpoints';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -25,8 +27,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.common.displayLoader();
-
+    if (request.url !== `${ApiEndPoints.GETMASTERDATA}`) {
+      this.common.displayLoader();
+    }
     let userToken = '';
     if (this.user.userData && this.user.userData.token) {
       userToken = this.user.userData.token;
@@ -46,6 +49,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     const req = request.clone({
       setHeaders: headers,
     });
+    console.log('Req***', req);
 
     return next.handle(req).pipe(
       tap((data) => console.log(data)),
@@ -67,7 +71,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         return throwError(error);
       }),
       finalize(() => {
-        // setTimeout(() => {
+        //setTimeout(() => {
         this.common.hideLoader();
         // }, 1000);
       })
@@ -76,7 +80,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //handle error response
   handleError(err) {
-    this.common.presentToast(err.error.message);
+    console.log('Http Error**************', err);
+    this.common.presentToast(
+      err.error.message ? err.error.message : 'Please try again!'
+    );
     if (err.status === 401) {
       this.logoutUser();
     } else if (err.err.message === 'Token is not valid') {
@@ -92,6 +99,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   //logout user from app
   logoutUser() {
+    // this.userService.userLogout().subscribe((data) => {
     this.userService.logout();
+    // });
   }
 }

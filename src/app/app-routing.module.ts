@@ -41,7 +41,6 @@ const routes: Routes = [
       import('./pages/notification/notification.module').then(
         (m) => m.NotificationPageModule
       ),
-    canActivate: [AuthGuard],
   },
   {
     path: 'request-details',
@@ -49,7 +48,6 @@ const routes: Routes = [
       import('./pages/request-details/request-details.module').then(
         (m) => m.RequestDetailsPageModule
       ),
-    canActivate: [AuthGuard],
   },
   {
     path: 'accepted-requests',
@@ -59,17 +57,17 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
-  {
-    path: 'accepted-requests-details',
-    loadChildren: () =>
-      import(
-        './pages/accepted-requests-details/accepted-requests-details.module'
-      ).then((m) => m.AcceptedRequestsDetailsPageModule),
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: 'accepted-requests-details',
+  //   loadChildren: () =>
+  //     import(
+  //       './pages/accepted-requests-details/accepted-requests-details.module'
+  //     ).then((m) => m.AcceptedRequestsDetailsPageModule),
+  //   canActivate: [AuthGuard],
+  // },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'profile',
     pathMatch: 'full',
   },
   {
@@ -85,6 +83,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/reset-password/reset-password.module').then(
         (m) => m.ResetPasswordPageModule
+      ),
+  },
+  {
+    path: 'inquiry-list',
+    loadChildren: () =>
+      import('./pages/inquiry-list/inquiry-list.module').then(
+        (m) => m.InquiryListPageModule
       ),
   },
 ];

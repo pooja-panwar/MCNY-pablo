@@ -11,7 +11,7 @@ export class RegistrationSuccessMessagePage implements OnInit {
   constructor(private router: Router, private platform: Platform) {}
   subscription;
   ngOnInit() {
-    this.routeToLogin();
+    // this.routeToLogin();
     this.disableBackNav();
   }
 
