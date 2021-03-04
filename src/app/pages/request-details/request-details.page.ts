@@ -111,6 +111,9 @@ export class RequestDetailsPage implements OnInit {
       this.inqueryData = resp;
       this.inquiryFileName = resp.vcfFileName;
       this.isAppointmentDone();
+      if (this.inqueryData.dob) {
+        this.inqueryData.dob = this.inqueryData.dob.split('T')[0];
+      }
     });
   }
   isAppointmentDone() {
