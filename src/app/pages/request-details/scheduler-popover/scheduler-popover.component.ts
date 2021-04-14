@@ -71,7 +71,7 @@ export class SchedulerPopoverComponent implements OnInit {
         patientEnquiryId: this.patientEnquiryId,
         timeZone: moment.tz.guess(),
       };
-
+      console.log(body);
       this.patient.scheduleAppointment(body).subscribe((data) => {
         this.popoverController.dismiss();
         this.patient.scheduleStatus.next(true);
