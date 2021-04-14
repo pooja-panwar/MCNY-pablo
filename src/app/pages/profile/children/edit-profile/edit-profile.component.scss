@@ -1,0 +1,213 @@
+.profileImgWrap {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  img {
+    max-width: 200px;
+    border: 3px solid #252526;
+    border-radius: 100%;
+  }
+}
+
+.userInfo {
+  background: #f0f0f0;
+
+  h2 {
+    color: #1b356b;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 28px;
+
+    ion-button {
+      --background: transparent;
+      --border-color: transparent;
+      --box-shadow: none;
+      --background-activated: transparent;
+      --background-hover: transparent;
+      padding-inline-start: 0px;
+      padding-inline-end: 0px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+
+      img {
+        width: 25px;
+      }
+    }
+  }
+
+  p {
+    color: #0e0e0e;
+    font-weight: 400;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+
+    &.name {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.mobileEmailInfo {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+
+  .title {
+    color: #2b2b2c;
+    font-weight: 400;
+    font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 0px;
+
+    @media only screen and (max-width: 360px) {
+      font-size: 15px;
+    }
+  }
+
+  .info {
+    color: #2b2b2c;
+    font-weight: 500;
+    font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 0px;
+
+    @media only screen and (max-width: 360px) {
+      font-size: 15px;
+    }
+  }
+}
+
+.acceptingAvailableInfo {
+  background: #f2f2f2;
+  border-top: 4px solid #e6e5e5;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  ion-col {
+    text-align: center;
+
+    h3 {
+      color: #2b2b2c;
+      font-weight: 400;
+      font-size: 16px;
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 5px;
+
+      @media only screen and (max-width: 360px) {
+        font-size: 15px;
+      }
+    }
+
+    ion-badge {
+      border-radius: 10px;
+      background-color: #ffffff;
+      border: 2px solid #ddd;
+      color: #2b2b2c;
+      font-weight: 400;
+      font-size: 16px;
+      text-align: center;
+      min-width: 100px;
+      padding: 12px 5px;
+      margin-top: 5px;
+
+      @media only screen and (max-width: 360px) {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+ion-input {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  max-width: 100%;
+  width: 100%;
+  --padding-start: 15px !important;
+  --padding-end: 15px;
+  color: #2b2b2c;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+ion-toggle {
+  --handle-background: #ebc104;
+  --background: #fff;
+  --background-checked: #ebc104;
+  --handle-box-shadow: none;
+  --handle-background-checked: #fff;
+  border: 2px solid #ddd;
+  border-radius: 30px;
+  width: 65px;
+  --handle-height: 28px;
+  --handle-width: 28px;
+  --handle-max-height: auto;
+  padding-inline-start: 1px;
+  padding-inline-end: 1px;
+  &.md {
+    height: 32px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  &[aria-checked='true'] {
+    border: 2px solid #ebc104;
+    background: #ebc104;
+  }
+}
+
+ion-checkbox {
+  --border-style: solid;
+  --border-color: #ddd;
+  --size: 140px;
+  --background-checked: #ecc716;
+  --border-color-checked: #ecc716;
+  --checkmark-color: #ecc716;
+  --checkmark-width: 0;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 40px;
+  --border-radius: 30px;
+  margin: auto;
+  --border-width: 2px;
+  @media only screen and (max-width: 360px) {
+    --size: 110px;
+  }
+}
+ion-label {
+  pointer-events: none;
+  margin: 0px;
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+ion-select {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  max-width: 100%;
+  width: 100%;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  padding-top: 10.5px;
+  padding-bottom: 10.5px;
+}
+
+.text-center {
+  text-align: center;
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "106224397664",
+    "firebase_url": "https://mcnys-8d4ea.firebaseio.com",
+    "project_id": "mcnys-8d4ea",
+    "storage_bucket": "mcnys-8d4ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106224397664:android:a24f7e14bdcee75adc4205",
+        "android_client_info": {
+          "package_name": "com.mcnys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106224397664-8jbj5pld0uvdvt37q6hanolnsib3nhin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDobJwZvQB74ZMp2vhr6dbB8h9LHbSr-5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106224397664-8jbj5pld0uvdvt37q6hanolnsib3nhin.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

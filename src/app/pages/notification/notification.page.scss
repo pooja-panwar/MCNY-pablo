@@ -16,6 +16,9 @@
         ion-label{
             padding-left:5px;
             margin:0px;
+            &.allNotiLabel {
+                text-align: center;
+            }
             h3{
                 font-size: 18px;
                 color: #2b2b2c;
@@ -35,5 +38,16 @@
             font-weight: 400;
             font-size: 14px;
         }
+        a {
+            &.seeAllLink {
+              color: #1b356b;
+              font-weight: 400;
+              font-family: 'Roboto', sans-serif;
+              text-align: center;
+              font-size: 14px;
+              text-decoration: none;
+              margin: 0px auto;
+            }
+          }
    }
 }

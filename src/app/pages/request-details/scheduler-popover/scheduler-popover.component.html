@@ -1,0 +1,40 @@
+<ion-item>
+  <ion-label>Schedule Date</ion-label>
+  <ion-datetime
+    value="scheduleDate"
+    [(ngModel)]="scheDate"
+    (ngModelChange)="dateSelected($event)"
+    placeholder="Select Date"
+    [min]="minDate"
+    [max]="maxDate"
+  ></ion-datetime>
+</ion-item>
+<!-- <ion-item-divider></ion-item-divider> -->
+<ion-item>
+  <ion-label>Schedule Time (24hr)</ion-label>
+  <!-- <ion-datetime
+    displayFormat="hh:mm A"
+    [(ngModel)]="scheTime"
+    (ngModelChange)="timeSelected($event)"
+    placeholder="Select Time"
+    pickerFormat="hh:mm A"
+  ></ion-datetime> -->
+  <ngb-timepicker
+    #dp
+    name="fieldName"
+    ngDefaultControl
+    [(ngModel)]="scheTime"
+  ></ngb-timepicker>
+</ion-item>
+
+<ion-item *ngIf="invalidTime">
+  <div style="width: 100%; text-align: center">
+    <span style="color: red; font-size: 14px">Invalid time entered.</span>
+  </div>
+</ion-item>
+
+<ion-item>
+  <ion-buttons class="expandBtn">
+    <ion-button class="download" (click)="schedule()">Schedule</ion-button>
+  </ion-buttons>
+</ion-item>

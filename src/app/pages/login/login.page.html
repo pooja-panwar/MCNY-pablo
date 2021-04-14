@@ -1,46 +1,76 @@
 <ion-content class="bg-blue">
-<ion-list class="logoWrap">
-  <ion-item text-center>
-     <img alt="" src="../assets/img/logo.png">
-  </ion-item>  
-</ion-list>
- <ion-card class="formWrap">
-  <ion-card-content>
-    <h4>Log in</h4>
-    <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)"  >
-      <ion-list>
-        <ion-item>
-          <ion-label position="stacked">Email Id</ion-label>
-          <ion-input formControlName="email"></ion-input>
-        </ion-item>
-        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
-          Email is required.
-        </span>
-        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.pattern">
-          Please provide valid email id.
-        </span>
-        <ion-item>
-          <ion-label position="stacked">Password</ion-label>
-          <ion-input type = "password" formControlName="password"></ion-input>
-        </ion-item>  
-        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
-          Password is required.
-        </span>
-        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
-          Password should be minimum 6 character.
-        </span> 
-        <ion-item>
-          <a href="#" class="forgotPassword">Forgot your password ?</a>
-        </ion-item>  
-        <ion-item>
-          <ion-button type="submit" class="yellowBtn">Log in</ion-button>
-        </ion-item>
-        <ion-item>
-          <p class="signupText">Don't have an account? <a href="#" routerLink="/signup1">Signup here</a> </p>
-        </ion-item>
-      </ion-list>
-    </form>
-    
-  </ion-card-content>
-</ion-card>
+  <ion-list class="logoWrap">
+    <ion-item text-center>
+      <img alt="" src="../assets/img/logo.png" />
+    </ion-item>
+  </ion-list>
+  <ion-card class="formWrap">
+    <ion-card-content>
+      <h4>Log in</h4>
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)">
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Email Id</ion-label>
+            <ion-input
+              formControlName="email"
+              [class.error-input]="isSubmitted && errorControl.email.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.email.errors?.required"
+          >
+            Email is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.email.errors?.pattern"
+          >
+            Please provide valid email id.
+          </span>
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input
+              type="password"
+              formControlName="password"
+              [class.error-input]="isSubmitted && errorControl.password.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.required"
+          >
+            Password is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.pattern"
+          >
+            Password must contain atleast 8 characters with one special
+            character, one capital and one small letter.
+          </span>
+
+          <ion-item class="login-remember-class" lines="none">
+            <ion-label class="mb-0">Remember Me</ion-label>
+            <ion-toggle formControlName="rememberMe"></ion-toggle>
+          </ion-item>
+
+          <ion-item>
+            <a routerLink="/forgot-password" class="forgotPassword"
+              >Forgot your password ?</a
+            >
+          </ion-item>
+          <ion-item>
+            <ion-button type="submit" class="yellowBtn">Log in</ion-button>
+          </ion-item>
+          <ion-item>
+            <p class="signupText">
+              Don't have an account?
+              <a routerLink="/signup1">Register for an Account</a>
+            </p>
+          </ion-item>
+        </ion-list>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

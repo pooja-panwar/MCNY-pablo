@@ -1,0 +1,44 @@
+<ion-grid class="mobileEmailInfo">
+  <ion-row>
+    <ion-col size="5" class="title">Phone Number</ion-col>
+    <ion-col size="7" class="info">{{ user?.phoneNumber }}</ion-col>
+    <ion-col size="5" class="title">Insurance</ion-col>
+    <ion-col size="7" class="info">{{ user?.insurances1 }}</ion-col>
+    <ion-col size="5" class="title">Email</ion-col>
+    <ion-col size="7" class="info">{{ user?.email }}</ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid class="acceptingAvailableInfo">
+  <ion-row>
+    <ion-col size="6">
+      <h3>Accepting Clients</h3>
+      <ion-badge>{{ user?.isAvailable ? 'Yes' : 'No' }}</ion-badge>
+    </ion-col>
+    <ion-col size="6">
+      <h3>Available Timeframe</h3>
+      <ion-badge *ngFor="let timeFrame of user?.timeframes">{{
+        timeFrame.timeframe
+      }}</ion-badge>
+    </ion-col>
+    <!-- <ion-col size="6">
+      <h3>Zipcode</h3>
+      <ion-badge>{{
+        user?.zipcode
+      }}</ion-badge>
+    </ion-col> -->
+    <ion-col size="6">
+      <h3>County</h3>
+      <ion-badge *ngFor="let county of user?.counties">{{ county?.county }}</ion-badge>
+    </ion-col>
+    <!-- <ion-col size="6">
+      <h3>City</h3>
+      <ion-badge>{{
+        user?.city
+      }}</ion-badge>
+    </ion-col> -->
+    <ion-col size="6">
+      <h3>Counseling Method</h3>
+      <ion-badge>{{ user?.counselingDisplay }}</ion-badge>
+    </ion-col>
+  </ion-row>
+</ion-grid>

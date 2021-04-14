@@ -2,30 +2,47 @@ import { Injectable } from '@angular/core';
 import {
   ToastController,
   LoadingController,
-} from "@ionic/angular";
-import { Storage } from "@ionic/storage";
+  Platform,
+  MenuController,
+  NavController,
+  PopoverController,
+} from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { Location } from '@angular/common';
 
 /**
  * Common service used throughout app
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
-  loading:any;
-  isLoading:boolean = false;
+  loading: any;
+  isLoading: boolean = false;
+  userSubject = new BehaviorSubject(null);
+  isEditPage = false;
+  isMenuOpened = false;
+  isPopupOpened = false;
   constructor(
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private storage: Storage
-  ) { 
-  }
+    private storage: Storage,
+    private platform: Platform,
+    private router: Router,
+    public menuCtrl: MenuController,
+    private navCtrl: NavController,
+    private location: Location,
+    private popoverController: PopoverController
+  ) {}
   /**
    * save to local db
    * @param key : name of the key that should be unique
    * @param value : value can be anything but will be saved in string
    */
   async saveLocal(key, value) {
+    //await localStorage.setItem(key, value);
     await this.storage.set(key, value);
   }
 
@@ -34,6 +51,7 @@ export class CommonService {
    * @param key : unique key to get the local data
    */
   async getFromLocal(key) {
+    //let val = await localStorage.getItem(key);
     let val = await this.storage.get(key);
     return val;
   }
@@ -44,17 +62,18 @@ export class CommonService {
    */
   async removeFromLocal(key) {
     await this.storage.remove(key);
+    //localStorage.removeItem(key);
   }
 
   /**
    * Show toast with message
    * @param text : message to display on toast
    */
-  async presentToast(text){
+  async presentToast(text) {
     const toast = await this.toastCtrl.create({
       message: text,
       duration: 3000,
-      position: "top"
+      position: 'top',
     });
     toast.present();
   }
@@ -65,7 +84,7 @@ export class CommonService {
    */
   async hideLoader() {
     this.isLoading = false;
-    return await this.loadingCtrl.dismiss().then(() => console.log('dismissed'));
+    return await this.loadingCtrl.dismiss().then(() => {});
   }
 
   /**
@@ -73,19 +92,91 @@ export class CommonService {
    */
   async displayLoader() {
     this.isLoading = true;
-    return await this.loadingCtrl.create({
-      spinner: 'dots',
-      message: 'Loading Please Wait...',
-      translucent: true,
-      cssClass: 'custom-class custom-loading',
-      backdropDismiss: true
-    }).then(a => {
-      a.present().then(() => {
-        console.log('presented');
-        if (!this.isLoading) {
-          a.dismiss().then(() => console.log('abort presenting'));
+    return await this.loadingCtrl
+      .create({
+        spinner: 'dots',
+        message: 'Loading Please Wait...',
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+        backdropDismiss: true,
+      })
+      .then((a) => {
+        a.present().then(() => {
+          if (!this.isLoading) {
+            a.dismiss().then(() => {});
+          }
+        });
+      });
+  }
+
+  /**
+   * subscribe to back navigation event in android and handle
+   */
+  handleBackNavigation() {
+    this.platform.backButton.subscribe(() => {
+      //back handle for android
+      this.menuCtrl.isOpen().then((status) => {
+        if (status === true) {
+          this.menuCtrl.close();
+        } else {
+          if (this.isPopupOpened) {
+            this.popoverController.dismiss();
+            this.isPopupOpened = false;
+          } else {
+            if (
+              this.router.url === '/profile' ||
+              this.router.url === '/login'
+            ) {
+              if (!this.isEditPage) {
+                navigator['app'].exitApp();
+              }
+            } else if (this.router.url === '/signup1') {
+              this.router.navigate(['login']);
+            }
+            // else if (this.router.url === '/notification') {
+            //   this.router.navigate(['profile']);
+            // }
+            else {
+              this.location.back();
+            }
+          }
         }
       });
     });
   }
+
+  //emit user subject after value is stored
+  emitUserSubject(user) {
+    this.userSubject.next(user);
+  }
+
+  /**
+   * return user token if stored either from
+   * local storage or from the user subject
+   */
+  getUserToken() {
+    return new Promise((resolve) => {
+      this.getFromLocal('userData').then((val) => {
+        if (val && JSON.parse(val).token) {
+          resolve(JSON.parse(val).token);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  // validation for no whote spaces in text
+  noWhiteSpace(e) {
+    if (e.key === ' ') {
+      return false;
+    }
+  }
+  // //logout user and delete local stored details of the
+  // logout() {
+  //   this.removeFromLocal('rememberMe');
+  //   this.removeFromLocal('userData');
+  //   this.menuCtrl.toggle();
+  //   this.navCtrl.navigateForward(['login']);
+  // }
 }

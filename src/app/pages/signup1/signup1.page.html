@@ -1,66 +1,180 @@
 <ion-content class="bg-blue">
+  <ion-card class="formWrap">
+    <ion-card-content>
+      <h4>
+        Account Registration
+        <ion-button (click)="close()"
+          ><img routerLink="/login" src="../assets/img/close.png"
+        /></ion-button>
+      </h4>
 
- <ion-card class="formWrap">
-  <ion-card-content>
-    <h4>Sign up <ion-button><img src="../assets/img/close.png"></ion-button></h4>
-    <ion-list>
-        <ion-item>
-          <ion-label position="stacked">Name</ion-label>
-          <ion-input></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">License</ion-label>
-          <ion-input></ion-input>
-        </ion-item>   
-        <ion-item>
-          <ion-label position="stacked">Phone Number</ion-label>
-          <ion-input></ion-input>
-        </ion-item>  
-        <ion-item>
-          <ion-label position="stacked">Insurance</ion-label>
-         <ion-select>
+      <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input
+              formControlName="name"
+              [class.error-input]="isSubmitted && errorControl.name.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.name.errors?.required"
+          >
+            Name is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.name.errors?.minlength"
+          >
+            Enter valid name (must contain atleast 3 characters).
+          </span>
 
-         
-            <ion-select-option> Insurance</ion-select-option>
-            <ion-select-option>Fidelis Care</ion-select-option>
-            <ion-select-option>YourCare Option Plus</ion-select-option>
-            <ion-select-option>YourCare Health Plan</ion-select-option>
-            <ion-select-option>Crystal Run Health Plan</ion-select-option>
-            <ion-select-option>Metroplus Health Plan FIDA</ion-select-option>
-            <ion-select-option>Metroplus Health Plan Enhanced</ion-select-option>
-            <ion-select-option>Metroplus Health Plan</ion-select-option>
-            <ion-select-option>Centers Plan for Healthy Living</ion-select-option>
-            <ion-select-option>Unicare Commercial</ion-select-option>
-            <ion-select-option>Independent Health (All Commercial and State Plans)</ion-select-option>
-            <ion-select-option>Independent Health's Medisource Connect</ion-select-option>
-            <ion-select-option>Independent Health Association Inc</ion-select-option>
-            <ion-select-option> Healthfirst</ion-select-option>
-            <ion-select-option>Amida Care, Affinity Health Plan Enriched</ion-select-option>
-            <ion-select-option>Affinity Health Plan</ion-select-option>
-            <ion-select-option>Kalos Gold Plus</ion-select-option>
-            <ion-select-option>other</ion-select-option>
-          
-        </ion-select>
-        </ion-item>  
-        <ion-item>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input></ion-input>
-        </ion-item>  
-        <ion-item>
-          <ion-label position="stacked">Gender</ion-label>
-         <ion-select multiple>                  
-          <ion-select-option value="Male">Male</ion-select-option>
-           <ion-select-option value="Female">Female</ion-select-option>
-          <ion-select-option value="Male">other</ion-select-option>
-        </ion-select>
-        </ion-item> 
-       
-        <ion-item>
-          <ion-button class="yellowBtn" routerLink="/signup2" >next</ion-button>
-        </ion-item>
-         
-    </ion-list>
-   
-  </ion-card-content>
-</ion-card>
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">License</ion-label>
+            <ion-select
+              formControlName="license"
+              [class.error-input]="isSubmitted && errorControl.license.errors"
+            >
+              <ion-select-option
+                *ngFor="let license of masterData?.license"
+                [value]="license.id"
+                >{{license.license}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.license.errors?.required"
+          >
+            License is required.
+          </span>
+
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Phone Number</ion-label>
+            <ion-input
+              formControlName="phoneNumber"
+              type="number"
+              [class.error-input]="isSubmitted && errorControl.phoneNumber?.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.phoneNumber.errors?.required"
+          >
+            Phone Number is required.
+          </span>
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Insurance</ion-label>
+            <ion-select
+              multiple
+              formControlName="insurances"
+              [class.error-input]="isSubmitted && errorControl.insurances.errors"
+            >
+              <ion-select-option
+                *ngFor="let insurance of masterData?.insurances"
+                [value]="insurance.id"
+                >{{insurance.insurance}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.insurances.errors?.required"
+          >
+            Insurance is required.
+          </span>
+
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input
+              formControlName="email"
+              (keyup)="common.noWhiteSpace($event)"
+              [class.error-input]="isSubmitted && errorControl.email.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.email.errors?.required"
+          >
+            Email is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.email.errors?.pattern"
+          >
+            Please provide valid email id.
+          </span>
+
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Gender</ion-label>
+            <ion-select
+              formControlName="gender"
+              [class.error-input]="isSubmitted && errorControl.gender.errors"
+            >
+              <ion-select-option value="Male">Male</ion-select-option>
+              <ion-select-option value="Female">Female</ion-select-option>
+              <ion-select-option value="non-binary/other"
+                >Non-binary/other</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.gender.errors?.required"
+          >
+            Gender is required.
+          </span>
+
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input
+              type="password"
+              formControlName="password"
+              (keyup)="common.noWhiteSpace($event)"
+              [class.error-input]="isSubmitted && errorControl.password.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.required"
+          >
+            Password is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.password.errors?.pattern"
+          >
+            Password must contain atleast 8 characters with one special
+            character, one capital, one small letter and no blank spaces.
+          </span>
+
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Confirm Password</ion-label>
+            <ion-input
+              type="password"
+              (keyup)="common.noWhiteSpace($event)"
+              formControlName="confirmPassword"
+              [class.error-input]="isSubmitted && errorControl.confirmPassword.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.confirmPassword.errors?.required"
+          >
+            Confirm Password is required.
+          </span>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.confirmPassword.errors?.mustMatch"
+          >
+            Passwords must match.
+          </span>
+          <ion-item>
+            <ion-button type="submit" class="yellowBtn">next</ion-button>
+          </ion-item>
+        </ion-list>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

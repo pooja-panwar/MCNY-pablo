@@ -1,0 +1,155 @@
+.text-center {
+  text-align: center;
+}
+
+.text {
+  color: #000;
+}
+.logoWrap {
+  background: #1b356b;
+  padding-top: 50px;
+  padding-bottom: 30px;
+  .item {
+    --background: #1b356b;
+    --border-color: #1b356b;
+    img {
+      max-width: 170px;
+      margin: auto;
+      width: 100%;
+    }
+  }
+}
+.formWrap {
+  border-radius: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-inline-start: 15px;
+  margin-inline-end: 15px;
+  h4 {
+    color: #1b356b;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+  }
+  ion-list {
+    --highlight-color-focused: red;
+    .item {
+      --padding-start: 0px;
+      --padding-end: 0px;
+      --border-color: #fff;
+      --highlight-color-focused: transparent;
+      --inner-padding-end: 0px;
+      margin-bottom: 10px;
+      --background-activated-opacity: 0;
+      ion-label {
+        margin: 0px;
+        padding: 0px;
+        color: #2b2b2c;
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        transform: translate3d(0, 0%, 0) scale(1);
+        margin-bottom: 5px;
+      }
+      ion-input {
+        border-radius: 8px;
+        background-color: #ffffff;
+        border: 2px solid #ddd;
+        max-width: 100%;
+        width: 100%;
+        --padding-start: 15px;
+        --padding-end: 15px;
+        color: #2b2b2c;
+        font-weight: 400;
+        font-size: 16px;
+      }
+      a {
+        &.forgotPassword {
+          color: #1b356b;
+          font-weight: 400;
+          font-family: 'Roboto', sans-serif;
+          text-align: center;
+          font-size: 14px;
+          text-decoration: none;
+          margin: 0px auto;
+        }
+      }
+      .yellowBtn {
+        --background: #ecc716;
+        width: 100%;
+        height: 50px;
+        border-radius: 8px;
+        color: #1b356b;
+        font-weight: 700;
+        font-family: 'Roboto', sans-serif;
+        font-size: 28px;
+        text-transform: uppercase;
+        --box-shadow: none;
+        --background-hover: #ecc716;
+        letter-spacing: 0;
+        --background-activated: #ecc716;
+        --background-focused: #ecc716;
+        --background-hover: #ecc716;
+      }
+      .signupText {
+        color: #2b2b2c;
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        width: 100%;
+        font-size: 16px;
+        a {
+          font-size: 16px;
+          color: #1b356b;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  ion-card-content {
+    padding-bottom: 10px;
+  }
+}
+
+.rememberMe {
+  text-align: center;
+}
+.checkbox-size {
+  width: 20px;
+  height: 20px;
+}
+
+ion-toggle {
+  --handle-background: #ebc104;
+  --background: #fff;
+  --background-checked: #ebc104;
+  --handle-box-shadow: none;
+  --handle-background-checked: #fff;
+  border: 2px solid #ddd;
+  border-radius: 30px;
+  width: 65px;
+  --handle-height: 28px;
+  --handle-width: 28px;
+  --handle-max-height: auto;
+  padding-inline-start: 1px;
+  padding-inline-end: 1px;
+  &.md {
+    height: 32px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  &[aria-checked='true'] {
+    border: 2px solid #ebc104;
+    background: #ebc104;
+  }
+}
+
+.gotoLink {
+  font-size: 16px;
+  color: #1b356b;
+  text-decoration: none;
+  padding-top: 20px;
+}

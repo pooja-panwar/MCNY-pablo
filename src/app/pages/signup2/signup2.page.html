@@ -1,79 +1,166 @@
 <ion-content class="bg-blue">
-
   <ion-card class="formWrap">
     <ion-card-content>
-      <h4>Sign up <ion-button><img src="../assets/img/close.png"></ion-button>
+      
+      <h4>
+        <ion-buttons>
+          <ion-back-button defaultHref="signup1"></ion-back-button>
+        </ion-buttons>
+        Account Registration
+        <ion-button (click)="close()"
+          ><img routerLink="/login" src="../assets/img/close.png"
+        /></ion-button>
       </h4>
-      <ion-list>  
-        <ion-item>
-          <ion-label position="stacked">Expertise</ion-label>
-          <ion-select>
-            <ion-select-option value="">Select Expertise</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label  class="mb-0">Availability</ion-label>
-          <ion-toggle ></ion-toggle>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Available Timeframe</ion-label>
-          <ion-list class="TimeframeGridWrap">
-            <ion-item>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Anytime</ion-label>
-                  </ion-col>
-                  <ion-col size="6">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Morning</ion-label>
-                  </ion-col>
-                  <ion-col size="6">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Afternoon</ion-label>
-                  </ion-col>
-                  <ion-col size="6">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Evening</ion-label>
-                  </ion-col>
-                  <ion-col size="6" class="pb-0">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Weekends</ion-label>
-                  </ion-col>
-                  <ion-col size="6" class="pb-0">
-                    <ion-checkbox></ion-checkbox>
-                    <ion-label>Others</ion-label>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </ion-list>          
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Cities</ion-label>
-          <ion-select multiple>
-            <ion-select-option value="Cities">Select Cities</ion-select-option>
-            <ion-select-option value="1">City of Lockport </ion-select-option>
-            <ion-select-option value="1">City of North Tonawanda</ion-select-option>
-            <ion-select-option value="1">City of Niagara Falls</ion-select-option>
-            <ion-select-option value="1">Town of Cambria</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Preferred Counseling Method</ion-label>
-          <ion-select>
-            <ion-select-option value="Person">Person</ion-select-option>
-            <ion-select-option value="Person">Telehealth</ion-select-option>           
-          </ion-select>
-        </ion-item>
 
-        <ion-item>
-          <ion-button class="yellowBtn" routerLink="/profile">Sign up</ion-button>
-        </ion-item>
+      <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()">
+        <ion-list lines="none">
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Expertise</ion-label>
+            <ion-select
+              multiple
+              formControlName="expertise"
+              placeholder="Select Expertise"
+              [class.error-input]="isSubmitted && errorControl.expertise.errors"
+            >
+              <ion-select-option
+                *ngFor="let expertise of masterData?.expertise"
+                [value]="expertise.id"
+                >{{expertise.expertise}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.expertise.errors?.required"
+          >
+            Expertise details are required.
+          </span>
 
-      </ion-list>
+          <ion-item class="hideErrorLine">
+            <ion-label class="mb-0">Availability</ion-label>
+            <ion-toggle formControlName="isAvailable"></ion-toggle>
+          </ion-item>
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Available Timeframe</ion-label>
+            <ion-list class="TimeframeGridWrap">
+              <ion-item>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col
+                      size="6"
+                      *ngFor="let timeFrame of masterData?.timeframes; let i = index"
+                    >
+                      <ion-checkbox
+                        (click)="pushTimeFrameVal(timeFrame)"
+                        [(ngModel)]="timeFrame.checked"
+                        [id]="timeFrame.timeframe"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></ion-checkbox>
+                      <ion-label>{{timeFrame.timeframe}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <span
+                    *ngIf="isSubmitted && !signUpForm.value.timeframes?.length"
+                    class="error ion-padding"
+                    >Please select your preferred timeframe</span
+                  >
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+          </ion-item>
+          <!-- <ion-item class="hideErrorLine">
+            <ion-label position="stacked">Zipcode</ion-label>
+            <ion-input
+              formControlName="zipcode"
+              [class.error-input]="isSubmitted && errorControl.zipcode.errors"
+              (focusout)="getCounty($event.target.value)"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.zipcode.errors?.required"
+          >
+          Zipcode is required.
+          </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && (errorControl.zipcode.errors?.minlength || errorControl.zipcode.errors?.maxLength)">
+            Zipcode should be 5 to 9 characters.
+          </span> -->
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked">County</ion-label>
+            <ion-select
+              formControlName="counties"
+              multiple
+              [class.error-input]="isSubmitted && errorControl.counties.errors"
+            >
+              <ion-select-option
+                *ngFor="let county of countyDB"
+                [value]="county?.id"
+                >{{county?.county}}</ion-select-option
+              >
+            </ion-select>
 
+            <!-- <ion-input
+              formControlName="county"
+              [class.error-input]="isSubmitted && errorControl.county.errors"
+              readonly
+            ></ion-input> -->
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.counties.errors?.required"
+          >
+            County is required.
+          </span>
+          <!-- <ion-item class="hideErrorLine">
+            <ion-label position="stacked">City</ion-label>
+            <ion-input
+              formControlName="city"
+              [class.error-input]="isSubmitted && errorControl.city.errors"
+            ></ion-input>
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.city.errors?.required"
+          >
+            City is required.
+          </span> -->
+          <ion-item class="hideErrorLine">
+            <ion-label position="stacked"
+              >Preferred Counseling Method</ion-label
+            >
+            <ion-select
+              formControlName="counselingMethod"
+              placeholder="Select Counseling Method"
+              [class.error-input]="isSubmitted && errorControl.counselingMethod.errors">
+              <ion-select-option *ngFor="let key of objectKeys( masterData?.counselingMethods)" [value]="key">{{masterData?.counselingMethods[key]}}</ion-select-option>
+            </ion-select>
+            <!-- <ion-select
+              formControlName="counselingMethod"
+              [class.error-input]="isSubmitted && errorControl.counselingMethod?.errors"
+              placeholder="Select Counseling Method"
+              
+            >
+              <ion-select-option value="
+              -person">Person</ion-select-option>
+              <ion-select-option value="Telehealth"
+                >Telehealth</ion-select-option
+              >
+              <ion-select-option value="both">Both</ion-select-option>
+
+            </ion-select> -->
+          </ion-item>
+          <span
+            class="error ion-padding"
+            *ngIf="isSubmitted && errorControl.counselingMethod.errors?.required"
+          >
+            Preferred counseling method is required.
+          </span>
+
+          <ion-item>
+            <ion-button class="yellowBtn" type="submit">Sign up</ion-button>
+          </ion-item>
+        </ion-list>
+      </form>
     </ion-card-content>
   </ion-card>
 </ion-content>
